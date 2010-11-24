@@ -1,0 +1,6 @@
+{% if value.url %}{{ initial_text }}: <a target="_blank" href="{{ value.url }}">{{ value }}</a>
+{% else %}
+
+{% endif %}
+
+<input id="{{ id }}" type="{{ type }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}{% if required %} required{% endif %}{% if checked %} checked{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}>

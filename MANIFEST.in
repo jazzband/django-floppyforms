@@ -1,0 +1,2 @@
+include README.rst LICENCE
+recursive-include floppyforms/templates *.html
