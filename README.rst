@@ -22,7 +22,7 @@ Usage
 Forms
 `````
 
-FloppyForms are suppposed to work just like Django forms::
+FloppyForms are supposed to work just like Django forms::
 
     import floppyforms as forms
 
@@ -47,7 +47,7 @@ Default templates are provided and their output is relatively similar to
 Django widgets, with a few minor differences:
 
 * HTML5 ``<input>`` types are supported: ``url``, ``email``, ``date``,
-  ``datetime``, ``time`` ``number``, ``range``, ``search``, ``color``,
+  ``datetime``, ``time``, ``number``, ``range``, ``search``, ``color``,
   ``tel``.
 
 * The ``required`` and ``placeholder`` attributes are also supported.
@@ -83,12 +83,12 @@ RangeInput     ``min``, ``max``, ``step``
 SelectMultiple ``multiple`` is set to ``True``
 ============== ===============================
 
-Furthermore, the ``attrs`` dictionnary is added to the template context. For
+Furthermore, the ``attrs`` dictionary is added to the template context. For
 instance, with a field created this way::
 
     bar = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'john@example.com'}))
 
-Then the ``placeholder`` is available in the template context.
+Then the ``placeholder`` variable is available in the template context.
 
 ModelForms
 ``````````
@@ -168,8 +168,8 @@ Then, the output can be customized in ``generic_email.html``::
            placeholder="john@example.com"
            {% if value %}value="{{ value }}"{% endif %} />
 
-Here we have a generic placeholder without needing to instanciate the widget
-with an ``attrs`` dictionnary::
+Here we have a generic placeholder without needing to instantiate the widget
+with an ``attrs`` dictionary::
 
     class EmailForm(forms.Form):
         email = forms.EmailField(widget=GenericEmailInput())
