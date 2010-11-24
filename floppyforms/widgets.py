@@ -25,8 +25,6 @@ class FloppyInput(forms.TextInput):
             context.update(attrs)
 
         context.update(self.get_extra_context())
-        print context
-        print
         return loader.render_to_string(self.template_name, context)
 
 
