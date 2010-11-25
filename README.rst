@@ -194,6 +194,10 @@ with an ``attrs`` dictionary::
     class EmailForm(forms.Form):
         email = forms.EmailField(widget=GenericEmailInput())
 
+You can also override the default templates in your project's templates,
+assuming they take precedence on the app-provided templates (this is the
+default behaviour).
+
 There is also a way to add extra context. This is done by subclassing the
 widget class an extending the ``get_extra_context()`` method::
 
@@ -206,7 +210,7 @@ widget class an extending the ``get_extra_context()`` method::
             ctx['foo'] = 'bar'
             return ctx
 
-And then the ``other.html`` template can make use of the ``{{ bar }}`` context
+And then the ``other.html`` template can make use of the ``{{ foo }}`` context
 variable.
 
 Widgets reference
