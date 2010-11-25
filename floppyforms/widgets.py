@@ -122,7 +122,6 @@ class NumberInput(FloppyInput):
         return ctx
 
 
-
 class RangeInput(NumberInput):
     input_type = 'range'
 

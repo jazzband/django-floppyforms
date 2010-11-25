@@ -74,14 +74,18 @@ complex.
 
 Some widgets may provide extra context variables:
 
-============== ===============================
-Widget         Extra context
-============== ===============================
-Textarea       ``rows``, ``cols``
-NumberInput    ``min``, ``max``,  ``step``
-RangeInput     ``min``, ``max``, ``step``
-SelectMultiple ``multiple`` is set to ``True``
-============== ===============================
+====================== ============================================
+Widget                 Extra context
+====================== ============================================
+Textarea               ``rows``, ``cols``
+NumberInput            ``min``, ``max``,  ``step``
+RangeInput             ``min``, ``max``, ``step``
+Select                 ``choices``
+RadioSelect            ``choices``
+NullBooleanSelect      ``choices``
+SelectMultiple         ``choices``, ``multiple`` is set to ``True``
+CheckboxSelectMultiple ``choices``, ``multiple`` is set to ``True``
+====================== ============================================
 
 Furthermore, the ``attrs`` dictionary is added to the template context. For
 instance, with a field created this way::
@@ -112,17 +116,20 @@ Creating a ``ModelForm`` with widgets from FloppyForms is easy::
                 'url': forms.URLInput,
             }
 
-Widget reference
+Provided widgets
 ----------------
+
+Default widgets for form fields
+```````````````````````````````
 
 The first column represents the name of a django.forms field. FloppyForms aims
 to implement all the Django fields with the same class name, in the
 ``floppyforms`` namespace. Some widgets are missing but you can safely use the
 widgets from ``django.forms`` if you need them.
 
-======================== ================
+======================== =================
 Fields                   Widgets
-======================== ================
+======================== =================
 BooleanField             CheckboxInput
 CharField                TextInput
 ChoiceField              Select
@@ -138,7 +145,7 @@ ImageField               Not implemented
 IntegerField             NumberInput
 IPAddressField           Not implemented
 MultipleChoiceField      SelectMultiple
-NullBooleanField         NullBooleanInput
+NullBooleanField         NullBooleanSelect
 RegexField               Not implemented
 SlugField                Not implemented
 TimeField                TimeInput
@@ -148,7 +155,20 @@ MultiValueField          Not implemented
 SplitDateTimeField       Not implemented
 ModelChoiceField         Not implemented
 ModelMultipleChoiceField Not implemented
-======================== ================
+======================== =================
+
+Other widgets
+`````````````
+
+Some HTML5 widgets are also provided, although browser support may not be
+there yet:
+
+* ``SearchInput``: a widget that renders ``<input type="search">``.
+* ``ColorInput``: ``<input type="color">`` (not implemented in any browser
+  yet).
+* ``RangeInput``: ``<input type="range">``, for sliders instead of spinboxes
+  for numbers.
+* ``PhoneNumberInput``: ``<input type="tel">``. For phone numbers.
 
 Customization
 -------------
@@ -188,6 +208,157 @@ widget class an extending the ``get_extra_context()`` method::
 
 And then the ``other.html`` template can make use of the ``{{ bar }}`` context
 variable.
+
+Widgets reference
+-----------------
+
+For each widgets, the default class attributes.
+
+TextInput
+`````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: text
+
+PasswordInput
+`````````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: password
+
+HiddenInput
+```````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: hidden
+
+FileInput
+`````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: file
+
+ClearableFileInput
+``````````````````
+
+* ``template_name``: ``'floppyforms/clearable_input.html'``
+* ``initial_text``: ``_('Currently')``
+* ``input_text``: ``_('Change')``
+* ``clear_checkbox_label``: ``_('Clear')``
+
+The ``initial_text``, ``input_text`` and ``clear_checkbox_label`` attributes
+are provided in the template context.
+
+EmailInput
+``````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: email
+
+URLInput
+````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: url
+
+SearchInput
+```````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: search
+
+ColorInput
+``````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: color
+
+PhoneNumberInput
+````````````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: tel
+
+DateInput
+`````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_text``: date
+
+DateTimeInput
+`````````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: datetime
+
+TimeInput
+`````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: time
+
+NumberInput
+```````````
+
+* ``template_name``: ``'floppyforms/number_input.html'``
+* ``input_type``: number
+* ``min``: None
+* ``max``: None
+* ``step``: None
+
+``min``, ``max`` and ``step`` are available in the template context if they
+are not None.
+
+RangeInput
+``````````
+
+* ``template_name``: ``'floppyforms/number_input.html'``
+* ``input_type``: range
+* ``min``: None
+* ``max``: None
+* ``step``: None
+
+``min``, ``max`` and ``step`` are available in the template context if they
+are not None.
+
+Textarea
+````````
+
+* ``template_name``: ``'floppyforms/textarea.html'``
+* ``rows``: 10
+* ``cols``: 40
+
+CheckboxInput
+`````````````
+
+* ``template_name``: ``'floppyforms/input.html'``
+* ``input_type``: checkbox
+
+Select
+``````
+
+* ``template_name``: ``'floppyforms/select.html'``
+
+NullBooleanSelect
+`````````````````
+
+* ``template_name``: ``'floppyforms/select.html'``
+
+RadioSelect
+```````````
+
+* ``template_name``: ``'floppyforms/radio.html'``
+
+SelectMultiple
+``````````````
+
+* ``template_name``: ``'floppyforms/select.html'``
+
+CheckboxSelectMultiple
+``````````````````````
+
+* ``template_name``: ``'floppyforms/checkbox_select.html'``
+
 
 Bugs
 ----
