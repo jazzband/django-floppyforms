@@ -67,7 +67,7 @@ look like::
     <input id="{{ id }}"
            type="{{ type }}"
            name="{{ name }}"
-           {% if value %}value="{{ value }}" />
+           {% if value %}value="{{ value }}"{% endif %} />
 
 The default FloppyForms template for an ``<input>`` widget is slightly more
 complex.
@@ -184,6 +184,7 @@ widget class an extending the ``get_extra_context()`` method::
         def get_extra_context(self):
             ctx = super(OtheEmailInput, self).get_extra_context()
             ctx['foo'] = 'bar'
+            return ctx
 
 And then the ``other.html`` template can make use of the ``{{ bar }}`` context
 variable.
