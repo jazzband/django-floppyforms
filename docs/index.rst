@@ -16,6 +16,10 @@ attribute, as well as the new ``<input>`` types. For more information, read
 
 .. _this: http://diveintohtml5.org/forms.html
 
+The source code is hosted on `github`_.
+
+.. _github: https://github.com/brutasse/django-floppyforms
+
 Installation
 -------------
 

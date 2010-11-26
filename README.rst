@@ -16,7 +16,10 @@ Installation
 * ``pip install -e git+git://github.com/brutasse/django-floppyforms.git#egg=floppyforms``
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
 
-For extensive documentation see the ``docs`` folder.
+For extensive documentation see the ``docs`` folder or `read it on
+readthedocs`_
+
+.. _read it on readthedocs: http://readthedocs.org/projects/brutasse/django-floppyforms/docs/
 
 Bugs
 ----
