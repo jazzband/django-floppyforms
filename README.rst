@@ -19,7 +19,7 @@ Installation
 For extensive documentation see the ``docs`` folder or `read it on
 readthedocs`_
 
-.. _read it on readthedocs: http://readthedocs.org/projects/brutasse/django-floppyforms/docs/
+.. _read it on readthedocs: http://django-floppyforms.readthedocs.org/
 
 Bugs
 ----
