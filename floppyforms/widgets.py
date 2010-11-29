@@ -162,15 +162,19 @@ class NullBooleanSelect(forms.NullBooleanSelect, Select):
             value = {True: u'2', False: u'3', u'2': u'2', u'3': u'3'}[value]
         except KeyError:
             value = u'1'
-        return Select.render(self, name, value, attrs, choices)
+        return Select.render(self, name, value, attrs, choices=choices)
 
 
-class SelectMultiple(Select):
+class SelectMultiple(forms.SelectMultiple, Select):
+    template_name = 'floppyforms/select_multiple.html'
 
     def get_extra_context(self):
         ctx = super(SelectMultiple, self).get_extra_context()
         ctx['multiple'] = True
         return ctx
+
+    def render(self, name, value, attrs=None, choices=()):
+        return Select.render(self, name, value, attrs=attrs, choices=choices)
 
 
 class CheckboxSelectMultiple(SelectMultiple):

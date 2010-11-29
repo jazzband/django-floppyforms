@@ -27,7 +27,7 @@ class FileField(FloppyField, forms.FileField):
     widget = ClearableFileInput
 
 
-class MultipleChoiceField(FloppyField, forms.MultipleChoiceField):
+class MultipleChoiceField(forms.MultipleChoiceField):
     widget = SelectMultiple
 
 

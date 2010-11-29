@@ -1,0 +1,3 @@
+<select id="{{ id }}" name="{{ name }}" multiple="multiple">{% for option in choices %}
+	<option value="{{ option.0 }}"{% if option.0 in value %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}
+</select>

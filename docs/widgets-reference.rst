@@ -249,7 +249,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: SelectMultiple.template_name
     
-        ``'floppyforms/select.html'``
+        ``'floppyforms/select_multiple.html'``
 
 .. class:: CheckboxSelectMultiple
 
