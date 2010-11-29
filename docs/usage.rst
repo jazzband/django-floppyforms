@@ -42,7 +42,7 @@ Widgets are rendered with the following context variables:
 * ``required``: set to ``True`` if the field is required.
 * ``type``: the input type. Can be ``text``, ``password``, etc. etc.
 * ``name``: the name of the input.
-* ``id``: the if of the input.
+* ``id``: the id of the input.
 
 Each widget has a ``template_name`` attribute which points to the template to
 use when rendering the widget. A basic template for an ``<input>`` widget may
