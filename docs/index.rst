@@ -26,7 +26,7 @@ Installation
 Django 1.2 or greater is required because of the smart *if* template tag.
 Two-step process:
 
-* ``pip install -e git+git://github.com/brutasse/django-floppyforms.git#egg=floppyforms``
+* ``pip install https://github.com/brutasse/django-floppyforms/tarball/master``
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
 
 When you're done you can jump to the :doc:`usage <usage>` section.
