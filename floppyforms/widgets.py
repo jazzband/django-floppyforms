@@ -1,5 +1,6 @@
 from django import forms
 from django.template import loader
+from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext, ugettext_lazy
 
 
@@ -10,19 +11,21 @@ class FloppyInput(forms.TextInput):
     def get_extra_context(self):
         return {}
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, extra_context={}):
         context = {
             'type': self.input_type,
             'name': name,
             'hidden': self.is_hidden,
             'required': self.is_required,
         }
+        context.update(extra_context)
+
         if value:
             context['value'] = value
 
-        context.update(self.attrs)
         if attrs:
-            context.update(attrs)
+            attrs.update(self.attrs)
+        context['attrs'] = attrs
 
         context.update(self.get_extra_context())
         return loader.render_to_string(self.template_name, context)
@@ -136,9 +139,11 @@ class CheckboxInput(forms.CheckboxInput, FloppyInput):
     def render(self, name, value, attrs=None):
         try:
             result = self.check_test(value)
-        except:
-            result = False
-        self.attrs['checked'] = result
+            self.attrs['checked'] = ''
+        except:  # That bare except is in the Django code...
+            pass
+        if value not in ('', True, False, None):
+            value = force_unicode(value)
         return FloppyInput.render(self, name, value, attrs=attrs)
 
 
@@ -148,8 +153,9 @@ class Select(forms.Select, FloppyInput):
     def render(self, name, value, attrs=None, choices=()):
         if choices:
             self.choices = choices
-        self.attrs['choices'] = self.choices
-        return FloppyInput.render(self, name, value, attrs=attrs)
+        extra = {'choices': self.choices}
+        return FloppyInput.render(self, name, value, attrs=attrs,
+                                  extra_context=extra)
 
 
 class NullBooleanSelect(forms.NullBooleanSelect, Select):
