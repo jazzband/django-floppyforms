@@ -8,7 +8,7 @@ class FloppyInput(forms.TextInput):
     input_type = None
     template_name = 'floppyforms/input.html'
 
-    def get_extra_context(self):
+    def get_context_data(self):
         return {}
 
     def render(self, name, value, attrs=None, extra_context={}):
@@ -23,11 +23,16 @@ class FloppyInput(forms.TextInput):
         if value:
             context['value'] = value
 
-        if attrs:
-            attrs.update(self.attrs)
-        context['attrs'] = attrs
+        context.update(self.get_context_data())
 
-        context.update(self.get_extra_context())
+        attrs.update(self.attrs)
+
+        # for things like "checked", set the value to False so that the
+        # template doesn't render checked="".
+        for key, value in attrs.items():
+            if value == True:
+                attrs[key] = False
+        context['attrs'] = attrs
         return loader.render_to_string(self.template_name, context)
 
 
@@ -43,8 +48,8 @@ class HiddenInput(FloppyInput):
     input_type = 'hidden'
     is_hidden = True
 
-    def get_extra_context(self):
-        ctx = super(HiddenInput, self).get_extra_context()
+    def get_context_data(self):
+        ctx = super(HiddenInput, self).get_context_data()
         ctx['hidden'] = True
         return ctx
 
@@ -54,10 +59,10 @@ class Textarea(FloppyInput):
     rows = 10
     cols = 40
 
-    def get_extra_context(self):
-        ctx = super(Textarea, self).get_extra_context()
-        ctx['rows'] = self.rows
-        ctx['cols'] = self.cols
+    def get_context_data(self):
+        ctx = super(Textarea, self).get_context_data()
+        self.attrs['rows'] = self.rows
+        self.attrs['cols'] = self.cols
         return ctx
 
 
@@ -74,8 +79,8 @@ class ClearableFileInput(FileInput):
     input_text = ugettext_lazy('Change')
     clear_checkbox_label = ugettext_lazy('Clear')
 
-    def get_extra_context(self):
-        ctx = super(ClearableFileInput, self).get_extra_context()
+    def get_context_data(self):
+        ctx = super(ClearableFileInput, self).get_context_data()
         ctx['initial'] = self.initial_text
         ctx['input_text'] = self.input_text
         ctx['clear_checkbox_label'] = self.clear_checkbox_label
@@ -115,14 +120,16 @@ class NumberInput(FloppyInput):
     min = None
     max = None
     step = None
-    template_name = 'floppyforms/number_input.html'
 
-    def get_extra_context(self):
-        ctx = super(NumberInput, self).get_extra_context()
+    def render(self, name, value, attrs=None):
+        if attrs is None:
+            attrs = {}
+
         for attr in ('min', 'max', 'step'):
             if getattr(self, attr) is not None:
-                ctx[attr] = getattr(self, attr)
-        return ctx
+                attrs[attr] = getattr(self, attr)
+
+        return super(NumberInput, self).render(name, value, attrs=attrs)
 
 
 class RangeInput(NumberInput):
@@ -172,10 +179,9 @@ class NullBooleanSelect(forms.NullBooleanSelect, Select):
 
 
 class SelectMultiple(forms.SelectMultiple, Select):
-    template_name = 'floppyforms/select_multiple.html'
 
-    def get_extra_context(self):
-        ctx = super(SelectMultiple, self).get_extra_context()
+    def get_context_data(self):
+        ctx = super(SelectMultiple, self).get_context_data()
         ctx['multiple'] = True
         return ctx
 

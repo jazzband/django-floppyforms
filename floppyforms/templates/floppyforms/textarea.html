@@ -1,1 +1,1 @@
-<textarea id="{{ id }}" name="{{ name }}" rows="{{ rows }}" cols="{{ cols }}"{% if required %} required{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}>{{ value }}</textarea>
+<textarea name="{{ name }}"{% if required %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>{{ value }}</textarea>

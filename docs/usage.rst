@@ -20,7 +20,7 @@ With some template code:
     <form method="post" action="/some-action/">
         {% csrf_token %}
         {{ form.as_p }}
-        <p><input type="submit" value="Yay!" /></p>
+        <p><input type="submit" value="Yay!"></p>
     </form>
 
 Each field has a default widget and widgets are rendered using a template.
@@ -42,7 +42,8 @@ Widgets are rendered with the following context variables:
 * ``required``: set to ``True`` if the field is required.
 * ``type``: the input type. Can be ``text``, ``password``, etc. etc.
 * ``name``: the name of the input.
-* ``id``: the id of the input.
+* ``attrs``: the dictionnary passed as a keyword argument to the widget. It
+  contains the ``id`` attribute of the widget by default.
 
 Each widget has a ``template_name`` attribute which points to the template to
 use when rendering the widget. A basic template for an ``<input>`` widget may
@@ -50,35 +51,38 @@ look like:
 
 .. code-block:: jinja
 
-    <input id="{{ id }}"
+    <input {% for attr in attrs.items %}
+             {{ attr.0 }}="{{ attr.1 }}"
+           {% endfor %}
            type="{{ type }}"
            name="{{ name }}"
-           {% if value %}value="{{ value }}"{% endif %} />
+           {% if value %}value="{{ value }}"{% endif %}>
 
 The default FloppyForms template for an ``<input>`` widget is slightly more
 complex.
 
-Some widgets may provide extra context variables:
+Some widgets may provide extra context variables and extra attributes:
 
-====================== ============================================
-Widget                 Extra context
-====================== ============================================
-Textarea               ``rows``, ``cols``
-NumberInput            ``min``, ``max``,  ``step``
-RangeInput             ``min``, ``max``, ``step``
+====================== ===================================== ==============
+Widget                 Extra context                         Extra ``attrs``
+====================== ===================================== ==============
+Textarea                                                     ``rows``, ``cols``
+NumberInput                                                  ``min``, ``max``,  ``step``
+RangeInput                                                   ``min``, ``max``, ``step``
 Select                 ``choices``
 RadioSelect            ``choices``
 NullBooleanSelect      ``choices``
-SelectMultiple         ``choices``, ``multiple`` is set to ``True``
-CheckboxSelectMultiple ``choices``, ``multiple`` is set to ``True``
-====================== ============================================
+SelectMultiple         ``choices``, ``multiple`` is ``True``
+CheckboxSelectMultiple ``choices``, ``multiple`` is ``True``
+====================== ===================================== ==============
 
-Furthermore, the ``attrs`` dictionary is added to the template context. For
+Furthermore, you can specify custom ``attrs`` during widget definition. For
 instance, with a field created this way::
 
     bar = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'john@example.com'}))
 
-Then the ``placeholder`` variable is available in the template context.
+Then the ``placeholder`` variable is available in the ``attrs`` template
+variable.
 
 ModelForms
 ``````````

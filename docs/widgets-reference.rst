@@ -173,8 +173,8 @@ For each widgets, the default class attributes.
 
         None
 
-    ``min``, ``max`` and ``step`` are available in the template context if
-    they are not None.
+    ``min``, ``max`` and ``step`` are available in the ``attrs`` template
+    variable if they are not None.
 
 .. class:: RangeInput
 
@@ -198,8 +198,8 @@ For each widgets, the default class attributes.
 
         None
 
-    ``min``, ``max`` and ``step`` are available in the template context if
-    they are not None.
+    ``min``, ``max`` and ``step`` are available in the ``attrs`` template
+    variable if they are not None.
 
 .. class:: Textarea
 
@@ -215,7 +215,7 @@ For each widgets, the default class attributes.
 
         40
 
-    ``rows`` and ``cols`` are available in the template context.
+    ``rows`` and ``cols`` are available in the ``attrs`` variable.
 
 .. class:: CheckboxInput
 
