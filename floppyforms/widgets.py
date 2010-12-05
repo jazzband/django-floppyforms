@@ -7,6 +7,7 @@ from django.utils.translation import ugettext, ugettext_lazy
 class FloppyInput(forms.TextInput):
     input_type = None
     template_name = 'floppyforms/input.html'
+    is_required = False
 
     def get_context_data(self):
         return {}
@@ -190,7 +191,7 @@ class SelectMultiple(forms.SelectMultiple, Select):
 
 
 class CheckboxSelectMultiple(SelectMultiple):
-    template_name  = 'floppyforms/checkbox_select.html'
+    template_name = 'floppyforms/checkbox_select.html'
 
 
 class RadioSelect(forms.RadioSelect, Select):
