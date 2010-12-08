@@ -20,10 +20,10 @@ DateField                DateInput
 DateTimeField            DateTimeInput
 DecimalField             NumberInput
 EmailField               EmailInput
-FileField                FileInput
+FileField                ClearableFileInput
 FilePathField            Not implemented
 FloatField               NumberInput
-ImageField               Not implemented
+ImageField               ClearableFileInput
 IntegerField             NumberInput
 IPAddressField           Not implemented
 MultipleChoiceField      SelectMultiple
@@ -38,6 +38,12 @@ SplitDateTimeField       Not implemented
 ModelChoiceField         Not implemented
 ModelMultipleChoiceField Not implemented
 ======================== =================
+
+.. note:: ClearableFileInput
+
+    The ``ClearableFileInput`` widget has been added in Django 1.3. If you use
+    django-floppyforms with Django 1.2, the ClearableFileInput will behave
+    just like a traditional FileInput.
 
 Other (HTML5) widgets
 ---------------------
