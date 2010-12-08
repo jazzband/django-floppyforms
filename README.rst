@@ -13,7 +13,7 @@ Full control of form rendering in the templates.
 Installation
 ------------
 
-* ``pip install https://github.com/brutasse/django-floppyforms/tarball/master``
+* ``pip install -U django-floppyforms``
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
 
 For extensive documentation see the ``docs`` folder or `read it on
