@@ -1,8 +1,8 @@
 {% if value.url %}{{ initial_text }}: <a target="_blank" href="{{ value.url }}">{{ value }}</a>
 {% if not required %}
-<input type="checkbox" name="{{ name }}-clear" id="{{ name }}-clear_id">
-<label for="{{ name }}-clear_id">{{ clear_checkbox_label }}</label><br/>
-{% endif %}
+<input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">
+<label for="{{ checkbox_id }}">{{ clear_checkbox_label }}</label>
+{% endif %}<br />
 {{ input_text }}:
 {% endif %}
-<input type="{{ type }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}{% if required %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>
+<input type="{{ type }}" name="{{ name }}"{% if required and not value %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>

@@ -12,12 +12,13 @@ class FloppyInput(forms.TextInput):
     def get_context_data(self):
         return {}
 
-    def render(self, name, value, attrs=None, extra_context={}):
+    def get_context(self, name, value, attrs=None, extra_context={}):
         context = {
             'type': self.input_type,
             'name': name,
             'hidden': self.is_hidden,
             'required': self.is_required,
+            'value': '',
         }
         context.update(extra_context)
 
@@ -34,6 +35,11 @@ class FloppyInput(forms.TextInput):
             if value == True:
                 attrs[key] = False
         context['attrs'] = attrs
+        return context
+
+    def render(self, name, value, attrs=None, extra_context={}):
+        context = self.get_context(name, value, attrs=attrs,
+                                   extra_context=extra_context)
         return loader.render_to_string(self.template_name, context)
 
 
@@ -74,7 +80,7 @@ class FileInput(forms.FileInput, FloppyInput):
         return super(FileInput, self).render(name, None, attrs=attrs)
 
 
-class ClearableFileInput(FileInput):
+class ClearableFileInput(FileInput, forms.ClearableFileInput):
     template_name = 'floppyforms/clearable_input.html'
     initial_text = ugettext_lazy('Currently')
     input_text = ugettext_lazy('Change')
@@ -82,10 +88,17 @@ class ClearableFileInput(FileInput):
 
     def get_context_data(self):
         ctx = super(ClearableFileInput, self).get_context_data()
-        ctx['initial'] = self.initial_text
+        ctx['initial_text'] = self.initial_text
         ctx['input_text'] = self.input_text
         ctx['clear_checkbox_label'] = self.clear_checkbox_label
         return ctx
+
+    def render(self, name, value, attrs=None, extra_context={}):
+        context = self.get_context(name, value, attrs=attrs,
+                                   extra_context=extra_context)
+        context['checkbox_name'] = self.clear_checkbox_name(name)
+        context['checkbox_id'] = self.clear_checkbox_id(context['checkbox_name'])
+        return loader.render_to_string(self.template_name, context)
 
 
 class DateInput(forms.DateInput, FloppyInput):

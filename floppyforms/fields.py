@@ -33,6 +33,10 @@ class FileField(FloppyField, forms.FileField):
     widget = ClearableFileInput
 
 
+class ImageField(FloppyField, forms.ImageField):
+    widget = ClearableFileInput
+
+
 class MultipleChoiceField(forms.MultipleChoiceField):
     widget = SelectMultiple
 
