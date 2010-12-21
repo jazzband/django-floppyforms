@@ -163,7 +163,8 @@ class CheckboxInput(forms.CheckboxInput, FloppyInput):
     def render(self, name, value, attrs=None):
         try:
             result = self.check_test(value)
-            self.attrs['checked'] = ''
+            if result:
+                self.attrs['checked'] = ''
         except:  # That bare except is in the Django code...
             pass
         if value not in ('', True, False, None):
