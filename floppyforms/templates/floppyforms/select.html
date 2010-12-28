@@ -1,3 +1,3 @@
 <select name="{{ name }}"{% if multiple %} multiple="multiple"{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>{% for option in choices %}
-	<option value="{{ option.0 }}"{% if option.0 == value %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}
+	<option value="{{ option.0 }}"{% if multiple %}{% if option.0 in value %}  selected="selected"{% endif %}{% else %}{% if option.0 == value %} selected="selected"{% endif %}{% endif %}>{{ option.1 }}</option>{% endfor %}
 </select>
