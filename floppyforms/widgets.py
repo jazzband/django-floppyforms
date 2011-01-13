@@ -47,8 +47,17 @@ class TextInput(FloppyInput):
     input_type = 'text'
 
 
-class PasswordInput(forms.PasswordInput, FloppyInput):
+class PasswordInput(FloppyInput):
     input_type = 'password'
+
+    def __init__(self, attrs=None, render_value=False):
+        super(PasswordInput, self).__init__(attrs)
+        self.render_value = render_value
+
+    def render(self, name, value, attrs=None):
+        if not self.render_value:
+            value = None
+        return super(PasswordInput, self).render(name, value, attrs)
 
 
 class HiddenInput(FloppyInput):
