@@ -147,15 +147,11 @@ class NumberInput(FloppyInput):
     max = None
     step = None
 
-    def render(self, name, value, attrs=None):
-        if attrs is None:
-            attrs = {}
-
-        for attr in ('min', 'max', 'step'):
-            if getattr(self, attr) is not None:
-                attrs[attr] = getattr(self, attr)
-
-        return super(NumberInput, self).render(name, value, attrs=attrs)
+    def __init__(self, attrs=None):
+        default_attrs = {'min': self.min, 'max': self.max, 'step': self.step}
+        if attrs:
+            default_attrs.update(attrs)
+        super(NumberInput, self).__init__(default_attrs)
 
 
 class RangeInput(NumberInput):
