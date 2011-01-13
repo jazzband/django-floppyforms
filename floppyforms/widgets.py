@@ -66,11 +66,11 @@ class Textarea(FloppyInput):
     rows = 10
     cols = 40
 
-    def get_context_data(self):
-        ctx = super(Textarea, self).get_context_data()
-        self.attrs['rows'] = self.rows
-        self.attrs['cols'] = self.cols
-        return ctx
+    def __init__(self, attrs=None):
+        default_attrs = {'cols': self.cols, 'rows': self.rows}
+        if attrs:
+            default_attrs.update(attrs)
+        super(Textarea, self).__init__(default_attrs)
 
 
 class FileInput(forms.FileInput, FloppyInput):
