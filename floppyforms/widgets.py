@@ -47,7 +47,7 @@ class TextInput(FloppyInput):
     input_type = 'text'
 
 
-class PasswordInput(FloppyInput):
+class PasswordInput(forms.PasswordInput, FloppyInput):
     input_type = 'password'
 
 
