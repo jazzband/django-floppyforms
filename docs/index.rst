@@ -28,6 +28,7 @@ Two-step process:
 
 * ``pip install -U django-floppyforms``
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
+* (optional) run ``python manage.py test floppyforms``. Tests should pass.
 
 When you're done you can jump to the :doc:`usage <usage>` section.
 
