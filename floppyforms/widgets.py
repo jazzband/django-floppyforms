@@ -3,8 +3,16 @@ from django.template import loader
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext, ugettext_lazy
 
+__all__ = (
+    'TextInput', 'PasswordInput', 'HiddenInput', 'ClearableFileInput',
+    'FileInput', 'DateInput', 'DateTimeInput', 'TimeInput', 'Textarea',
+    'CheckboxInput', 'Select', 'NullBooleanSelect', 'SelectMultiple',
+    'RadioSelect', 'CheckboxSelectMultiple', 'SearchInput', 'RangeInput',
+    'ColorInput', 'EmailInput', 'URLInput', 'PhoneNumberInput', 'NumberInput',
+)
 
-class FloppyInput(forms.TextInput):
+
+class Input(forms.TextInput):
     input_type = None
     template_name = 'floppyforms/input.html'
     is_required = False
@@ -43,11 +51,11 @@ class FloppyInput(forms.TextInput):
         return loader.render_to_string(self.template_name, context)
 
 
-class TextInput(FloppyInput):
+class TextInput(Input):
     input_type = 'text'
 
 
-class PasswordInput(FloppyInput):
+class PasswordInput(Input):
     input_type = 'password'
 
     def __init__(self, attrs=None, render_value=False):
@@ -60,7 +68,7 @@ class PasswordInput(FloppyInput):
         return super(PasswordInput, self).render(name, value, attrs)
 
 
-class HiddenInput(FloppyInput):
+class HiddenInput(Input):
     input_type = 'hidden'
     is_hidden = True
 
@@ -70,7 +78,7 @@ class HiddenInput(FloppyInput):
         return ctx
 
 
-class Textarea(FloppyInput):
+class Textarea(Input):
     template_name = 'floppyforms/textarea.html'
     rows = 10
     cols = 40
@@ -82,7 +90,7 @@ class Textarea(FloppyInput):
         super(Textarea, self).__init__(default_attrs)
 
 
-class FileInput(forms.FileInput, FloppyInput):
+class FileInput(forms.FileInput, Input):
     input_type = 'file'
 
     def render(self, name, value, attrs=None):
@@ -105,43 +113,44 @@ if VERSION >= (1, 3):
         def render(self, name, value, attrs=None, extra_context={}):
             context = self.get_context(name, value, attrs=attrs,
                                        extra_context=extra_context)
-            context['checkbox_name'] = self.clear_checkbox_name(name)
-            context['checkbox_id'] = self.clear_checkbox_id(context['checkbox_name'])
+            ccb_name = self.clear_checkbox_name(name)
+            context['checkbox_name'] = ccb_name
+            context['checkbox_id'] = self.clear_checkbox_id(ccb_name)
             return loader.render_to_string(self.template_name, context)
 else:
     class ClearableFileInput(FileInput):
         pass
 
 
-class DateInput(forms.DateInput, FloppyInput):
+class DateInput(forms.DateInput, Input):
     input_type = 'date'
 
 
-class DateTimeInput(forms.DateTimeInput, FloppyInput):
+class DateTimeInput(forms.DateTimeInput, Input):
     input_type = 'datetime'
 
 
-class TimeInput(forms.TimeInput, FloppyInput):
+class TimeInput(forms.TimeInput, Input):
     input_type = 'time'
 
 
-class SearchInput(FloppyInput):
+class SearchInput(Input):
     input_type = 'search'
 
 
-class EmailInput(FloppyInput):
+class EmailInput(Input):
     input_type = 'email'
 
 
-class URLInput(FloppyInput):
+class URLInput(Input):
     input_type = 'url'
 
 
-class ColorInput(FloppyInput):
+class ColorInput(Input):
     input_type = 'color'
 
 
-class NumberInput(FloppyInput):
+class NumberInput(Input):
     input_type = 'number'
     min = None
     max = None
@@ -158,11 +167,11 @@ class RangeInput(NumberInput):
     input_type = 'range'
 
 
-class PhoneNumberInput(FloppyInput):
+class PhoneNumberInput(Input):
     input_type = 'tel'
 
 
-class CheckboxInput(forms.CheckboxInput, FloppyInput):
+class CheckboxInput(forms.CheckboxInput, Input):
     input_type = 'checkbox'
 
     def render(self, name, value, attrs=None):
@@ -174,18 +183,18 @@ class CheckboxInput(forms.CheckboxInput, FloppyInput):
             pass
         if value not in ('', True, False, None):
             value = force_unicode(value)
-        return FloppyInput.render(self, name, value, attrs=attrs)
+        return Input.render(self, name, value, attrs=attrs)
 
 
-class Select(forms.Select, FloppyInput):
+class Select(forms.Select, Input):
     template_name = 'floppyforms/select.html'
 
     def render(self, name, value, attrs=None, choices=()):
         if choices:
             self.choices = choices
         extra = {'choices': self.choices}
-        return FloppyInput.render(self, name, value, attrs=attrs,
-                                  extra_context=extra)
+        return Input.render(self, name, value, attrs=attrs,
+                            extra_context=extra)
 
 
 class NullBooleanSelect(forms.NullBooleanSelect, Select):

@@ -56,7 +56,7 @@ class WidgetRenderingTest(TestCase):
             pw = forms.CharField(widget=forms.PasswordInput)
 
         form = PwForm(data={'pw': 'some-pwd'})
-        self.assertFalse(form.is_valid()) # missing text
+        self.assertFalse(form.is_valid())  # missing text
         rendered = form.as_p()
         self.assertFalse('some-pwd' in rendered, rendered)
 
@@ -67,7 +67,7 @@ class WidgetRenderingTest(TestCase):
             )
 
         form = PwForm(data={'pw': 'some-pwd'})
-        self.assertFalse(form.is_valid()) # missing text
+        self.assertFalse(form.is_valid())  # missing text
         rendered = form.as_p()
         self.assertTrue('some-pwd' in rendered, rendered)
 
@@ -278,6 +278,7 @@ class WidgetRenderingTest(TestCase):
             ('en', 'English'),
             ('de', 'Deutsch'),
         )
+
         class SelectForm(forms.Form):
             select = forms.ChoiceField(choices=CHOICES)
 
@@ -290,7 +291,7 @@ class WidgetRenderingTest(TestCase):
     def test_nbselect(self):
         """NullBooleanSelect"""
         class NBForm(forms.Form):
-            nb = forms.BooleanField(widget=forms.NullBooleanSelect)
+            nb = forms.NullBooleanField()
 
         rendered = NBForm().as_p()
         self.assertTrue('<select ' in rendered, rendered)
@@ -306,6 +307,7 @@ class WidgetRenderingTest(TestCase):
             ('de', 'Deutsch'),
             ('fr', 'Francais'),
         )
+
         class MultiForm(forms.Form):
             multi = forms.MultipleChoiceField(choices=CHOICES)
 
@@ -323,6 +325,7 @@ class WidgetRenderingTest(TestCase):
             ('de', 'Deutsch'),
             ('fr', 'Francais'),
         )
+
         class MultiForm(forms.Form):
             multi = forms.MultipleChoiceField(
                 choices=CHOICES,
@@ -341,6 +344,7 @@ class WidgetRenderingTest(TestCase):
             ('de', 'Deutsch'),
             ('fr', 'Francais'),
         )
+
         class RadioForm(forms.Form):
             radio = forms.ChoiceField(
                 choices=CHOICES,
