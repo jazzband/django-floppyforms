@@ -6,8 +6,8 @@ Default widgets for form fields
 
 The first column represents the name of a django.forms field. FloppyForms aims
 to implement all the Django fields with the same class name, in the
-``floppyforms`` namespace. Some widgets are missing but you can safely use the
-widgets from ``django.forms`` if you need them.
+``floppyforms`` namespace. Some widgets and fields are missing but the appropriate
+fields and widgets have been imported from the ``django.forms`` namespace.
 
 ======================== =================
 Fields                   Widgets
@@ -39,11 +39,35 @@ ModelChoiceField         Not implemented
 ModelMultipleChoiceField Not implemented
 ======================== =================
 
+The following fields have not yet been implemented.
+
+========================
+Fields Not Implemented
+========================
+TypedChoiceField
+FilePathField
+IPAddressField
+TypedMultipleChoiceField
+NullBooleanField
+RegexField
+SlugField
+ComboField
+MultiValueField
+SplitDateTimeField
+ModelChoiceField
+ModelMultipleChoiceField
+========================
+
+
 .. note:: ClearableFileInput
 
     The ``ClearableFileInput`` widget has been added in Django 1.3. If you use
     django-floppyforms with Django 1.2, the ClearableFileInput will behave
     just like a traditional FileInput.
+
+    The ``TypedMultipleChoiceField`` has also been added in Django 1.3 and is
+    imported into the namespace if it is available.
+
 
 Other (HTML5) widgets
 ---------------------
