@@ -9,25 +9,25 @@ to implement all the Django fields with the same class name, in the
 ``floppyforms`` namespace. Some widgets and fields are missing but the appropriate
 fields and widgets have been imported from the ``django.forms`` namespace.
 
-======================== =================
-Fields                   Widgets
-======================== =================
+======================== ================== ========================
+Fields                   Widgets            Specificities
+======================== ================== ========================
 BooleanField             CheckboxInput
 CharField                TextInput
 ChoiceField              Select
-DateField                DateInput
-DateTimeField            DateTimeInput
-DecimalField             NumberInput
-EmailField               EmailInput
+DateField                DateInput          <input type="date">
+DateTimeField            DateTimeInput      <input type="datetime">
+DecimalField             NumberInput        <input type="number">
+EmailField               EmailInput         <input type="email">
 FileField                ClearableFileInput
-FloatField               NumberInput
+FloatField               NumberInput        <input type="number">
 ImageField               ClearableFileInput
-IntegerField             NumberInput
+IntegerField             NumberInput        <input type="number">
 MultipleChoiceField      SelectMultiple
 NullBooleanField         NullBooleanSelect
-TimeField                TimeInput
-URLField                 URLInput
-======================== =================
+TimeField                TimeInput          <input type="time">
+URLField                 URLInput           <input type="url">
+======================== ================== ========================
 
 .. note:: ClearableFileInput
 
