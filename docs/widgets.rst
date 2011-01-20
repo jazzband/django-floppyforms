@@ -15,49 +15,19 @@ Fields                   Widgets
 BooleanField             CheckboxInput
 CharField                TextInput
 ChoiceField              Select
-TypedChoiceField         Not implemented
 DateField                DateInput
 DateTimeField            DateTimeInput
 DecimalField             NumberInput
 EmailField               EmailInput
 FileField                ClearableFileInput
-FilePathField            Not implemented
 FloatField               NumberInput
 ImageField               ClearableFileInput
 IntegerField             NumberInput
-IPAddressField           Not implemented
 MultipleChoiceField      SelectMultiple
 NullBooleanField         NullBooleanSelect
-RegexField               Not implemented
-SlugField                Not implemented
 TimeField                TimeInput
 URLField                 URLInput
-ComboField               Not implemented
-MultiValueField          Not implemented
-SplitDateTimeField       Not implemented
-ModelChoiceField         Not implemented
-ModelMultipleChoiceField Not implemented
 ======================== =================
-
-The following fields have not yet been implemented.
-
-========================
-Fields Not Implemented
-========================
-TypedChoiceField
-FilePathField
-IPAddressField
-TypedMultipleChoiceField
-NullBooleanField
-RegexField
-SlugField
-ComboField
-MultiValueField
-SplitDateTimeField
-ModelChoiceField
-ModelMultipleChoiceField
-========================
-
 
 .. note:: ClearableFileInput
 
@@ -67,6 +37,31 @@ ModelMultipleChoiceField
 
     The ``TypedMultipleChoiceField`` has also been added in Django 1.3 and is
     imported into the namespace if it is available.
+
+The following fields have not yet been implemented:
+
+* TypedChoiceField
+* FilePathField
+* IPAddressField
+* TypedMultipleChoiceField
+* RegexField
+* SlugField
+* ComboField
+* MultiValueField
+* SplitDateTimeField
+* ModelChoiceField
+* ModelMultipleChoiceField
+
+The following widgets have not yet been implemented:
+
+* MultiWidget
+* MultipleHiddenInput
+* SplitDateTimeWidget
+* SelectDateWidget
+
+Fields and widgets that are not implemented are aliased from ``django.forms``.
+They are still usable from the ``floppyforms`` namespace but their rendering
+can't be customized using the floppyforms concepts.
 
 
 Other (HTML5) widgets
