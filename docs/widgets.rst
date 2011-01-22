@@ -53,7 +53,9 @@ RegexField               TextInput          <input [pattern=...]>
                                         '\d{3}-[a-z]+')     # js_regex
 
     If you don't provide the ``js_regex`` argument, there will be no
-    client-side validation of the field.
+    client-side validation of the field. Although the the two versions of the
+    regex may be identical but the distinction allows you to pass compiled
+    regexes as a ``regex`` argument.
 
 The following fields have not yet been implemented:
 
