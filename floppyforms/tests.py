@@ -385,3 +385,15 @@ class WidgetRenderingTest(TestCase):
                                          're_field_': 'fr'}).is_valid())
         self.assertTrue(RegexForm(data={'re_field': '123-python',
                                         're_field_': 'fr'}).is_valid())
+
+    def test_ip_address(self):
+        """<input pattern="<IPv4 re>">"""
+        class IPv4Form(forms.Form):
+            ip = forms.IPAddressField()
+
+        rendered = IPv4Form().as_p()
+        self.assertTrue(' required' in rendered, rendered)
+        self.assertTrue('pattern="' in rendered, rendered)
+
+        self.assertFalse(IPv4Form(data={'ip': '500.500.1.1'}).is_valid())
+        self.assertTrue(IPv4Form(data={'ip': '250.100.1.8'}).is_valid())

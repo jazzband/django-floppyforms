@@ -4,7 +4,7 @@ from django.forms import (Form, ModelForm, BaseModelForm, model_to_dict,
 
 # Import Django Fields not implemented in floppyforms yet
 from django.forms import (ComboField, MultiValueField,
-                          SplitDateTimeField, IPAddressField, FilePathField,
+                          SplitDateTimeField, FilePathField,
                           TypedChoiceField,
                           DEFAULT_DATE_INPUT_FORMATS,
                           DEFAULT_TIME_INPUT_FORMATS,

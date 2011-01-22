@@ -4,13 +4,13 @@ from floppyforms.widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                                  FileInput, ClearableFileInput, SelectMultiple,
                                  DateInput, DateTimeInput, TimeInput, URLInput,
                                  NumberInput, RangeInput, EmailInput,
-                                 NullBooleanSelect, SlugInput)
+                                 NullBooleanSelect, SlugInput, IPAddressInput)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
-    'FloatField', 'DecimalField', 'SlugField', 'RegexField',
+    'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
 )
 
 
@@ -103,3 +103,7 @@ class RegexField(Field, forms.RegexField):
         if self.js_regex is not None:
             attrs['pattern'] = self.js_regex
         return attrs
+
+
+class IPAddressField(Field, forms.IPAddressField):
+    widget = IPAddressInput

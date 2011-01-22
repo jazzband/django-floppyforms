@@ -29,6 +29,7 @@ TimeField                TimeInput          <input type="time">
 URLField                 URLInput           <input type="url">
 SlugField                SlugInput          <input pattern="[-\w]+">
 RegexField               TextInput          <input [pattern=...]>
+IPAddressField           IPAddressInput     <input pattern=...>
 ======================== ================== ========================
 
 .. note:: ClearableFileInput
@@ -61,7 +62,6 @@ The following fields have not yet been implemented:
 
 * TypedChoiceField
 * FilePathField
-* IPAddressField
 * TypedMultipleChoiceField
 * ComboField
 * MultiValueField

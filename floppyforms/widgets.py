@@ -9,6 +9,7 @@ __all__ = (
     'CheckboxInput', 'Select', 'NullBooleanSelect', 'SelectMultiple',
     'RadioSelect', 'CheckboxSelectMultiple', 'SearchInput', 'RangeInput',
     'ColorInput', 'EmailInput', 'URLInput', 'PhoneNumberInput', 'NumberInput',
+    'IPAddressInput',
 )
 
 
@@ -83,6 +84,13 @@ class SlugInput(TextInput):
     def get_context_data(self):
         self.attrs['pattern'] = "[-\w]+"
         return super(SlugInput, self).get_context_data()
+
+
+class IPAddressInput(TextInput):
+
+    def get_context_data(self):
+        self.attrs['pattern'] = "(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}"
+        return super(IPAddressInput, self).get_context_data()
 
 
 class Textarea(Input):

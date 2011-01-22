@@ -49,6 +49,20 @@ For each widgets, the default class attributes.
     An text input that renders as ``<input pattern="[-\w]+" ...>`` for
     client-side validation of the slug.
 
+.. class:: IPAddressInput
+
+    .. attribute:: IPAddressInput.template_name
+
+        ``'floppyforms/input.html'``
+
+    .. attribute:: IPAddressInput.input_type
+
+        ``text``
+
+    An text input that renders as ``<input pattern="..." ...>`` for
+    client-side validation. The pattern checks that the entered value is a
+    valid IPv4 address.
+
 .. class:: FileInput
 
     .. attribute:: FileInput.template_name
