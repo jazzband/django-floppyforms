@@ -9,55 +9,68 @@ For each widgets, the default class attributes.
 .. class:: TextInput
 
     .. attribute:: TextInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: TextInput.input_type
-    
+
         ``text``
 
 .. class:: PasswordInput
 
     .. attribute:: PasswordInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: PasswordInput.input_type
-    
+
         ``password``
 
 .. class:: HiddenInput
 
     .. attribute:: HiddenInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: HiddenInput.input_type
-    
+
         ``hidden``
+
+.. class:: SlugInput
+
+    .. attribute:: SlugInput.template_name
+
+        ``'floppyforms/input.html'``
+
+    .. attribute:: SlugInput.input_type
+
+        ``text``
+
+    An text input that renders as ``<input pattern="[-\w]+" ...>`` for
+    client-side validation of the slug.
 
 .. class:: FileInput
 
     .. attribute:: FileInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: FileInput.input_type
-    
+
         ``file``
 
 .. class:: ClearableFileInput
 
     .. attribute:: ClearableFileInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: ClearableFileInput.input_type
-    
+
         ``file``
 
     .. attribute:: ClearableFileInput.initial_text
-    
+
         ``_('Currently')``
 
     .. attribute:: ClearableFileInput.input_text
@@ -65,7 +78,7 @@ For each widgets, the default class attributes.
         ``_('Change')``
 
     .. attribute:: ClearableFileInput.clear_checkbox_label
-    
+
         ``_('Clear')``
 
     The ``initial_text``, ``input_text`` and ``clear_checkbox_label``
@@ -74,91 +87,91 @@ For each widgets, the default class attributes.
 .. class:: EmailInput
 
     .. attribute:: EmailInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: EmailInput.input_type
-    
+
         ``email``
 
 .. class:: URLInput
 
     .. attribute:: URLInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: URLInput.input_type
-    
+
         ``url``
 
 .. class:: SearchInput
 
     .. attribute:: SearchInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: SearchInput.input_type
-    
+
         ``search``
 
 .. class:: ColorInput
 
     .. attribute:: ColorInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: ColorInput.input_type
-    
+
         ``color``
 
 .. class:: PhoneNumberInput
 
     .. attribute:: PhoneNumberInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: PhoneNumberInput.input_type
-    
+
         ``tel``
 
 .. class:: DateInput
 
     .. attribute:: DateInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: DateInput.input_type
-    
+
         ``date``
 
 .. class:: DateTimeInput
 
     .. attribute:: DateTimeInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: DateTimeInput.input_type
-    
+
         ``datetime``
 
 .. class:: TimeInput
 
     .. attribute:: TimeInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: TimeInput.input_type
-    
+
         ``time``
 
 .. class:: NumberInput
 
     .. attribute:: NumberInput.template_name
-    
+
         ``'floppyforms/number_input.html'``
 
     .. attribute:: NumberInput.input_type
-    
+
         ``number``
 
     .. attribute:: NumberInput.min
@@ -179,11 +192,11 @@ For each widgets, the default class attributes.
 .. class:: RangeInput
 
     .. attribute:: NumberInput.template_name
-    
+
         ``'floppyforms/number_input.html'``
 
     .. attribute:: RangeInput.input_type
-    
+
         ``range``
 
     .. attribute:: RangeInput.min
@@ -204,11 +217,11 @@ For each widgets, the default class attributes.
 .. class:: Textarea
 
     .. attribute:: Textarea.template_name
-    
+
         ``'floppyforms/textarea.html'``
 
     .. attribute:: Textarea.rows
-    
+
         10
 
     .. attribute:: Textarea.cols
@@ -220,39 +233,39 @@ For each widgets, the default class attributes.
 .. class:: CheckboxInput
 
     .. attribute:: CheckboxInput.template_name
-    
+
         ``'floppyforms/input.html'``
 
     .. attribute:: CheckboxInput.input_type
-    
+
         ``checkbox``
 
 .. class:: Select
 
     .. attribute:: Select.template_name
-    
+
         ``'floppyforms/select.html'``
 
 .. class:: NullBooleanSelect
 
     .. attribute:: NullBooleanSelect.template_name
-    
+
         ``'floppyforms/select.html'``
 
 .. class:: RadioSelect
 
     .. attribute:: RadioSelect.template_name
-    
+
         ``'floppyforms/radio.html'``
 
 .. class:: SelectMultiple
 
     .. attribute:: SelectMultiple.template_name
-    
+
         ``'floppyforms/select_multiple.html'``
 
 .. class:: CheckboxSelectMultiple
 
     .. attribute:: CheckboxSelectMultiple.template_name
-    
+
         ``'floppyforms/checkbox_select.html'``
