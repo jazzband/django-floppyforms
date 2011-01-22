@@ -4,13 +4,13 @@ from floppyforms.widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                                  FileInput, ClearableFileInput, SelectMultiple,
                                  DateInput, DateTimeInput, TimeInput, URLInput,
                                  NumberInput, RangeInput, EmailInput,
-                                 NullBooleanSelect)
+                                 NullBooleanSelect, SlugInput)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
-    'FloatField', 'DecimalField',
+    'FloatField', 'DecimalField', 'SlugField',
 )
 
 
@@ -83,3 +83,7 @@ class EmailField(Field, forms.EmailField):
 
 class URLField(Field, forms.URLField):
     widget = URLInput
+
+
+class SlugField(Field, forms.SlugField):
+    widget = SlugInput

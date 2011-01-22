@@ -27,6 +27,7 @@ MultipleChoiceField      SelectMultiple
 NullBooleanField         NullBooleanSelect
 TimeField                TimeInput          <input type="time">
 URLField                 URLInput           <input type="url">
+SlugField                SlugInput          <input pattern="[-\w]+">
 ======================== ================== ========================
 
 .. note:: ClearableFileInput
@@ -45,7 +46,6 @@ The following fields have not yet been implemented:
 * IPAddressField
 * TypedMultipleChoiceField
 * RegexField
-* SlugField
 * ComboField
 * MultiValueField
 * SplitDateTimeField

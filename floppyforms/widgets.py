@@ -78,6 +78,13 @@ class HiddenInput(Input):
         return ctx
 
 
+class SlugInput(TextInput):
+
+    def get_context_data(self):
+        self.attrs['pattern'] = "[-\w]+"
+        return super(SlugInput, self).get_context_data()
+
+
 class Textarea(Input):
     template_name = 'floppyforms/textarea.html'
     rows = 10

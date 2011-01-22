@@ -358,3 +358,14 @@ class WidgetRenderingTest(TestCase):
 
         rendered = RadioForm(data={'radio': 'fr'}).as_p()
         self.assertTrue('checked> Francais' in rendered, rendered)
+
+    def test_slug(self):
+        """<input type="text" pattern="[-\w]+">"""
+        class SlugForm(forms.Form):
+            slug = forms.SlugField()
+
+        rendered = SlugForm().as_p()
+        self.assertTrue(' required' in rendered, rendered)
+        self.assertTrue('pattern="[-\w]+"' in rendered, rendered)
+        self.assertFalse(SlugForm(data={'slug': '123 foo'}).is_valid())
+        self.assertTrue(SlugForm(data={'slug': '123-foo'}).is_valid())
