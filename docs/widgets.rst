@@ -28,6 +28,7 @@ NullBooleanField         NullBooleanSelect
 TimeField                TimeInput          <input type="time">
 URLField                 URLInput           <input type="url">
 SlugField                SlugInput          <input pattern="[-\w]+">
+RegexField               TextInput          <input [pattern=...]>
 ======================== ================== ========================
 
 .. note:: ClearableFileInput
@@ -39,13 +40,27 @@ SlugField                SlugInput          <input pattern="[-\w]+">
     The ``TypedMultipleChoiceField`` has also been added in Django 1.3 and is
     imported into the namespace if it is available.
 
+
+.. note:: RegexField
+
+    In Django, ``RegexField`` takes a required ``regex`` argument. The version
+    shipped in floppyforms also takes an optional ``js_regex`` argument, for
+    client-side validation of the regex. The ``js_regex`` must be a regex
+    written in javascript syntax. Example::
+
+        class RegexForm(forms.Form):
+            re_field = forms.RegexField(r'^\d{3}-[a-z]+$',  # regex
+                                        '\d{3}-[a-z]+')     # js_regex
+
+    If you don't provide the ``js_regex`` argument, there will be no
+    client-side validation of the field.
+
 The following fields have not yet been implemented:
 
 * TypedChoiceField
 * FilePathField
 * IPAddressField
 * TypedMultipleChoiceField
-* RegexField
 * ComboField
 * MultiValueField
 * SplitDateTimeField

@@ -3,7 +3,7 @@ from django.forms import (Form, ModelForm, BaseModelForm, model_to_dict,
                           ValidationError)
 
 # Import Django Fields not implemented in floppyforms yet
-from django.forms import (RegexField, ComboField, MultiValueField,
+from django.forms import (ComboField, MultiValueField,
                           SplitDateTimeField, IPAddressField, FilePathField,
                           TypedChoiceField,
                           DEFAULT_DATE_INPUT_FORMATS,

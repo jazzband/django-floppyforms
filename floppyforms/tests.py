@@ -369,3 +369,19 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue('pattern="[-\w]+"' in rendered, rendered)
         self.assertFalse(SlugForm(data={'slug': '123 foo'}).is_valid())
         self.assertTrue(SlugForm(data={'slug': '123-foo'}).is_valid())
+
+    def test_regex(self):
+        """<input type="text" pattern="...">"""
+        class RegexForm(forms.Form):
+            re_field = forms.RegexField(r'^\d{3}-[a-z]+$',
+                                        '\d{3}-[a-z]+')
+            re_field_ = forms.RegexField(r'^[a-z]{2}$')
+
+        rendered = RegexForm().as_p()
+        self.assertTrue(' required' in rendered, rendered)
+        self.assertTrue('pattern="\d{3}-[a-z]+"' in rendered, rendered)
+
+        self.assertFalse(RegexForm(data={'re_field': 'meh',
+                                         're_field_': 'fr'}).is_valid())
+        self.assertTrue(RegexForm(data={'re_field': '123-python',
+                                        're_field_': 'fr'}).is_valid())

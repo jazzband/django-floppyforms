@@ -10,7 +10,7 @@ __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
-    'FloatField', 'DecimalField', 'SlugField',
+    'FloatField', 'DecimalField', 'SlugField', 'RegexField',
 )
 
 
@@ -87,3 +87,19 @@ class URLField(Field, forms.URLField):
 
 class SlugField(Field, forms.SlugField):
     widget = SlugInput
+
+
+class RegexField(Field, forms.RegexField):
+    widget = TextInput
+
+    def __init__(self, regex, js_regex=None, max_length=None, min_length=None,
+                 error_message=None, *args, **kwargs):
+        self.js_regex = js_regex
+        super(RegexField, self).__init__(regex, max_length, min_length,
+                                         *args, **kwargs)
+
+    def widget_attrs(self, widget):
+        attrs = super(RegexField, self).widget_attrs(widget) or {}
+        if self.js_regex is not None:
+            attrs['pattern'] = self.js_regex
+        return attrs
