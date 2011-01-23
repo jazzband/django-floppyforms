@@ -30,7 +30,8 @@ Two-step process:
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
 * (optional) run ``python manage.py test floppyforms``. Tests should pass.
 
-When you're done you can jump to the :doc:`usage <usage>` section.
+When you're done you can jump to the :doc:`usage <usage>` section. For the
+impatient reader, there's also an :doc:`examples <examples>` section.
 
 .. toctree::
    :maxdepth: 2
@@ -39,6 +40,7 @@ When you're done you can jump to the :doc:`usage <usage>` section.
    widgets
    customization
    widgets-reference
+   examples
 
 Indices and tables
 ------------------
