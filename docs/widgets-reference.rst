@@ -182,7 +182,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: NumberInput.template_name
 
-        ``'floppyforms/number_input.html'``
+        ``'floppyforms/input.html'``
 
     .. attribute:: NumberInput.input_type
 
@@ -207,7 +207,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: NumberInput.template_name
 
-        ``'floppyforms/number_input.html'``
+        ``'floppyforms/input.html'``
 
     .. attribute:: RangeInput.input_type
 
