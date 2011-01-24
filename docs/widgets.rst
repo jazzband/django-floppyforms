@@ -43,8 +43,11 @@ IPAddressField           IPAddressInput     <input pattern=...>
     django-floppyforms with Django 1.2, the ClearableFileInput will behave
     just like a traditional FileInput.
 
-    The ``TypedMultipleChoiceField`` has also been added in Django 1.3 and is
-    imported into the namespace if it is available.
+
+.. note:: TypedMultipleChoiceField
+
+    The ``TypedMultipleChoiceField`` has also been added in Django 1.3, it
+    will behave like a normal ``MultipleChoiceField`` on Django 1.2.
 
 
 .. note:: RegexField
