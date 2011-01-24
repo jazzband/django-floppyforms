@@ -16,6 +16,7 @@ BooleanField             CheckboxInput
 CharField                TextInput
 ChoiceField              Select
 TypedChoiceField         Select
+FilePathField            Select
 DateField                DateInput          <input type="date">
 DateTimeField            DateTimeInput      <input type="datetime">
 DecimalField             NumberInput        <input type="number">
@@ -62,7 +63,6 @@ IPAddressField           IPAddressInput     <input pattern=...>
 The following fields have not yet been adapted to use widgets from
 django-floppyforms:
 
-* FilePathField
 * TypedMultipleChoiceField
 * ComboField
 * MultiValueField

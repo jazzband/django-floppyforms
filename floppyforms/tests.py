@@ -414,5 +414,14 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue('<select ' in rendered, rendered)
         form = TypedForm(data={'typed': '0'})
         self.assertTrue(form.is_valid())
-        print form.cleaned_data
         self.assertEquals(form.cleaned_data['typed'], False)
+
+    def test_file_path_field(self):
+        """foo = forms.FilePathField()"""
+        parent = os.path.dirname(__file__)
+        class PathForm(forms.Form):
+            path = forms.FilePathField(path=parent, recursive=True)
+
+        rendered = PathForm().as_p()
+        self.assertTrue('<select ' in rendered, rendered)
+        self.assertTrue(len(PathForm().fields['path'].choices) > 10)
