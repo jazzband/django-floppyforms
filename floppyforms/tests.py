@@ -425,3 +425,19 @@ class WidgetRenderingTest(TestCase):
         rendered = PathForm().as_p()
         self.assertTrue('<select ' in rendered, rendered)
         self.assertTrue(len(PathForm().fields['path'].choices) > 10)
+
+    def test_typed_multiple_choice(self):
+        """foo = forms.TypedMultipleChoiceField()"""
+        TYPE_CHOICES = (
+            (0, 'Some value'),
+            (1, 'Other value'),
+            (2, 'A third one'),
+        )
+        my_coerce = lambda val: bool(int(val))
+        class TypedMultiForm(forms.Form):
+            thing = forms.TypedMultipleChoiceField(coerce=my_coerce,
+                                                   choices=TYPE_CHOICES)
+
+        rendered = TypedMultiForm().as_p()
+        self.assertTrue('<select ' in rendered, rendered)
+        self.assertTrue(' multiple="multiple"' in rendered, rendered)

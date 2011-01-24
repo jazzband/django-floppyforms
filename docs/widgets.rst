@@ -26,6 +26,7 @@ FloatField               NumberInput        <input type="number">
 ImageField               ClearableFileInput
 IntegerField             NumberInput        <input type="number">
 MultipleChoiceField      SelectMultiple
+TypedMultipleChoiceField SelectMultiple
 NullBooleanField         NullBooleanSelect
 TimeField                TimeInput          <input type="time">
 URLField                 URLInput           <input type="url">
@@ -63,7 +64,6 @@ IPAddressField           IPAddressInput     <input pattern=...>
 The following fields have not yet been adapted to use widgets from
 django-floppyforms:
 
-* TypedMultipleChoiceField
 * ComboField
 * MultiValueField
 * SplitDateTimeField

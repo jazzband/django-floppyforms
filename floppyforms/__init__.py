@@ -10,12 +10,6 @@ from django.forms import (ComboField, MultiValueField,
                           DEFAULT_DATETIME_INPUT_FORMATS,
                           ModelChoiceField, ModelMultipleChoiceField)
 
-# TypedMultipleChoiceField was added in Django 1.3. Import it if available.
-try:
-    from django.forms import TypedMultipleChoiceField
-except ImportError:
-    pass
-
 # Import Django Widgets not implemented yet
 from django.forms import (Media, MediaDefiningClass, Widget,
                           MultipleHiddenInput, MultiWidget,

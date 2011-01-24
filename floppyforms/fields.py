@@ -11,7 +11,7 @@ __all__ = (
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
     'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
-    'TypedChoiceField', 'FilePathField',
+    'TypedChoiceField', 'FilePathField', 'TypedMultipleChoiceField',
 )
 
 
@@ -60,6 +60,21 @@ class ImageField(Field, forms.ImageField):
 
 class MultipleChoiceField(forms.MultipleChoiceField):
     widget = SelectMultiple
+
+
+try:
+    Parent = forms.TypedMultipleChoiceField
+except AttributeError:  # Django < 1.3
+    class Parent(forms.MultipleChoiceField):
+        """No-op class for older Django versions"""
+        def __init__(self, *args, **kwargs):
+            kwargs.pop('coerce', None)
+            kwargs.pop('empty_value', None)
+            super(Parent, self).__init__(*args, **kwargs)
+
+
+class TypedMultipleChoiceField(MultipleChoiceField, Parent):
+    pass
 
 
 class DateField(Field, forms.DateField):
