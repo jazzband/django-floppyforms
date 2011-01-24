@@ -96,7 +96,7 @@ doesn't support it.
 A slider
 --------
 
-An ``range`` input that uses the browser implementation or falls back to
+A ``range`` input that uses the browser implementation or falls back to
 jQuery UI.
 
 .. code-block:: python
