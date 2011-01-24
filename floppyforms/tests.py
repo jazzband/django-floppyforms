@@ -406,6 +406,7 @@ class WidgetRenderingTest(TestCase):
             (2, 'A third one'),
         )
         my_coerce = lambda val: bool(int(val))
+
         class TypedForm(forms.Form):
             typed = forms.TypedChoiceField(coerce=my_coerce,
                                            choices=TYPE_CHOICES)
@@ -419,6 +420,7 @@ class WidgetRenderingTest(TestCase):
     def test_file_path_field(self):
         """foo = forms.FilePathField()"""
         parent = os.path.dirname(__file__)
+
         class PathForm(forms.Form):
             path = forms.FilePathField(path=parent, recursive=True)
 
@@ -434,6 +436,7 @@ class WidgetRenderingTest(TestCase):
             (2, 'A third one'),
         )
         my_coerce = lambda val: bool(int(val))
+
         class TypedMultiForm(forms.Form):
             thing = forms.TypedMultipleChoiceField(coerce=my_coerce,
                                                    choices=TYPE_CHOICES)
@@ -441,3 +444,46 @@ class WidgetRenderingTest(TestCase):
         rendered = TypedMultiForm().as_p()
         self.assertTrue('<select ' in rendered, rendered)
         self.assertTrue(' multiple="multiple"' in rendered, rendered)
+
+    def test_model_choice_field(self):
+        """ModelChoiceField and ModelMultipleChoiceField"""
+
+        class SomeModel(models.Model):
+            some_field = models.CharField(max_length=255)
+
+            def __unicode__(self):
+                return u'%s' % self.some_field
+
+        fake_items = [
+            SomeModel(some_field='Meh', pk=1),
+            SomeModel(some_field='Bah', pk=2),
+        ]
+
+        class HackedQuerySet(models.query.QuerySet):
+            """Yield results with no DB"""
+            def iterator(self):
+                for obj in fake_items:
+                    yield obj
+
+            def get(self, *args, **kwargs):
+                return fake_items[0]
+
+        queryset = HackedQuerySet(model=SomeModel)
+
+        class ModelChoiceForm(forms.Form):
+            mod = forms.ModelChoiceField(queryset=queryset)
+
+        rendered = ModelChoiceForm().as_p()
+        self.assertTrue('<option value="1">Meh</option>' in rendered, rendered)
+
+        rendered = ModelChoiceForm(data={'mod': 1}).as_p()
+        self.assertTrue('<option value="1" selected' in rendered, rendered)
+
+        class MultiModelForm(forms.Form):
+            mods = forms.ModelMultipleChoiceField(queryset=queryset)
+
+        rendered = MultiModelForm().as_p()
+        self.assertTrue('<option value="1">Meh</option>' in rendered, rendered)
+        self.assertTrue('multiple="multiple"' in rendered, rendered)
+        rendered = MultiModelForm(data={'mods': [1]}).as_p()
+        self.assertTrue('<option value="1" selected' in rendered, rendered)

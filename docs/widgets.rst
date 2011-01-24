@@ -17,6 +17,7 @@ CharField                TextInput
 ChoiceField              Select
 TypedChoiceField         Select
 FilePathField            Select
+ModelChoiceField         Select
 DateField                DateInput          <input type="date">
 DateTimeField            DateTimeInput      <input type="datetime">
 DecimalField             NumberInput        <input type="number">
@@ -27,6 +28,7 @@ ImageField               ClearableFileInput
 IntegerField             NumberInput        <input type="number">
 MultipleChoiceField      SelectMultiple
 TypedMultipleChoiceField SelectMultiple
+ModelMultipleChoiceField SelectMultiple
 NullBooleanField         NullBooleanSelect
 TimeField                TimeInput          <input type="time">
 URLField                 URLInput           <input type="url">
@@ -67,8 +69,6 @@ django-floppyforms:
 * ComboField
 * MultiValueField
 * SplitDateTimeField
-* ModelChoiceField
-* ModelMultipleChoiceField
 
 The following widgets have not yet been implemented:
 

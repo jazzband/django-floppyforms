@@ -89,7 +89,8 @@ class SlugInput(TextInput):
 class IPAddressInput(TextInput):
 
     def get_context_data(self):
-        self.attrs['pattern'] = "(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}"
+        self.attrs['pattern'] = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|"
+                                 "2[0-4]\d|[0-1]?\d?\d)){3}")
         return super(IPAddressInput, self).get_context_data()
 
 

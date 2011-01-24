@@ -7,8 +7,7 @@ from django.forms import (ComboField, MultiValueField,
                           SplitDateTimeField,
                           DEFAULT_DATE_INPUT_FORMATS,
                           DEFAULT_TIME_INPUT_FORMATS,
-                          DEFAULT_DATETIME_INPUT_FORMATS,
-                          ModelChoiceField, ModelMultipleChoiceField)
+                          DEFAULT_DATETIME_INPUT_FORMATS)
 
 # Import Django Widgets not implemented yet
 from django.forms import (Media, MediaDefiningClass, Widget,
@@ -19,4 +18,5 @@ from django.forms import (Media, MediaDefiningClass, Widget,
 from django.forms.extras import SelectDateWidget
 
 from floppyforms.fields import *
+from floppyforms.models import *
 from floppyforms.widgets import *
