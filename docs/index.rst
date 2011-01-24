@@ -42,6 +42,71 @@ impatient reader, there's also an :doc:`examples <examples>` section.
    widgets-reference
    examples
 
+Additional notes
+----------------
+
+Why the name?
+`````````````
+
+* There aren't enough packages with silly names in the Django community. So,
+  here's one more.
+* The name reflects the idea that a widget can take any kind of shape.
+
+Performance
+```````````
+
+Each time a widget is rendered, there is a template inclusion. To what extent
+does it affect performance? You can try with this little script:
+
+.. code-block:: python
+
+    import timeit
+
+    django = """from django import forms
+
+    class DjangoForm(forms.Form):
+        text = forms.CharField()
+        slug = forms.SlugField()
+        some_bool = forms.BooleanField()
+        email = forms.EmailField()
+        date = forms.DateTimeField()
+        file_ = forms.FileField()
+
+    rendered = DjangoForm().as_p()"""
+
+    flop = """import floppyforms as forms
+
+    class FloppyForm(forms.Form):
+        text = forms.CharField()
+        slug = forms.SlugField()
+        some_bool = forms.BooleanField()
+        email = forms.EmailField()
+        date = forms.DateTimeField()
+        file_ = forms.FileField()
+
+    rendered = FloppyForm().as_p()"""
+
+    def time(stmt):
+        t = timeit.Timer(stmt=stmt)
+        return t.timeit(number=1000)
+
+    print "Plain django:", time(django)
+    print "Django-floppyforms:", time(flop)
+
+The result varies if you're doing template caching or not. To put it simply, here is the result on a MacBookPro @ 2.53GHz.
+
+================== ============================= ===========================
+Method             Time without template caching Time with template caching
+================== ============================= ===========================
+Plain Django       1.63973999023 sec             1.6320669651 sec
+Django-floppyforms 9.05481505394 sec             3.0161819458 sec
+================== ============================= ===========================
+
+Even with template caching, the rendering time is doubled. However the impact
+is probably not noticeable since rendering the form above takes 3
+milliseconds instead of 1.6: **it still takes no time :)**. The use of
+template caching in production is, of course, encouraged.
+
 Indices and tables
 ------------------
 
