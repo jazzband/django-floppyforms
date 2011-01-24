@@ -15,6 +15,7 @@ Installation
 
 * ``pip install -U django-floppyforms``
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
+* Run ``python manage.py test floppyforms``.
 
 For extensive documentation see the ``docs`` folder or `read it on
 readthedocs`_
