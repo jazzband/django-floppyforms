@@ -11,6 +11,7 @@ __all__ = (
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
     'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
+    'TypedChoiceField',
 )
 
 
@@ -38,6 +39,10 @@ class NullBooleanField(Field, forms.NullBooleanField):
 
 
 class ChoiceField(Field, forms.ChoiceField):
+    widget = Select
+
+
+class TypedChoiceField(ChoiceField, forms.TypedChoiceField):
     widget = Select
 
 

@@ -397,3 +397,22 @@ class WidgetRenderingTest(TestCase):
 
         self.assertFalse(IPv4Form(data={'ip': '500.500.1.1'}).is_valid())
         self.assertTrue(IPv4Form(data={'ip': '250.100.1.8'}).is_valid())
+
+    def test_typed_choice_field(self):
+        """foo = forms.TypedChoiceField()"""
+        TYPE_CHOICES = (
+            (0, 'Some value'),
+            (1, 'Other value'),
+            (2, 'A third one'),
+        )
+        my_coerce = lambda val: bool(int(val))
+        class TypedForm(forms.Form):
+            typed = forms.TypedChoiceField(coerce=my_coerce,
+                                           choices=TYPE_CHOICES)
+
+        rendered = TypedForm().as_p()
+        self.assertTrue('<select ' in rendered, rendered)
+        form = TypedForm(data={'typed': '0'})
+        self.assertTrue(form.is_valid())
+        print form.cleaned_data
+        self.assertEquals(form.cleaned_data['typed'], False)
