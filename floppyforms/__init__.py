@@ -1,5 +1,5 @@
 from django.forms import (Form, ModelForm, BaseModelForm, model_to_dict,
-                          fields_for_model, save_instance, form_for_fields,
+                          fields_for_model, save_instance,
                           ValidationError)
 
 # Import Django Fields not implemented in floppyforms yet
