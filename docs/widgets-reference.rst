@@ -293,3 +293,7 @@ For each widgets, the default class attributes.
 .. class:: SplitDateTimeWidget
 
     Displays a ``DateInput`` and a ``TimeInput`` side by side.
+
+.. class:: MultipleHiddenInput
+
+    A multiple <input type="hidden"> for fields that have several values.

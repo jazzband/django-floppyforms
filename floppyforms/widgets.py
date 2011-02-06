@@ -10,7 +10,7 @@ __all__ = (
     'RadioSelect', 'CheckboxSelectMultiple', 'SearchInput', 'RangeInput',
     'ColorInput', 'EmailInput', 'URLInput', 'PhoneNumberInput', 'NumberInput',
     'IPAddressInput', 'MultiWidget', 'Widget', 'SplitDateTimeWidget',
-    'SplitHiddenDateTimeWidget',
+    'SplitHiddenDateTimeWidget', 'MultipleHiddenInput',
 )
 
 
@@ -279,3 +279,29 @@ class SplitHiddenDateTimeWidget(SplitDateTimeWidget):
         for widget in self.widgets:
             widget.input_type = 'hidden'
             widget.is_hidden = True
+
+
+class MultipleHiddenInput(HiddenInput):
+    """<input type="hidden"> for fields that have a list of values"""
+    def __init__(self, attrs=None, choices=()):
+        super(MultipleHiddenInput, self).__init__(attrs)
+        self.choices = choices
+
+    def render(self, name, value, attrs=None, choices=()):
+        if value is None:
+            value = []
+
+        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        id_ = final_attrs.get('id', None)
+        inputs = []
+        for i, v in enumerate(value):
+            input_attrs = dict(value=force_unicode(v), **final_attrs)
+            if id_:
+                input_attrs['id'] = '%s_%s' % (id_, i)
+            del input_attrs['type']
+            del input_attrs['value']
+            input_ = HiddenInput()
+            input_.is_required = self.is_required
+            inputs.append(input_.render(name, force_unicode(v), input_attrs))
+        return "\n".join(inputs)
+

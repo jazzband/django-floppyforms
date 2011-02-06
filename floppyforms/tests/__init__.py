@@ -540,3 +540,20 @@ class WidgetRenderingTest(TestCase):
 
         rendered = SplitForm().as_p()
         self.assertEquals(len(rendered.split('type="hidden"')), 3)
+
+    def test_multiple_hidden(self):
+        """<input type="hidden"> for fields with a list of values"""
+
+        some_choices = (
+            ('foo', 'bar'),
+            ('baz', 'meh'),
+            ('heh', 'what?!'),
+        )
+
+        class MultiForm(forms.Form):
+            multi = forms.MultipleChoiceField(widget=forms.MultipleHiddenInput,
+                                              choices=some_choices)
+
+        rendered = MultiForm(data={'multi': ['heh', 'foo']}).as_p()
+        self.assertEquals(len(rendered.split('type="hidden"')), 3, rendered)
+        self.assertTrue(' required ' in rendered, rendered)

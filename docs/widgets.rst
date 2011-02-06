@@ -72,7 +72,6 @@ SplitDateTimeField       SplitDateTimeWidget
 
 The following widgets have not yet been implemented:
 
-* MultipleHiddenInput
 * SelectDateWidget
 
 Fields and widgets that are not implemented are aliased from ``django.forms``.
