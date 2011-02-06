@@ -1,0 +1,6 @@
+{% extends "floppyforms/gis/openlayers.html" %}
+
+{% block options %}{{ block.super }}
+options['base_layer'] = new OpenLayers.Layer.Google("Google Streets", {numZoomLevels: 20, units: 'm'});
+options['point_zoom'] = 14;
+{% endblock %}

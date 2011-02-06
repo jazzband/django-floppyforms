@@ -20,3 +20,4 @@ from django.forms.extras import SelectDateWidget
 from floppyforms.fields import *
 from floppyforms.models import *
 from floppyforms.widgets import *
+from floppyforms import gis

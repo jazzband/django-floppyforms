@@ -1,10 +1,10 @@
 import os
 
-from django.core.files import File
 from django.db import models
 from django.test import TestCase
 
 import floppyforms as forms
+from floppyforms.tests.gis import GisTests
 
 
 class WidgetRenderingTest(TestCase):
@@ -419,7 +419,7 @@ class WidgetRenderingTest(TestCase):
 
     def test_file_path_field(self):
         """foo = forms.FilePathField()"""
-        parent = os.path.dirname(__file__)
+        parent = os.path.join(os.path.dirname(__file__), '..')
 
         class PathForm(forms.Form):
             path = forms.FilePathField(path=parent, recursive=True)

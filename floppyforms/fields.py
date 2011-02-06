@@ -1,10 +1,10 @@
 from django import forms
 
 from floppyforms.widgets import (TextInput, HiddenInput, CheckboxInput, Select,
-                                 FileInput, ClearableFileInput, SelectMultiple,
+                                 ClearableFileInput, SelectMultiple,
                                  DateInput, DateTimeInput, TimeInput, URLInput,
-                                 NumberInput, RangeInput, EmailInput,
-                                 NullBooleanSelect, SlugInput, IPAddressInput)
+                                 NumberInput, EmailInput, NullBooleanSelect,
+                                 SlugInput, IPAddressInput)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',

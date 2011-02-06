@@ -40,6 +40,7 @@ impatient reader, there's also an :doc:`examples <examples>` section.
    widgets
    customization
    widgets-reference
+   geodjango
    examples
 
 Additional notes
@@ -50,7 +51,8 @@ Why the name?
 
 * There aren't enough packages with silly names in the Django community. So,
   here's one more.
-* The name reflects the idea that a widget can take any kind of shape.
+* The name reflects the idea that a widget can take any kind of shape, if that
+  makes any sense.
 
 Performance
 ```````````

@@ -1,0 +1,37 @@
+<style type="text/css">
+	#{{ attrs.id }}_map { width: {{ map_width }}px; height: {{ map_height }}px; }
+	#{{ attrs.id }}_map .aligned label { float: inherit; }
+	#{{ attrs.id }}_span_map { position: relative; vertical-align: top; float: left; }
+	{% if not display_wkt %}#{{ attrs.id }} { display: none; }{% endif %}
+	.olControlEditingToolbar .olControlModifyFeatureItemActive {
+		background-image: url("{{ ADMIN_MEDIA_PREFIX }}img/gis/move_vertex_on.png");
+		background-repeat: no-repeat;
+	}
+	.olControlEditingToolbar .olControlModifyFeatureItemInactive {
+		background-image: url("{{ ADMIN_MEDIA_PREFIX }}img/gis/move_vertex_off.png");
+		background-repeat: no-repeat;
+	}
+</style>
+
+<span id="{{ attrs.id }}_span_map">
+	<div id="{{ attrs.id }}_map"></div>
+	<a href="javascript:{{ module }}.clearFeatures()">Delete all Features</a>
+	{% if display_wkt %}<p> WKT debugging window:</p>{% endif %}
+	{% include "floppyforms/textarea.html" %}
+	<script type="text/javascript">
+		{% block map_options %}var map_options = {};{% endblock %}
+		{% block options %}var options = {
+			geom_type: OpenLayers.Geometry.{{ geom_type }},
+			id: '{{ attrs.id }}',
+			is_collection: {{ is_collection|yesno:"true,false" }},
+			is_linestring: {{ is_linestring|yesno:"true,false" }},
+			is_point: {{ is_point|yesno:"true,false" }},
+			is_polygon: {{ is_polygon|yesno:"true,false" }},
+			map_id: '{{ attrs.id }}_map',
+			map_options: map_options,
+			map_srid: {{ map_srid }},
+			name: '{{ name }}'
+		};{% endblock %}
+		var {{ module }} = new MapWidget(options);
+	</script>
+</span>
