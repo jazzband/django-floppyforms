@@ -42,6 +42,14 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue('placeholder="Heheheh"' in rendered, rendered)
         self.assertTrue('value="some initial text"' in rendered, rendered)
 
+        invalid = lambda: forms.CharField(max_length=5).clean('foo bar')
+        self.assertRaises(forms.ValidationError, invalid)
+
+        class TextForm(forms.Form):
+            text = forms.CharField(max_length=2)
+
+        self.assertFalse(TextForm(data={'text': 'foo'}).is_valid())
+
     def test_password(self):
         """<input type="password">"""
         class PwForm(forms.Form):

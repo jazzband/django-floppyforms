@@ -26,7 +26,7 @@ class Field(forms.Field):
                                                  # Django < 1.3
 
 
-class CharField(Field):
+class CharField(Field, forms.CharField):
     widget = TextInput
 
 
