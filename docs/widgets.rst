@@ -9,9 +9,9 @@ to implement all the Django fields with the same class name, in the
 ``floppyforms`` namespace. Some widgets and fields are missing but the appropriate
 fields and widgets have been imported from the ``django.forms`` namespace.
 
-======================== ================== ========================
-Fields                   Widgets            Specificities
-======================== ================== ========================
+======================== =================== ========================
+Fields                   Widgets             Specificities
+======================== =================== ========================
 BooleanField             CheckboxInput
 CharField                TextInput
 ComboField               TextInput
@@ -19,24 +19,26 @@ ChoiceField              Select
 TypedChoiceField         Select
 FilePathField            Select
 ModelChoiceField         Select
-DateField                DateInput          <input type="date">
-DateTimeField            DateTimeInput      <input type="datetime">
-DecimalField             NumberInput        <input type="number">
-EmailField               EmailInput         <input type="email">
+DateField                DateInput           <input type="date">
+DateTimeField            DateTimeInput       <input type="datetime">
+DecimalField             NumberInput         <input type="number">
+EmailField               EmailInput          <input type="email">
 FileField                ClearableFileInput
-FloatField               NumberInput        <input type="number">
+FloatField               NumberInput         <input type="number">
 ImageField               ClearableFileInput
-IntegerField             NumberInput        <input type="number">
+IntegerField             NumberInput         <input type="number">
 MultipleChoiceField      SelectMultiple
 TypedMultipleChoiceField SelectMultiple
 ModelMultipleChoiceField SelectMultiple
 NullBooleanField         NullBooleanSelect
-TimeField                TimeInput          <input type="time">
-URLField                 URLInput           <input type="url">
-SlugField                SlugInput          <input pattern="[-\\w]+">
-RegexField               TextInput          <input [pattern=...]>
-IPAddressField           IPAddressInput     <input pattern=...>
-======================== ================== ========================
+TimeField                TimeInput           <input type="time">
+URLField                 URLInput            <input type="url">
+SlugField                SlugInput           <input pattern="[-\\w]+">
+RegexField               TextInput           <input [pattern=...]>
+IPAddressField           IPAddressInput      <input pattern=...>
+MultiValueField          MultiWidget
+SplitDateTimeField       SplitDateTimeWidget
+======================== =================== ========================
 
 .. note:: ClearableFileInput
 
@@ -67,17 +69,10 @@ IPAddressField           IPAddressInput     <input pattern=...>
     regex may be identical, the distinction allows you to pass compiled
     regexes as a ``regex`` argument.
 
-The following fields have not yet been adapted to use widgets from
-django-floppyforms:
-
-* MultiValueField
-* SplitDateTimeField
 
 The following widgets have not yet been implemented:
 
-* MultiWidget
 * MultipleHiddenInput
-* SplitDateTimeWidget
 * SelectDateWidget
 
 Fields and widgets that are not implemented are aliased from ``django.forms``.

@@ -508,3 +508,35 @@ class WidgetRenderingTest(TestCase):
         f = ComboForm(data={'combo': 'bob@example.com'})
         self.assertFalse(ComboForm(data={'combo': 'bob@exmpl.com'}).is_valid())
         self.assertTrue(ComboForm(data={'combo': 'bob@ex.com'}).is_valid())
+
+    def test_split_datetime(self):
+        """Split date time widget"""
+        class SplitForm(forms.Form):
+            split = forms.SplitDateTimeField()
+
+        rendered = SplitForm().as_p()
+        self.assertTrue(' required ' in rendered, rendered)
+        self.assertTrue('type="date"' in rendered, rendered)
+        self.assertTrue('type="time"' in rendered, rendered)
+
+        class SplitForm(forms.Form):
+            split = forms.SplitDateTimeField(required=False)
+
+        rendered = SplitForm().as_p()
+        self.assertFalse(' required ' in rendered, rendered)
+        self.assertTrue('type="date"' in rendered, rendered)
+        self.assertTrue('type="time"' in rendered, rendered)
+
+        valid = {'split_0': '2011-02-06', 'split_1': '12:12'}
+        self.assertTrue(SplitForm(data=valid).is_valid())
+
+        invalid = {'split_0': '2011-02-06', 'split_1': ''}
+        self.assertFalse(SplitForm(data=invalid).is_valid())
+
+        class SplitForm(forms.Form):
+            split = forms.SplitDateTimeField(
+                widget=forms.SplitHiddenDateTimeWidget,
+            )
+
+        rendered = SplitForm().as_p()
+        self.assertEquals(len(rendered.split('type="hidden"')), 3)

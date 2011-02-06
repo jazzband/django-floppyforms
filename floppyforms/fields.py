@@ -4,7 +4,9 @@ from floppyforms.widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                                  ClearableFileInput, SelectMultiple,
                                  DateInput, DateTimeInput, TimeInput, URLInput,
                                  NumberInput, EmailInput, NullBooleanSelect,
-                                 SlugInput, IPAddressInput)
+                                 SlugInput, IPAddressInput,
+                                 SplitDateTimeWidget,
+                                 SplitHiddenDateTimeWidget)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
@@ -12,7 +14,7 @@ __all__ = (
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
     'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
     'TypedChoiceField', 'FilePathField', 'TypedMultipleChoiceField',
-    'ComboField',
+    'ComboField', 'MultiValueField', 'SplitDateTimeField',
 )
 
 
@@ -136,3 +138,17 @@ class IPAddressField(Field, forms.IPAddressField):
 
 class ComboField(Field, forms.ComboField):
     pass
+
+
+class MultiValueField(Field, forms.MultiValueField):
+    pass
+
+
+class SplitDateTimeField(forms.SplitDateTimeField):
+    widget = SplitDateTimeWidget
+    hidden_widget = SplitHiddenDateTimeWidget
+
+    def __init__(self, *args, **kwargs):
+        super(SplitDateTimeField, self).__init__(*args, **kwargs)
+        for widget in self.widget.widgets:
+            widget.is_required = self.required

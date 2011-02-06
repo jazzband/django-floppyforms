@@ -9,8 +9,13 @@ __all__ = (
     'CheckboxInput', 'Select', 'NullBooleanSelect', 'SelectMultiple',
     'RadioSelect', 'CheckboxSelectMultiple', 'SearchInput', 'RangeInput',
     'ColorInput', 'EmailInput', 'URLInput', 'PhoneNumberInput', 'NumberInput',
-    'IPAddressInput',
+    'IPAddressInput', 'MultiWidget', 'Widget', 'SplitDateTimeWidget',
+    'SplitHiddenDateTimeWidget',
 )
+
+
+class Widget(forms.Widget):
+    pass
 
 
 class Input(forms.TextInput):
@@ -246,3 +251,31 @@ class RadioSelect(forms.RadioSelect, Select):
 
     def render(self, name, value, attrs=None, choices=()):
         return Select.render(self, name, value, attrs=attrs, choices=choices)
+
+
+class MultiWidget(forms.MultiWidget):
+    pass
+
+
+class SplitDateTimeWidget(MultiWidget):
+
+    def __init__(self, attrs=None, date_format=None, time_format=None):
+        widgets = (DateInput(attrs=attrs, format=date_format),
+                   TimeInput(attrs=attrs, format=time_format))
+        super(SplitDateTimeWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return [value.date(), value.time().replace(microseconds=0)]
+        return [None, None]
+
+
+class SplitHiddenDateTimeWidget(SplitDateTimeWidget):
+    is_hidden = True
+
+    def __init__(self, attrs=None, date_format=None, time_format=None):
+        super(SplitHiddenDateTimeWidget, self).__init__(attrs, date_format,
+                                                        time_format)
+        for widget in self.widgets:
+            widget.input_type = 'hidden'
+            widget.is_hidden = True
