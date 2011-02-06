@@ -283,3 +283,13 @@ For each widgets, the default class attributes.
     .. attribute:: CheckboxSelectMultiple.template_name
 
         ``'floppyforms/checkbox_select.html'``
+
+.. class:: MultiWdiget
+
+   The same as ``django.forms.widgets.MultiWdiget``. The rendering can be
+   customized by overriding ``format_output``, which joins all the rendered
+   widgets.
+
+.. class:: SplitDateTimeWidget
+
+    Displays a ``DateInput`` and a ``TimeInput`` side by side.
