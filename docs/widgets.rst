@@ -14,6 +14,7 @@ Fields                   Widgets            Specificities
 ======================== ================== ========================
 BooleanField             CheckboxInput
 CharField                TextInput
+ComboField               TextInput
 ChoiceField              Select
 TypedChoiceField         Select
 FilePathField            Select
@@ -69,7 +70,6 @@ IPAddressField           IPAddressInput     <input pattern=...>
 The following fields have not yet been adapted to use widgets from
 django-floppyforms:
 
-* ComboField
 * MultiValueField
 * SplitDateTimeField
 

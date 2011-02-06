@@ -495,3 +495,16 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue('multiple="multiple"' in rendered, rendered)
         rendered = MultiModelForm(data={'mods': [1]}).as_p()
         self.assertTrue('<option value="1" selected' in rendered, rendered)
+
+    def test_combo_field(self):
+        """Combo field"""
+        class ComboForm(forms.Form):
+            combo = forms.ComboField(fields=[forms.EmailField(),
+                                             forms.CharField(max_length=10)])
+
+        rendered = ComboForm().as_p()
+        self.assertTrue(' required ' in rendered, rendered)
+        form = ComboForm(data={'combo': 'bob@example.com'})
+        f = ComboForm(data={'combo': 'bob@example.com'})
+        self.assertFalse(ComboForm(data={'combo': 'bob@exmpl.com'}).is_valid())
+        self.assertTrue(ComboForm(data={'combo': 'bob@ex.com'}).is_valid())

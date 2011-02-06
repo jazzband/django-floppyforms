@@ -12,6 +12,7 @@ __all__ = (
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
     'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
     'TypedChoiceField', 'FilePathField', 'TypedMultipleChoiceField',
+    'ComboField',
 )
 
 
@@ -131,3 +132,7 @@ class RegexField(Field, forms.RegexField):
 
 class IPAddressField(Field, forms.IPAddressField):
     widget = IPAddressInput
+
+
+class ComboField(Field, forms.ComboField):
+    pass
