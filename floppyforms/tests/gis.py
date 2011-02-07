@@ -1,7 +1,12 @@
 from django.conf import settings
-from django.contrib.gis.geos import GEOSGeometry
 from django.test import TestCase
 from django.utils.functional import wraps
+
+try:
+    from django.contrib.gis.geos import GEOSGeometry
+except ImportError:
+    """GDAL / GEOS not installed. Tests will fail if contrib.gis
+    is installed, and will be skipped otherwise"""
 
 try:
     from django.utils import unittest as ut2

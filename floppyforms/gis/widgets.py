@@ -1,6 +1,10 @@
 from django.conf import settings
-from django.contrib.gis import gdal, geos
 from django.utils import translation
+
+try:
+    from django.contrib.gis import gdal, geos
+except ImportError:
+    """GDAL / GEOS not installed"""
 
 import floppyforms as forms
 
