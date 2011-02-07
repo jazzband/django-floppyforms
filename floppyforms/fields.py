@@ -61,7 +61,7 @@ class ImageField(Field, forms.ImageField):
     widget = ClearableFileInput
 
 
-class MultipleChoiceField(forms.MultipleChoiceField):
+class MultipleChoiceField(Field, forms.MultipleChoiceField):
     widget = SelectMultiple
 
 
