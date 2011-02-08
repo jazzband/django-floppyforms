@@ -95,13 +95,14 @@ does it affect performance? You can try with this little script:
     print "Plain django:", time(django)
     print "Django-floppyforms:", time(flop)
 
-The result varies if you're doing template caching or not. To put it simply, here is the result on a MacBookPro @ 2.53GHz.
+The result varies if you're doing template caching or not. To put it simply,
+here is the average time for a single iteration on a MacBookPro @ 2.53GHz.
 
 ================== ============================= ===========================
 Method             Time without template caching Time with template caching
 ================== ============================= ===========================
-Plain Django       1.63973999023 sec             1.6320669651 sec
-Django-floppyforms 9.05481505394 sec             3.0161819458 sec
+Plain Django       1.63973999023 msec            1.6320669651 msec
+Django-floppyforms 9.05481505394 msec            3.0161819458 msec
 ================== ============================= ===========================
 
 Even with template caching, the rendering time is doubled. However the impact
