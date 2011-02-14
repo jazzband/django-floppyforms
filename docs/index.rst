@@ -46,6 +46,14 @@ impatient reader, there's also an :doc:`examples <examples>` section.
 Additional notes
 ----------------
 
+Changelog
+`````````
+
+* **v0.4**:
+
+  * All widgets from django have their floppyforms equivalent
+  * Added widgets for GeoDjango
+
 Why the name?
 `````````````
 

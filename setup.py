@@ -15,7 +15,7 @@ setup(
     description='Full control of form rendering in the templates',
     long_description=open('README.rst').read(),
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
