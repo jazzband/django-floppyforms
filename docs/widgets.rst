@@ -1,6 +1,8 @@
 Provided widgets
 ================
 
+.. _widgets:
+
 Default widgets for form fields
 -------------------------------
 

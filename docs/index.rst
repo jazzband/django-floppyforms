@@ -41,6 +41,7 @@ impatient reader, there's also an :doc:`examples <examples>` section.
    customization
    widgets-reference
    geodjango
+   differences
    examples
 
 Additional notes
