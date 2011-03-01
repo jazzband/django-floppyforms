@@ -167,3 +167,50 @@ Here is how chromium renders it with its native slider:
 And here is the jQuery UI slider as shown by Firefox:
 
 .. image:: images/slider-jquery-ui.png
+
+A placeholder with fallback
+---------------------------
+
+An ``<input>`` with a ``placeholder`` attribute and a javascript fallback for
+broader browser support.
+
+.. code-block:: python
+
+
+    # forms.py
+    import floppyforms as forms
+
+
+    class PlaceholderInput(forms.TextInput):
+        template_name = 'placeholder_input.html'
+
+
+    class MyForm(forms.Form):
+        text = forms.CharField(widget=PlaceholderInput(
+            attrs={'placeholder': _('Some text here')},
+        ))
+
+.. code-block:: jinja
+
+    {# placeholder_input.html #}
+
+    {% include "floppyforms/input.html" %}
+
+    <script type="text/javascript">
+        window.onload = function() {
+            if (!('placeholder' in document.createElement('input'))) {
+                var input = document.getElementById('{{ attrs.id }}');
+                input.value = '{{ attrs.placeholder }}';
+
+                input.onblur = function() {
+                    if (this.value == '')
+                        this.value='{{ attrs.placeholder }}';
+                };
+
+                input.onfocus = function() {
+                    if (this.value == '{{ attrs.placeholder }}')
+                        this.value = '';
+                };
+            }
+        };
+    </script>
