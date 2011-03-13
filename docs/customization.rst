@@ -43,7 +43,7 @@ Add more template variables
 ---------------------------
 
 There is also a way to add extra context. This is done by subclassing the
-widget class an extending the ``get_context_data()`` method::
+widget class and extending the ``get_context_data()`` method::
 
     class OtherEmailInput(forms.EmailInput):
         template_name = 'path/to/other.html'
