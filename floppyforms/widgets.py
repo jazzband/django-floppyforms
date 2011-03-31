@@ -36,7 +36,7 @@ class Input(forms.TextInput):
         }
         context.update(extra_context)
 
-        if value:
+        if not value is None:
             context['value'] = value
 
         context.update(self.get_context_data())
@@ -232,12 +232,12 @@ class NullBooleanSelect(forms.NullBooleanSelect, Select):
 
 
 class SelectMultiple(forms.SelectMultiple, Select):
-
+    
     def get_context_data(self):
         ctx = super(SelectMultiple, self).get_context_data()
         ctx['multiple'] = True
         return ctx
-
+        
     def render(self, name, value, attrs=None, choices=()):
         return Select.render(self, name, value, attrs=attrs, choices=choices)
 
