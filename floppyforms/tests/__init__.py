@@ -50,6 +50,10 @@ class WidgetRenderingTest(TestCase):
 
         self.assertFalse(TextForm(data={'text': 'foo'}).is_valid())
 
+        # Bug #7 - values should be passed as unicode strings
+        rendered = TextForm(data={'text': 0}).as_p()
+        self.assertTrue(' value="0"' in rendered, rendered)
+
     def test_password(self):
         """<input type="password">"""
         class PwForm(forms.Form):

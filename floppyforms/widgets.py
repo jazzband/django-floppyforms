@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django import forms, VERSION
 from django.template import loader
 from django.utils.encoding import force_unicode
@@ -32,12 +34,14 @@ class Input(forms.TextInput):
             'name': name,
             'hidden': self.is_hidden,
             'required': self.is_required,
-            'value': '',
         }
         context.update(extra_context)
 
-        if not value is None:
-            context['value'] = value
+        if value is None:
+            value = ''
+
+        if value != '':
+            context['value'] = force_unicode(value)
 
         context.update(self.get_context_data())
 
@@ -211,9 +215,14 @@ class Select(forms.Select, Input):
     template_name = 'floppyforms/select.html'
 
     def render(self, name, value, attrs=None, choices=()):
-        if choices:
-            self.choices = choices
-        extra = {'choices': self.choices}
+        if value is None:
+            value = ''
+
+        choices = chain(self.choices, choices)
+        final_choices = []
+        for option_value, option_label in choices:
+            final_choices.append((force_unicode(option_value), option_label))
+        extra = {'choices': final_choices}
         return Input.render(self, name, value, attrs=attrs,
                             extra_context=extra)
 
@@ -232,12 +241,12 @@ class NullBooleanSelect(forms.NullBooleanSelect, Select):
 
 
 class SelectMultiple(forms.SelectMultiple, Select):
-    
+
     def get_context_data(self):
         ctx = super(SelectMultiple, self).get_context_data()
         ctx['multiple'] = True
         return ctx
-        
+
     def render(self, name, value, attrs=None, choices=()):
         return Select.render(self, name, value, attrs=attrs, choices=choices)
 
