@@ -330,6 +330,26 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue('"fr" selected' in rendered, rendered)
         self.assertTrue('"en" selected' in rendered, rendered)
 
+
+    def test_select_multiple_values(self):
+        """<select multiple>"""
+        CHOICES = (
+            ('1', 'English'),
+            ('12', 'Deutsch'),
+            ('123', 'Francais'),
+        )
+
+        class MultiForm(forms.Form):
+            multi = forms.MultipleChoiceField(choices=CHOICES)
+
+        rendered = MultiForm().as_p()
+        self.assertTrue('multiple' in rendered, rendered)
+
+        rendered = MultiForm(data={'multi': ['123']}).as_p()
+        self.assertFalse('"1" selected' in rendered, rendered)
+        self.assertFalse('"12" selected' in rendered, rendered)
+        self.assertTrue('"123" selected' in rendered, rendered)
+
     def test_cb_multiple(self):
         """CheckboxSelectMultiple"""
         CHOICES = (
