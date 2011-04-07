@@ -40,7 +40,9 @@ class Input(forms.TextInput):
         if value is None:
             value = ''
 
-        if value != '':
+        if hasattr(value, '__iter__'):
+            context['value'] = [force_unicode(v) for v in value]
+        elif value != '':
             context['value'] = force_unicode(value)
 
         context.update(self.get_context_data())
