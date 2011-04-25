@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from django.db import models
@@ -581,3 +582,12 @@ class WidgetRenderingTest(TestCase):
         rendered = MultiForm(data={'multi': ['heh', 'foo']}).as_p()
         self.assertEquals(len(rendered.split('type="hidden"')), 3, rendered)
         self.assertTrue(' required ' in rendered, rendered)
+
+    def test_datetime_with_initial(self):
+        """SplitDateTimeWidget with an initial value"""
+        class DateTimeForm(forms.Form):
+            dt = forms.DateTimeField(initial=datetime.datetime.now(),
+                                     widget=forms.SplitDateTimeWidget)
+
+        rendered = DateTimeForm().as_p()
+        self.assertTrue('value="' in rendered)
