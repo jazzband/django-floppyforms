@@ -275,12 +275,23 @@ class WidgetRenderingTest(TestCase):
 
         form = CBForm(data={'cb': 0})
         self.assertFalse(form.is_valid())
+        rendered = form.as_p()
+        self.assertFalse('value=' in rendered, rendered)
+
         form = CBForm(data={'cb': 1})
         self.assertTrue(form.is_valid())
+        rendered = form.as_p()
+        self.assertFalse('value=' in rendered, rendered)
+
         form = CBForm(data={'cb': True})
         self.assertTrue(form.is_valid())
+        rendered = form.as_p()
+        self.assertFalse('value=' in rendered, rendered)
+
         form = CBForm(data={'cb': 'foo'})
         self.assertTrue(form.is_valid())
+        rendered = form.as_p()
+        self.assertTrue('value="foo"' in rendered, rendered)
 
         rendered = CBForm(initial={'cb': True}).as_p()
         self.assertTrue('checked' in rendered, rendered)

@@ -208,7 +208,9 @@ class CheckboxInput(forms.CheckboxInput, Input):
                 self.attrs['checked'] = ''
         except:  # That bare except is in the Django code...
             pass
-        if value not in ('', True, False, None):
+        if value in ('', True, False, None):
+            value = None
+        else:
             value = force_unicode(value)
         return Input.render(self, name, value, attrs=attrs)
 
