@@ -14,3 +14,5 @@ from floppyforms.fields import *
 from floppyforms.models import *
 from floppyforms.widgets import *
 from floppyforms import gis
+
+__version___ = '0.4.6'

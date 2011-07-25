@@ -5,7 +5,7 @@ from setuptools import find_packages
 
 setup(
     name='django-floppyforms',
-    version='0.4.5',
+    version='0.4.6',
     author=u'Bruno Renie',
     author_email='bruno@renie.fr',
     packages=find_packages(),
