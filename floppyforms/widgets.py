@@ -40,13 +40,8 @@ class Input(forms.TextInput):
         if value is None:
             value = ''
 
-        if hasattr(value, '__iter__'):
-            context['value'] = [force_unicode(v) for v in value]
-        elif value != '':
-            context['value'] = force_unicode(value)
-
+        context['value'] = self.format_value(value)
         context.update(self.get_context_data())
-
         attrs.update(self.attrs)
 
         # for things like "checked", set the value to False so that the
@@ -61,6 +56,11 @@ class Input(forms.TextInput):
         context = self.get_context(name, value, attrs=attrs,
                                    extra_context=extra_context)
         return loader.render_to_string(self.template_name, context)
+
+    def format_value(self, value):
+        if value != '':
+            value = force_unicode(value)
+        return value
 
 
 class TextInput(Input):
@@ -198,10 +198,10 @@ class PhoneNumberInput(Input):
     input_type = 'tel'
 
 
-class CheckboxInput(forms.CheckboxInput, Input):
+class CheckboxInput(Input, forms.CheckboxInput):
     input_type = 'checkbox'
 
-    def render(self, name, value, attrs=None):
+    def format_value(self, value):
         try:
             result = self.check_test(value)
             if result:
@@ -212,7 +212,7 @@ class CheckboxInput(forms.CheckboxInput, Input):
             value = None
         else:
             value = force_unicode(value)
-        return Input.render(self, name, value, attrs=attrs)
+        return value
 
 
 class Select(forms.Select, Input):
@@ -253,6 +253,9 @@ class SelectMultiple(forms.SelectMultiple, Select):
 
     def render(self, name, value, attrs=None, choices=()):
         return Select.render(self, name, value, attrs=attrs, choices=choices)
+
+    def format_value(self, value):
+        return [force_unicode(v) for v in value]
 
 
 class CheckboxSelectMultiple(SelectMultiple):
