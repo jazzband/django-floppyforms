@@ -144,6 +144,9 @@ if VERSION >= (1, 3):
             context['checkbox_name'] = ccb_name
             context['checkbox_id'] = self.clear_checkbox_id(ccb_name)
             return loader.render_to_string(self.template_name, context)
+
+        def format_value(self, value):
+            return value
 else:
     class ClearableFileInput(FileInput):
         pass
