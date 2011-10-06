@@ -8,7 +8,7 @@ Full control of form rendering in the templates.
 * Compatibility: Django 1.2+ (smart *if* template tag needed)
 * Requirements: homework -- read `this`_.
 
-.. _this: http://diveintohtml5.org/forms.html
+.. _this: http://diveintohtml5.ep.io/forms.html
 
 Installation
 ------------
