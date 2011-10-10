@@ -7,9 +7,6 @@ from django.contrib.localflavor.generic.forms import (
                           DEFAULT_DATETIME_INPUT_FORMATS,
 )
 
-# Import SelectDateWidget from extras
-from django.forms.extras import SelectDateWidget
-
 from floppyforms.fields import *
 from floppyforms.models import *
 from floppyforms.widgets import *
