@@ -12,6 +12,8 @@ from django.utils import datetime_safe
 from django.utils.dates import MONTHS
 from django.utils.formats import get_format
 
+RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
+
 
 __all__ = (
     'TextInput', 'PasswordInput', 'HiddenInput', 'ClearableFileInput',
@@ -333,8 +335,6 @@ class MultipleHiddenInput(HiddenInput):
         return "\n".join(inputs)
 
 
-RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
-
 class SelectDateWidget(Widget):
     """
     A Widget that splits date input into three <select> boxes.
@@ -349,14 +349,15 @@ class SelectDateWidget(Widget):
     template_name = 'floppyforms/select_date.html'
 
     def __init__(self, attrs=None, years=None, required=True):
-        # years is an optional list/tuple of years to use in the "year" select box.
+        # years is an optional list/tuple of years to use in the
+        # "year" select box.
         self.attrs = attrs or {}
         self.required = required
         if years:
             self.years = years
         else:
             this_year = datetime.date.today().year
-            self.years = range(this_year, this_year+10)
+            self.years = range(this_year, this_year + 10)
 
     def get_context_data(self):
         return {}
@@ -384,7 +385,7 @@ class SelectDateWidget(Widget):
         context['month_id'] = self.month_field % attrs['id']
         context['day_id'] = self.day_field % attrs['id']
         del attrs['id']
-                
+
         context['attrs'] = attrs
         return context
 
@@ -397,18 +398,14 @@ class SelectDateWidget(Widget):
                 if settings.USE_L10N:
                     try:
                         input_format = get_format('DATE_INPUT_FORMATS')[0]
-                        # Python 2.4 compatibility:
-                        #     v = datetime.datetime.strptime(value, input_format)
-                        # would be clearer, but datetime.strptime was added in
-                        # Python 2.5
-                        v = datetime.datetime(*(time.strptime(value, input_format)[0:6]))
+                        v = datetime.datetime.strptime(value, input_format)
                         year_val, month_val, day_val = v.year, v.month, v.day
                     except ValueError:
                         pass
                 else:
                     match = RE_DATE.match(value)
                     if match:
-                        year_val, month_val, day_val = [int(v) for v in match.groups()]
+                        year_val, month_val, day_val = map(int, match.groups())
 
         context = self.get_context(name, value, attrs=attrs,
                                    extra_context=extra_context)

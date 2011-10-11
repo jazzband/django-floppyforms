@@ -344,7 +344,6 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue('"fr" selected' in rendered, rendered)
         self.assertTrue('"en" selected' in rendered, rendered)
 
-
     def test_select_multiple_values(self):
         """<select multiple>"""
         CHOICES = (
@@ -615,13 +614,16 @@ class WidgetRenderingTest(TestCase):
 
         rendered = SelectDateForm().as_p()
 
-        option_year = u'<option value="%(year)d" selected="selected">%(year)d</option>' % {'year': today.year}
+        option_year = (u'<option value="%(year)d" selected="selected">'
+                       u'%(year)d</option>') % {'year': today.year}
         self.assertTrue(option_year in rendered, rendered)
 
-        option_month = u'<option value="%d" selected="selected">%s</option>' % (today.month, MONTHS[today.month])
+        option_month = (u'<option value="%d" selected="selected">%s'
+                        u'</option>') % (today.month, MONTHS[today.month])
         self.assertTrue(option_month in rendered, rendered)
 
-        option_day = u'<option value="%(day)d" selected="selected">%(day)d</option>' % {'day': today.day}
+        option_day = (u'<option value="%(day)d" selected="selected">%(day)d'
+                      u'</option>') % {'day': today.day}
         self.assertTrue(option_day in rendered, rendered)
 
         self.assertFalse(' id="id_dt"' in rendered, rendered)
@@ -629,3 +631,9 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(' id="id_dt_year"' in rendered, rendered)
         self.assertTrue(' id="id_dt_month"' in rendered, rendered)
         self.assertTrue(' id="id_dt_day"' in rendered, rendered)
+
+        class SelectDateForm(forms.Form):
+            dt = forms.DateField(initial='2011-09-09',
+                                 widget=forms.SelectDateWidget)
+        rendered = SelectDateForm().as_p()
+        self.assertTrue('2011' in rendered, rendered)
