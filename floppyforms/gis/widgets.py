@@ -86,7 +86,12 @@ class BaseGeometryWidget(forms.Textarea):
         context = super(BaseGeometryWidget, self).get_context(name, wkt, attrs)
         context['module'] = 'map_%s' % name.replace('-', '_')
         context['name'] = name
-        context['ADMIN_MEDIA_PREFIX'] = settings.ADMIN_MEDIA_PREFIX
+        # Django >= 1.4 doesn't have ADMIN_MEDIA_PREFIX anymore, we must
+        # rely on contrib.staticfiles.
+        if hasattr(settings, 'ADMIN_MEDIA_PREFIX'):
+            context['ADMIN_MEDIA_PREFIX'] = settings.ADMIN_MEDIA_PREFIX
+        else:
+            context['ADMIN_MEDIA_PREFIX'] = settings.STATIC_URL + 'admin/'
         context['LANGUAGE_BIDI'] = translation.get_language_bidi()
         return context
 
