@@ -1,13 +1,17 @@
 from itertools import chain
-
-from django import forms, VERSION
-from django.template import loader
-from django.utils.encoding import force_unicode
-from django.utils.translation import ugettext, ugettext_lazy
-
 import re
 import datetime
 import time
+
+from django import forms, VERSION
+from django.conf import settings
+from django.template import loader
+from django.utils.encoding import force_unicode
+from django.utils.translation import ugettext, ugettext_lazy
+from django.utils import datetime_safe
+from django.utils.dates import MONTHS
+from django.utils.formats import get_format
+
 
 __all__ = (
     'TextInput', 'PasswordInput', 'HiddenInput', 'ClearableFileInput',
@@ -329,11 +333,6 @@ class MultipleHiddenInput(HiddenInput):
         return "\n".join(inputs)
 
 
-from django.utils import datetime_safe
-from django.utils.dates import MONTHS
-from django.utils.formats import get_format
-from django.conf import settings
-
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
 def _parse_date_fmt():
@@ -401,6 +400,11 @@ class SelectDateWidget(Widget):
         for key, value in attrs.items():
             if value == True:
                 attrs[key] = False
+        context['year_id'] = self.year_field % attrs['id']
+        context['month_id'] = self.month_field % attrs['id']
+        context['day_id'] = self.day_field % attrs['id']
+        del attrs['id']
+                
         context['attrs'] = attrs
         return context
 
@@ -426,7 +430,6 @@ class SelectDateWidget(Widget):
                     if match:
                         year_val, month_val, day_val = [int(v) for v in match.groups()]
 
-
         context = self.get_context(name, value, attrs=attrs,
                                    extra_context=extra_context)
 
@@ -440,17 +443,6 @@ class SelectDateWidget(Widget):
         context['day_val'] = day_val
 
         return loader.render_to_string(self.template_name, context)
-
-    def id_for_label(self, id_):
-        first_select = None
-        field_list = _parse_date_fmt()
-        if field_list:
-            first_select = field_list[0]
-        if first_select is not None:
-            return '%s_%s' % (id_, first_select)
-        else:
-            return '%s_month' % id_
-    id_for_label = classmethod(id_for_label)
 
     def value_from_datadict(self, data, files, name):
         y = data.get(self.year_field % name)
