@@ -297,3 +297,37 @@ For each widgets, the default class attributes.
 .. class:: MultipleHiddenInput
 
     A multiple <input type="hidden"> for fields that have several values.
+
+.. class:: SelectDateWidget
+
+    A widget that displays three ``<select>`` boxes, for the year, the month
+    and the date.
+
+    Available context:
+
+    * ``year_field``: the name for the year's ``<select>`` box.
+    * ``month_field``: the name for the month's ``<select>`` box.
+    * ``day_field``: the name for the day's ``<select>`` box.
+
+    .. attribute:: SelectDateWidget.template_name
+
+        The template used to render the widget. Default:
+        ``'floppyforms/select_date.html'``.
+
+    .. attribute:: SelectDateWidget.none_value
+
+        A tuple representing the value to display when there is no initial
+        value. Default: ``(0, '---')``.
+
+    .. attribute:: SelectDateWidget.day_field
+
+        The way the day field's name is derived from the widget's name.
+        Default: ``'%s_day'``.
+
+    .. attribute:: SelectDateWidget.month_field
+
+        The way the month field's name is derived. Default: ``'%s_month'``.
+
+    .. attribute:: SelectDateWidget.year_field
+
+        The way the year field's name is derived. Default: ``'%s_year'``.

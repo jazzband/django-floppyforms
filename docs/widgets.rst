@@ -72,17 +72,22 @@ SplitDateTimeField       SplitDateTimeWidget
     regexes as a ``regex`` argument.
 
 
-.. note:: SelectDateWidget
+Extra widget
+------------
 
-   By defaut, this widget with split the date into three select (year, month and day).
+Django provides "extra" widgets in ``django.forms.extras.widgets``. In fact, a
+single extra widget is implemented: ``SelectDateWidget``. The template-based
+version is available under the ``floppyforms.SelectDateWidget`` name.
 
-   You can overload the template so that it is displayed in a different order or with 3 inputs::
+By defaut, this widget with split the date into three select (year, month and
+day). You can overload the template so that it is displayed in a different
+order or with 3 inputs:
+
+.. code-block:: jinja
 
        <input type="text" name="{{ day_field }}" value="{{ day_val|stringformat:"02d" }}" id="{{ day_id }}"{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %} />
        <input type="text" name="{{ month_field }}" value="{{ month_val|stringformat:"02d" }}" id="{{ month_id }}"{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}/>
        <input type="text" name="{{ year_field }}" value="{{ year_val|stringformat:"04d" }}" id="{{ year_id }}"{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}/>
-
-
 
 Other (HTML5) widgets
 ---------------------
