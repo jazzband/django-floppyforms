@@ -1,9 +1,17 @@
 from itertools import chain
+import re
+import datetime
+import time
 
 from django import forms, VERSION
+from django.conf import settings
 from django.template import loader
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext, ugettext_lazy
+from django.utils import datetime_safe
+from django.utils.dates import MONTHS
+from django.utils.formats import get_format
+
 
 __all__ = (
     'TextInput', 'PasswordInput', 'HiddenInput', 'ClearableFileInput',
@@ -12,7 +20,7 @@ __all__ = (
     'RadioSelect', 'CheckboxSelectMultiple', 'SearchInput', 'RangeInput',
     'ColorInput', 'EmailInput', 'URLInput', 'PhoneNumberInput', 'NumberInput',
     'IPAddressInput', 'MultiWidget', 'Widget', 'SplitDateTimeWidget',
-    'SplitHiddenDateTimeWidget', 'MultipleHiddenInput',
+    'SplitHiddenDateTimeWidget', 'MultipleHiddenInput', 'SelectDateWidget',
 )
 
 
@@ -324,3 +332,114 @@ class MultipleHiddenInput(HiddenInput):
             inputs.append(input_.render(name, force_unicode(v), input_attrs))
         return "\n".join(inputs)
 
+
+RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
+
+class SelectDateWidget(Widget):
+    """
+    A Widget that splits date input into three <select> boxes.
+
+    This also serves as an example of a Widget that has more than one HTML
+    element and hence implements value_from_datadict.
+    """
+    none_value = (0, '---')
+    month_field = '%s_month'
+    day_field = '%s_day'
+    year_field = '%s_year'
+    template_name = 'floppyforms/select_date.html'
+
+    def __init__(self, attrs=None, years=None, required=True):
+        # years is an optional list/tuple of years to use in the "year" select box.
+        self.attrs = attrs or {}
+        self.required = required
+        if years:
+            self.years = years
+        else:
+            this_year = datetime.date.today().year
+            self.years = range(this_year, this_year+10)
+
+    def get_context_data(self):
+        return {}
+
+    def get_context(self, name, value, attrs=None, extra_context={}):
+        context = {
+            'year_field': self.year_field % name,
+            'month_field': self.month_field % name,
+            'day_field': self.day_field % name
+            }
+        context.update(extra_context)
+
+        if value is None:
+            value = ''
+
+        context.update(self.get_context_data())
+        attrs.update(self.attrs)
+
+        # for things like "checked", set the value to False so that the
+        # template doesn't render checked="".
+        for key, value in attrs.items():
+            if value == True:
+                attrs[key] = False
+        context['year_id'] = self.year_field % attrs['id']
+        context['month_id'] = self.month_field % attrs['id']
+        context['day_id'] = self.day_field % attrs['id']
+        del attrs['id']
+                
+        context['attrs'] = attrs
+        return context
+
+    def render(self, name, value, attrs=None, extra_context={}):
+        try:
+            year_val, month_val, day_val = value.year, value.month, value.day
+        except AttributeError:
+            year_val = month_val = day_val = None
+            if isinstance(value, basestring):
+                if settings.USE_L10N:
+                    try:
+                        input_format = get_format('DATE_INPUT_FORMATS')[0]
+                        # Python 2.4 compatibility:
+                        #     v = datetime.datetime.strptime(value, input_format)
+                        # would be clearer, but datetime.strptime was added in
+                        # Python 2.5
+                        v = datetime.datetime(*(time.strptime(value, input_format)[0:6]))
+                        year_val, month_val, day_val = v.year, v.month, v.day
+                    except ValueError:
+                        pass
+                else:
+                    match = RE_DATE.match(value)
+                    if match:
+                        year_val, month_val, day_val = [int(v) for v in match.groups()]
+
+        context = self.get_context(name, value, attrs=attrs,
+                                   extra_context=extra_context)
+
+        context['year_choices'] = [(i, i) for i in self.years]
+        context['year_val'] = year_val
+
+        context['month_choices'] = MONTHS.items()
+        context['month_val'] = month_val
+
+        context['day_choices'] = [(i, i) for i in range(1, 32)]
+        context['day_val'] = day_val
+
+        return loader.render_to_string(self.template_name, context)
+
+    def value_from_datadict(self, data, files, name):
+        y = data.get(self.year_field % name)
+        m = data.get(self.month_field % name)
+        d = data.get(self.day_field % name)
+        if y == m == d == "0":
+            return None
+        if y and m and d:
+            if settings.USE_L10N:
+                input_format = get_format('DATE_INPUT_FORMATS')[0]
+                try:
+                    date_value = datetime.date(int(y), int(m), int(d))
+                except ValueError:
+                    return '%s-%s-%s' % (y, m, d)
+                else:
+                    date_value = datetime_safe.new_date(date_value)
+                    return date_value.strftime(input_format)
+            else:
+                return '%s-%s-%s' % (y, m, d)
+        return data.get(name, None)
