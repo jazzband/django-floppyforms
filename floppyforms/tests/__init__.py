@@ -3,6 +3,8 @@ import os
 
 from django.db import models
 from django.test import TestCase
+from django.utils.dates import MONTHS
+
 
 import floppyforms as forms
 from floppyforms.tests.gis import GisTests
@@ -602,3 +604,28 @@ class WidgetRenderingTest(TestCase):
 
         rendered = DateTimeForm().as_p()
         self.assertTrue('value="' in rendered)
+
+    def test_select_date_widget(self):
+        """SelectDateWidget"""
+        today = datetime.date.today()
+
+        class SelectDateForm(forms.Form):
+            dt = forms.DateField(initial=today,
+                                 widget=forms.SelectDateWidget)
+
+        rendered = SelectDateForm().as_p()
+
+        option_year = u'<option value="%(year)d" selected="selected">%(year)d</option>' % {'year': today.year}
+        self.assertTrue(option_year in rendered, rendered)
+
+        option_month = u'<option value="%d" selected="selected">%s</option>' % (today.month, MONTHS[today.month])
+        self.assertTrue(option_month in rendered, rendered)
+
+        option_day = u'<option value="%(day)d" selected="selected">%(day)d</option>' % {'day': today.day}
+        self.assertTrue(option_day in rendered, rendered)
+
+        self.assertFalse(' id="id_dt"' in rendered, rendered)
+
+        self.assertTrue(' id="id_dt_year"' in rendered, rendered)
+        self.assertTrue(' id="id_dt_month"' in rendered, rendered)
+        self.assertTrue(' id="id_dt_day"' in rendered, rendered)
