@@ -335,26 +335,6 @@ class MultipleHiddenInput(HiddenInput):
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
-def _parse_date_fmt():
-    fmt = get_format('DATE_FORMAT')
-    escaped = False
-    output = []
-    for char in fmt:
-        if escaped:
-            escaped = False
-        elif char == '\\':
-            escaped = True
-        elif char in 'Yy':
-            output.append('year')
-            #if not self.first_select: self.first_select = 'year'
-        elif char in 'bEFMmNn':
-            output.append('month')
-            #if not self.first_select: self.first_select = 'month'
-        elif char in 'dj':
-            output.append('day')
-            #if not self.first_select: self.first_select = 'day'
-    return output
-
 class SelectDateWidget(Widget):
     """
     A Widget that splits date input into three <select> boxes.
