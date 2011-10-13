@@ -637,3 +637,14 @@ class WidgetRenderingTest(TestCase):
                                  widget=forms.SelectDateWidget)
         rendered = SelectDateForm().as_p()
         self.assertTrue('2011' in rendered, rendered)
+
+    def test_no_attrs_rendering(self):
+        widget = forms.TextInput()
+        try:
+            rendered = widget.render('name', 'value')
+            self.assertEquals(
+                rendered,
+                '<input type="text" name="name" value="value">\n',
+            )
+        except AttributeError:
+            self.fail("Rendering with no attrs should work")
