@@ -1,4 +1,4 @@
-from django.forms import (Form, ModelForm, BaseModelForm, model_to_dict,
+from django.forms import (BaseForm, Form, ModelForm, BaseModelForm, model_to_dict,
                           fields_for_model, save_instance, ValidationError,
                           Media, MediaDefiningClass)
 
