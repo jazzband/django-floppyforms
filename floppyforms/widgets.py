@@ -63,7 +63,7 @@ class Input(forms.TextInput):
         return context
 
     def render(self, name, value, attrs=None, extra_context={}):
-        context = self.get_context(name, value, attrs=attrs,
+        context = self.get_context(name, value, attrs=attrs or {},
                                    extra_context=extra_context)
         return loader.render_to_string(self.template_name, context)
 
