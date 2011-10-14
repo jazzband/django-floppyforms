@@ -648,3 +648,21 @@ class WidgetRenderingTest(TestCase):
             )
         except AttributeError:
             self.fail("Rendering with no attrs should work")
+
+    def test_required_select(self):
+        """The 'required' attribute on the Select widget"""
+        choices = (('foo', 'foo'),
+                   ('bar', 'bar'))
+
+        class SelectForm(forms.Form):
+            foo = forms.CharField(widget=forms.Select(choices=choices))
+
+        rendered = SelectForm().as_p()
+        self.assertTrue('required' in rendered, rendered)
+
+        class SelectForm(forms.Form):
+            foo = forms.CharField(widget=forms.Select(choices=choices),
+                                  required=False)
+
+        rendered = SelectForm().as_p()
+        self.assertFalse('required' in rendered, rendered)
