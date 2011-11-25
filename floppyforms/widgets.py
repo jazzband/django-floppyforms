@@ -147,12 +147,19 @@ if VERSION >= (1, 3):
             ctx['clear_checkbox_label'] = self.clear_checkbox_label
             return ctx
 
-        def render(self, name, value, attrs=None, extra_context={}):
-            context = self.get_context(name, value, attrs=attrs,
-                                       extra_context=extra_context)
+        def get_context(self, name, value, attrs=None):
+            context = super(ClearableFileInput, self).get_context(
+                name, value, attrs=attrs,
+            )
             ccb_name = self.clear_checkbox_name(name)
-            context['checkbox_name'] = ccb_name
-            context['checkbox_id'] = self.clear_checkbox_id(ccb_name)
+            context.update({
+                'checkbox_name': ccb_name,
+                'checkbox_id': self.clear_checkbox_id(ccb_name),
+            })
+            return context
+
+        def render(self, name, value, attrs=None):
+            context = self.get_context(name, value, attrs=attrs or {})
             return loader.render_to_string(self.template_name, context)
 
         def format_value(self, value):
@@ -367,7 +374,7 @@ class SelectDateWidget(Widget):
             'year_field': self.year_field % name,
             'month_field': self.month_field % name,
             'day_field': self.day_field % name
-            }
+        }
         context.update(extra_context)
 
         if value is None:

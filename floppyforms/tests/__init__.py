@@ -1,6 +1,7 @@
 import datetime
 import os
 
+from django import VERSION
 from django.db import models
 from django.test import TestCase
 from django.utils.dates import MONTHS
@@ -666,3 +667,20 @@ class WidgetRenderingTest(TestCase):
 
         rendered = SelectForm().as_p()
         self.assertFalse('required' in rendered, rendered)
+
+    def test_clearable_file_input(self):
+        if VERSION < (1, 3):
+            return  # ClearableFileInput not present
+
+        class Form(forms.Form):
+            file_ = forms.FileField(required=False)
+
+        fake_instance = {'url': 'test test'}
+        rendered = Form(initial={'file_': fake_instance}).as_p()
+        self.assertTrue('type="checkbox" name="file_-clear"' in rendered)
+
+        form = Form(initial={'file_': fake_instance},
+                    data={'file_-clear': True})
+        self.assertTrue(form.is_valid())
+        # file_ has been cleared
+        self.assertFalse(form.cleaned_data['file_'])
