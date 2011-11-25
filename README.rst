@@ -22,6 +22,11 @@ readthedocs`_
 
 .. _read it on readthedocs: http://django-floppyforms.readthedocs.org/
 
+Help
+----
+
+Ask your questions on the #django-floppyforms IRC channel on freenode.
+
 Bugs
 ----
 
