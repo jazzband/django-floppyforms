@@ -56,9 +56,9 @@ class Input(forms.TextInput):
 
         # for things like "checked", set the value to False so that the
         # template doesn't render checked="".
-        for key, value in attrs.items():
-            if value == True:
-                attrs[key] = False
+        #for key, value in attrs.items():
+        #    if value == True:
+        #        attrs[key] = False
         context['attrs'] = attrs
         return context
 
