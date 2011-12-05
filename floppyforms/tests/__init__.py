@@ -684,3 +684,11 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(form.is_valid())
         # file_ has been cleared
         self.assertFalse(form.cleaned_data['file_'])
+
+    def test_range_input(self):
+        class Form(forms.Form):
+            foo = forms.CharField(widget=forms.RangeInput({'min': 1, 'max': 10, 'step': 1}))
+
+        rendered = Form(initial={'foo': 5}).as_p()
+        self.assertTrue('step="1"' in rendered)
+        self.assertTrue('min="1"' in rendered)
