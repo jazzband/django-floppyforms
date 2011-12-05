@@ -731,3 +731,15 @@ class WidgetRenderingTest(TestCase):
         rendered = Form().as_p()
         self.assertFalse('True' in rendered, rendered)
         self.assertTrue('False' in rendered, rendered)
+
+    def test_range_input(self):
+        class Form(forms.Form):
+            foo = forms.CharField(widget=forms.RangeInput(attrs={
+                'min': 1, 'max': 10L, 'step': 1, 'bar': 1.0
+            }))
+
+        rendered = Form(initial={'foo': 5}).as_p()
+        self.assertTrue('step="1"' in rendered)
+        self.assertTrue('min="1"' in rendered)
+        self.assertTrue('max="10"' in rendered)
+        self.assertTrue('bar="1.0"' in rendered)

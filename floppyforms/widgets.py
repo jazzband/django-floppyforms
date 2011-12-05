@@ -71,6 +71,15 @@ class Input(Widget):
 
         context.update(self.get_context_data())
         context['attrs'] = self.build_attrs(attrs)
+
+        for key in context['attrs']:
+            attr = context['attrs'][key]
+            if attr == 1:
+                # 1 == True so 'key="1"' will show up only as 'key'
+                # Casting to a string so that it doesn't equal to True
+                # See #25.
+                if not isinstance(attr, bool):
+                    context['attrs'][key] = str(attr)
         return context
 
     def render(self, name, value, attrs=None, **kwargs):
