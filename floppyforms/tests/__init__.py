@@ -1,7 +1,7 @@
 import datetime
 import os
 
-from django import VERSION
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
 from django.test import TestCase
 from django.utils.dates import MONTHS
@@ -364,6 +364,30 @@ class WidgetRenderingTest(TestCase):
         self.assertFalse('"12" selected' in rendered, rendered)
         self.assertTrue('"123" selected' in rendered, rendered)
 
+    def test_optgroup(self):
+        """<optgroup> in select widgets"""
+        CHOICES = (
+            (None, (
+                ('en', 'English'),
+                ('de', 'Deutsch'),
+                ('fr', 'Francais'),
+            )),
+            ("Asian", (
+                ('jp', 'Japanese'),
+                ('bn', 'Bengali'),
+            )),
+        )
+
+        class LangForm(forms.Form):
+            lang = forms.ChoiceField(choices=CHOICES)
+
+        rendered = LangForm().as_p()
+        self.assertTrue('<optgroup label="Asian">' in rendered, rendered)
+
+        rendered = LangForm(data={'lang': 'jp'}).as_p()
+        expected = '<option value="jp" selected="selected">Japanese</option>'
+        self.assertTrue(expected in rendered, rendered)
+
     def test_cb_multiple(self):
         """CheckboxSelectMultiple"""
         CHOICES = (
@@ -542,8 +566,6 @@ class WidgetRenderingTest(TestCase):
 
         rendered = ComboForm().as_p()
         self.assertTrue(' required ' in rendered, rendered)
-        form = ComboForm(data={'combo': 'bob@example.com'})
-        f = ComboForm(data={'combo': 'bob@example.com'})
         self.assertFalse(ComboForm(data={'combo': 'bob@exmpl.com'}).is_valid())
         self.assertTrue(ComboForm(data={'combo': 'bob@ex.com'}).is_valid())
 
@@ -669,9 +691,6 @@ class WidgetRenderingTest(TestCase):
         self.assertFalse('required' in rendered, rendered)
 
     def test_clearable_file_input(self):
-        if VERSION < (1, 3):
-            return  # ClearableFileInput not present
-
         class Form(forms.Form):
             file_ = forms.FileField(required=False)
 
@@ -684,3 +703,19 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(form.is_valid())
         # file_ has been cleared
         self.assertFalse(form.cleaned_data['file_'])
+
+    def test_rendered_file_input(self):
+        class Form(forms.Form):
+            file_ = forms.FileField()
+
+            def clean_file_(self):
+                raise forms.ValidationError('Some error')
+
+        file_ = SimpleUploadedFile('name', 'some contents')
+
+        form = Form(files={'file_': file_})
+        valid = form.is_valid()
+        self.assertFalse(valid)
+        rendered = form.as_p()
+        self.assertTrue('Some error' in rendered, rendered)
+        self.assertTrue(' required' in rendered, rendered)

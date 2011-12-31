@@ -3,8 +3,6 @@ try:
 except ImportError:
     from floppyforms.fields import CharField as BaseGeometryField
 
-import floppyforms as forms
-
 from floppyforms.gis import widgets
 
 __all__ = ('GeometryField', 'GeometryCollectionField',

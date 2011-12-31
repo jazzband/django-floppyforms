@@ -1,12 +1,12 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
-from floppyforms.widgets import (TextInput, HiddenInput, CheckboxInput, Select,
-                                 ClearableFileInput, SelectMultiple,
-                                 DateInput, DateTimeInput, TimeInput, URLInput,
-                                 NumberInput, EmailInput, NullBooleanSelect,
-                                 SlugInput, IPAddressInput,
-                                 SplitDateTimeWidget,
-                                 SplitHiddenDateTimeWidget)
+from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
+                      ClearableFileInput, SelectMultiple, DateInput,
+                      DateTimeInput, TimeInput, URLInput, NumberInput,
+                      EmailInput, NullBooleanSelect, SlugInput, IPAddressInput,
+                      SplitDateTimeWidget, SplitHiddenDateTimeWidget,
+                      FILE_INPUT_CONTRADICTION)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
@@ -55,6 +55,29 @@ class FilePathField(ChoiceField, forms.FilePathField):
 
 class FileField(Field, forms.FileField):
     widget = ClearableFileInput
+    default_error_messages = {
+        'invalid': _(u"No file was submitted. Check the encoding type on the form."),
+        'missing': _(u"No file was submitted."),
+        'empty': _(u"The submitted file is empty."),
+        'max_length': _(u'Ensure this filename has at most %(max)d characters (it has %(length)d).'),
+        'contradiction': _(u'Please either submit a file or check the clear checkbox, not both.')
+    }
+
+    def __init__(self, *args, **kwargs):
+        self.max_length = kwargs.pop('max_length', None)
+        self.allow_empty_file = kwargs.pop('allow_empty_file', False)
+        super(FileField, self).__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        if data is FILE_INPUT_CONTRADICTION:
+            raise ValidationError(self.error_messages['contradiction'])
+        if data is False:
+            if not self.required:
+                return False
+            data = None
+        if not data and initial:
+            return initial
+        return super(FileField, self).clean(data)
 
 
 class ImageField(Field, forms.ImageField):

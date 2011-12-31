@@ -1,8 +1,8 @@
-{% if value.url %}{{ initial_text }}: <a target="_blank" href="{{ value.url }}">{{ value }}</a>
+{% load i18n %}{% if value.url %}{% trans "Currently:" %} <a target="_blank" href="{{ value.url }}">{{ value }}</a>
 {% if not required %}
 <input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">
-<label for="{{ checkbox_id }}">{{ clear_checkbox_label }}</label>
+<label for="{{ checkbox_id }}">{% trans "Clear" %}</label>
 {% endif %}<br />
-{{ input_text }}:
+{% trans "Change:" %}
 {% endif %}
-<input type="{{ type }}" name="{{ name }}"{% if required and not value %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>
+<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>

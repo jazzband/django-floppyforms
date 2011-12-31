@@ -1,13 +1,14 @@
 from django.forms import models
 
-from floppyforms.widgets import Select, SelectMultiple
+from .fields import Field
+from .widgets import Select, SelectMultiple
 
 __all__ = ('ModelChoiceField', 'ModelMultipleChoiceField')
 
 
-class ModelChoiceField(models.ModelChoiceField):
+class ModelChoiceField(Field, models.ModelChoiceField):
     widget = Select
 
 
-class ModelMultipleChoiceField(models.ModelMultipleChoiceField):
+class ModelMultipleChoiceField(Field, models.ModelMultipleChoiceField):
     widget = SelectMultiple

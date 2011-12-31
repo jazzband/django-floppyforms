@@ -1,16 +1,23 @@
 from itertools import chain
 import re
 import datetime
-import time
 
-from django import forms, VERSION
+from django import forms
 from django.conf import settings
 from django.template import loader
+from django.utils.datastructures import MultiValueDict, MergeDict
+from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
-from django.utils.translation import ugettext, ugettext_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.utils import datetime_safe
 from django.utils.dates import MONTHS
-from django.utils.formats import get_format
+from django.utils import formats
+
+try:
+    from django.forms.util import to_current_timezone
+except ImportError:
+    # Dummy timzone converter
+    to_current_timezone = lambda value: value
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
@@ -27,50 +34,51 @@ __all__ = (
 
 
 class Widget(forms.Widget):
-    pass
-
-
-class Input(forms.TextInput):
-    input_type = None
-    template_name = 'floppyforms/input.html'
     is_required = False
+
+
+class Input(Widget):
+    template_name = 'floppyforms/input.html'
+    input_type = None
 
     def get_context_data(self):
         return {}
 
-    def get_context(self, name, value, attrs=None, extra_context={}):
+    def _format_value(self, value):
+        if self.is_localized:
+            value = formats.localize_input(value)
+        return force_unicode(value)
+
+    def get_context(self, name, value, attrs=None):
         context = {
             'type': self.input_type,
             'name': name,
             'hidden': self.is_hidden,
             'required': self.is_required,
         }
-        context.update(extra_context)
+        if self.is_hidden:
+            context['hidden'] = True
 
         if value is None:
             value = ''
 
-        context['value'] = self.format_value(value)
+        if value != '':
+            # Only add the value if it is non-empty
+            context['value'] = self._format_value(value)
+
         context.update(self.get_context_data())
-        attrs.update(self.attrs)
 
         # for things like "checked", set the value to False so that the
         # template doesn't render checked="".
         for key, value in attrs.items():
             if value == True:
                 attrs[key] = False
-        context['attrs'] = attrs
+        context['attrs'] = self.build_attrs(attrs)
         return context
 
-    def render(self, name, value, attrs=None, extra_context={}):
-        context = self.get_context(name, value, attrs=attrs or {},
-                                   extra_context=extra_context)
+    def render(self, name, value, attrs=None, **kwargs):
+        context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
         return loader.render_to_string(self.template_name, context)
-
-    def format_value(self, value):
-        if value != '':
-            value = force_unicode(value)
-        return value
 
 
 class TextInput(Input):
@@ -94,25 +102,109 @@ class HiddenInput(Input):
     input_type = 'hidden'
     is_hidden = True
 
-    def get_context_data(self):
-        ctx = super(HiddenInput, self).get_context_data()
-        ctx['hidden'] = True
-        return ctx
+
+class MultipleHiddenInput(HiddenInput):
+    """<input type="hidden"> for fields that have a list of values"""
+    def __init__(self, attrs=None, choices=()):
+        super(MultipleHiddenInput, self).__init__(attrs)
+        self.choices = choices
+
+    def render(self, name, value, attrs=None, choices=()):
+        if value is None:
+            value = []
+
+        final_attrs = self.build_attrs(attrs)
+        id_ = final_attrs.get('id', None)
+        inputs = []
+        for i, v in enumerate(value):
+            input_attrs = final_attrs.copy()
+            if id_:
+                input_attrs['id'] = '%s_%s' % (id_, i)
+            input_ = HiddenInput()
+            input_.is_required = self.is_required
+            inputs.append(input_.render(name, force_unicode(v), input_attrs))
+        return "\n".join(inputs)
+
+    def value_from_datadict(self, data, files, name):
+        if isinstance(data, (MultiValueDict, MergeDict)):
+            return data.getlist(name)
+        return data.get(name, None)
 
 
 class SlugInput(TextInput):
-
-    def get_context_data(self):
-        self.attrs['pattern'] = "[-\w]+"
-        return super(SlugInput, self).get_context_data()
+    """<input type="text"> validating slugs with a pattern"""
+    def get_context(self, name, value, attrs):
+        context = super(SlugInput, self).get_context(name, value, attrs)
+        context['attrs']['pattern'] = "[-\w]+"
+        return context
 
 
 class IPAddressInput(TextInput):
+    """<input type="text"> validating IP addresses with a pattern"""
+    def get_context(self, name, value, attrs):
+        context = super(IPAddressInput, self).get_context(name, value, attrs)
+        context['attrs']['pattern'] = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25"
+                                       "[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}")
+        return context
 
-    def get_context_data(self):
-        self.attrs['pattern'] = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|"
-                                 "2[0-4]\d|[0-1]?\d?\d)){3}")
-        return super(IPAddressInput, self).get_context_data()
+
+class FileInput(Input):
+    input_type = 'file'
+    needs_multipart_form = True
+    omit_value = True
+
+    def render(self, name, value, attrs=None):
+        if self.omit_value:
+            # File inputs can't render an existing value if it's not saved
+            value = None
+        return super(FileInput, self).render(name, value, attrs=attrs)
+
+    def value_from_datadict(self, data, files, name):
+        return files.get(name, None)
+
+    def _has_changed(self, initial, data):
+        if data is None:
+            return False
+        return True
+
+
+FILE_INPUT_CONTRADICTION = object()
+
+
+class ClearableFileInput(FileInput):
+    template_name = 'floppyforms/clearable_input.html'
+    omit_value = False
+
+    def clear_checkbox_name(self, name):
+        return name + '-clear'
+
+    def clear_checkbox_id(self, name):
+        return name + '_id'
+
+    def get_context(self, name, value, attrs):
+        context = super(ClearableFileInput, self).get_context(name, value,
+                                                              attrs)
+        ccb_name = self.clear_checkbox_name(name)
+        context.update({
+            'checkbox_name': ccb_name,
+            'checkbox_id': self.clear_checkbox_id(ccb_name),
+        })
+        return context
+
+    def value_from_datadict(self, data, files, name):
+        upload = super(ClearableFileInput, self).value_from_datadict(
+            data, files, name
+        )
+        if not self.is_required and CheckboxInput().value_from_datadict(
+            data, files, self.clear_checkbox_name(name)
+        ):
+            if upload:
+                return FILE_INPUT_CONTRADICTION
+            return False
+        return upload
+
+    def _format_value(self, value):
+        return value
 
 
 class Textarea(Input):
@@ -126,59 +218,100 @@ class Textarea(Input):
             default_attrs.update(attrs)
         super(Textarea, self).__init__(default_attrs)
 
-
-class FileInput(forms.FileInput, Input):
-    input_type = 'file'
-
-    def render(self, name, value, attrs=None):
-        return super(FileInput, self).render(name, None, attrs=attrs)
-
-if VERSION >= (1, 3):
-    class ClearableFileInput(FileInput, forms.ClearableFileInput):
-        template_name = 'floppyforms/clearable_input.html'
-        initial_text = ugettext_lazy('Currently')
-        input_text = ugettext_lazy('Change')
-        clear_checkbox_label = ugettext_lazy('Clear')
-
-        def get_context_data(self):
-            ctx = super(ClearableFileInput, self).get_context_data()
-            ctx['initial_text'] = self.initial_text
-            ctx['input_text'] = self.input_text
-            ctx['clear_checkbox_label'] = self.clear_checkbox_label
-            return ctx
-
-        def get_context(self, name, value, attrs=None):
-            context = super(ClearableFileInput, self).get_context(
-                name, value, attrs=attrs,
-            )
-            ccb_name = self.clear_checkbox_name(name)
-            context.update({
-                'checkbox_name': ccb_name,
-                'checkbox_id': self.clear_checkbox_id(ccb_name),
-            })
-            return context
-
-        def render(self, name, value, attrs=None):
-            context = self.get_context(name, value, attrs=attrs or {})
-            return loader.render_to_string(self.template_name, context)
-
-        def format_value(self, value):
-            return value
-else:
-    class ClearableFileInput(FileInput):
-        pass
+    def _format_value(self, value):
+        return conditional_escape(force_unicode(value))
 
 
-class DateInput(forms.DateInput, Input):
+class DateInput(Input):
     input_type = 'date'
 
+    def __init__(self, attrs=None, format=None):
+        super(DateInput, self).__init__(attrs)
+        if format:
+            self.format = format
+            self.manual_format = True
+        else:
+            self.format = formats.get_format('DATE_INPUT_FORMATS')[0]
+            self.manual_format = False
 
-class DateTimeInput(forms.DateTimeInput, Input):
+    def _format_value(self, value):
+        if self.is_localized and not self.manual_format:
+            return formats.localize_input(value)
+        elif hasattr(value, 'strftime'):
+            value = datetime_safe.new_date(value)
+            return value.strftime(self.format)
+        return value
+
+    def _has_changed(self, initial, data):
+        try:
+            input_format = formats.get_format('DATE_INPUT_FORMATS')[0]
+            initial = datetime.datetime.strptime(initial, input_format).date()
+        except (TypeError, ValueError):
+            pass
+        return super(DateInput, self)._has_changed(
+            self._format_value(initial), data
+        )
+
+
+class DateTimeInput(Input):
     input_type = 'datetime'
 
+    def __init__(self, attrs=None, format=None):
+        super(DateTimeInput, self).__init__(attrs)
+        if format:
+            self.format = format
+            self.manual_format = True
+        else:
+            self.format = formats.get_format('DATETIME_INPUT_FORMATS')[0]
+            self.manual_format = False
 
-class TimeInput(forms.TimeInput, Input):
+    def _format_value(self, value):
+        if self.is_localized and not self.manual_format:
+            return formats.localize_input(value)
+        elif hasattr(value, 'strftime'):
+            value = datetime_safe.new_datetime(value)
+            return value.strftime(self.format)
+        return value
+
+    def _has_changed(self, initial, data):
+        try:
+            input_format = formats.get_format('DATETIME_INPUT_FORMATS')[0]
+            initial = datetime.datetime.strptime(initial, input_format)
+        except (TypeError, ValueError):
+            pass
+        return super(DateTimeInput, self)._has_changed(
+            self._format_value(initial), data
+        )
+
+
+class TimeInput(Input):
     input_type = 'time'
+
+    def __init__(self, attrs=None, format=None):
+        super(TimeInput, self).__init__(attrs)
+        if format:
+            self.format = format
+            self.manual_format = True
+        else:
+            self.format = formats.get_format('TIME_INPUT_FORMATS')[0]
+            self.manual_format = False
+
+    def _format_value(self, value):
+        if self.is_localized and not self.manual_format:
+            return formats.localize_input(value)
+        elif hasattr(value, 'strftime'):
+            return value.strftime(self.format)
+        return value
+
+    def _has_changed(self, initial, data):
+        try:
+            input_format = formats.get_format('TIME_INPUT_FORMATS')[0]
+            initial = datetime.datetime.strptime(initial, input_format).time()
+        except (TypeError, ValueError):
+            pass
+        return super(TimeInput, self)._has_changed(
+            self._format_value(initial), data
+        )
 
 
 class SearchInput(Input):
@@ -221,72 +354,158 @@ class PhoneNumberInput(Input):
 class CheckboxInput(Input, forms.CheckboxInput):
     input_type = 'checkbox'
 
-    def format_value(self, value):
+    def __init__(self, attrs=None, check_test=None):
+        super(CheckboxInput, self).__init__(attrs)
+        if check_test is None:
+            self.check_test = lambda v: not (v is False or
+                                             v is None or
+                                             v == '')
+        else:
+            self.check_test = check_test
+
+    def get_context(self, name, value, attrs):
+        result = False
         try:
             result = self.check_test(value)
-            if result:
-                self.attrs['checked'] = ''
         except:  # That bare except is in the Django code...
             pass
+        context = super(CheckboxInput, self).get_context(name, value, attrs)
+        if result:
+            context['attrs']['checked'] = True
+        return context
+
+    def _format_value(self, value):
         if value in ('', True, False, None):
             value = None
         else:
             value = force_unicode(value)
         return value
 
+    def value_from_datadict(self, data, files, name):
+        if name not in data:
+            return False
+        value = data.get(name)
+        values = {'true': True, 'false': False}
+        if isinstance(value, basestring):
+            value = values.get(value.lower(), value)
+        return value
 
-class Select(forms.Select, Input):
+    def _has_changed(self, initial, data):
+        return bool(initial) != bool(data)
+
+
+class Select(Input):
+    allow_multiple_selected = False
     template_name = 'floppyforms/select.html'
 
-    def render(self, name, value, attrs=None, choices=()):
-        if value is None:
-            value = ''
+    def __init__(self, attrs=None, choices=()):
+        super(Select, self).__init__(attrs)
+        self.choices = list(choices)
 
-        choices = chain(self.choices, choices)
-        final_choices = []
-        for option_value, option_label in choices:
-            final_choices.append((force_unicode(option_value), option_label))
-        extra = {'choices': final_choices}
-        return Input.render(self, name, value, attrs=attrs,
-                            extra_context=extra)
+    def get_context(self, name, value, attrs=None, choices=()):
+        if not isinstance(value, (list, tuple)):
+            value = [value]
+        context = super(Select, self).get_context(name, value, attrs)
+
+        if self.allow_multiple_selected:
+            context['attrs']['multiple'] = "multiple"
+
+        # 'groups' look like this:
+        # (
+        #   ("Optgroup name", (
+        #       (value1, label1),
+        #       (value2, label2),
+        #   )),
+        #   (None, [
+        #       (value3, label3),
+        #       (value4, label4),
+        #   ]),
+        # )
+        groups = []
+        for option_value, option_label in chain(self.choices, choices):
+            if isinstance(option_label, (list, tuple)):
+                group = []
+                for val, lab in option_label:
+                    group.append((force_unicode(val), lab))
+                groups.append((option_value, group))
+            else:
+                option_value = force_unicode(option_value)
+                if groups and groups[-1][0] is None:
+                    groups[-1][1].append((option_value, option_label))
+                else:
+                    groups.append((None, [(option_value, option_label)]))
+        context["optgroups"] = groups
+        return context
+
+    def _format_value(self, value):
+        if len(value) == 1 and value[0] is None:
+            return []
+        return set(force_unicode(v) for v in value)
 
 
-class NullBooleanSelect(forms.NullBooleanSelect, Select):
+class NullBooleanSelect(Select):
+    def __init__(self, attrs=None):
+        choices = ((u'1', _('Unknown')),
+                   (u'2', _('Yes')),
+                   (u'3', _('No')))
+        super(NullBooleanSelect, self).__init__(attrs, choices)
 
-    def render(self, name, value, attrs=None, choices=()):
-        choices = ((u'1', ugettext('Unknown')),
-                   (u'2', ugettext('Yes')),
-                   (u'3', ugettext('No')))
+    def _format_value(self, value):
+        value = value[0]
         try:
             value = {True: u'2', False: u'3', u'2': u'2', u'3': u'3'}[value]
         except KeyError:
             value = u'1'
-        return Select.render(self, name, value, attrs, choices=choices)
+        return value
+
+    def value_from_datadict(self, data, files, name):
+        value = data.get(name, None)
+        return {u'2': True,
+                True: True,
+                'True': True,
+                u'3': False,
+                'False': False,
+                False: False}.get(value, None)
+
+    def _has_changed(self, initial, data):
+        if initial is not None:
+            initial = bool(initial)
+        if data is not None:
+            data = bool(data)
+        return initial != data
 
 
-class SelectMultiple(forms.SelectMultiple, Select):
+class SelectMultiple(Select):
+    allow_multiple_selected = True
 
-    def get_context_data(self):
-        ctx = super(SelectMultiple, self).get_context_data()
-        ctx['multiple'] = True
-        return ctx
-
-    def render(self, name, value, attrs=None, choices=()):
-        return Select.render(self, name, value, attrs=attrs, choices=choices)
-
-    def format_value(self, value):
+    def _format_value(self, value):
+        if value is None:
+            value = []
         return [force_unicode(v) for v in value]
+
+    def value_from_datadict(self, data, files, name):
+        if isinstance(data, (MultiValueDict, MergeDict)):
+            return data.getlist(name)
+        return data.get(name, None)
+
+    def _has_changed(self, initial, data):
+        if initial is None:
+            initial = []
+        if data is None:
+            data = []
+        if len(initial) != len(data):
+            return True
+        initial_set = set([force_unicode(value) for value in initial])
+        data_set = set([force_unicode(value) for value in data])
+        return data_set != initial_set
+
+
+class RadioSelect(Select):
+    template_name = 'floppyforms/radio.html'
 
 
 class CheckboxSelectMultiple(SelectMultiple):
     template_name = 'floppyforms/checkbox_select.html'
-
-
-class RadioSelect(forms.RadioSelect, Select):
-    template_name = 'floppyforms/radio.html'
-
-    def render(self, name, value, attrs=None, choices=()):
-        return Select.render(self, name, value, attrs=attrs, choices=choices)
 
 
 class MultiWidget(forms.MultiWidget):
@@ -294,7 +513,6 @@ class MultiWidget(forms.MultiWidget):
 
 
 class SplitDateTimeWidget(MultiWidget):
-
     def __init__(self, attrs=None, date_format=None, time_format=None):
         widgets = (DateInput(attrs=attrs, format=date_format),
                    TimeInput(attrs=attrs, format=time_format))
@@ -302,6 +520,7 @@ class SplitDateTimeWidget(MultiWidget):
 
     def decompress(self, value):
         if value:
+            value = to_current_timezone(value)
             return [value.date(), value.time().replace(microsecond=0)]
         return [None, None]
 
@@ -317,32 +536,7 @@ class SplitHiddenDateTimeWidget(SplitDateTimeWidget):
             widget.is_hidden = True
 
 
-class MultipleHiddenInput(HiddenInput):
-    """<input type="hidden"> for fields that have a list of values"""
-    def __init__(self, attrs=None, choices=()):
-        super(MultipleHiddenInput, self).__init__(attrs)
-        self.choices = choices
-
-    def render(self, name, value, attrs=None, choices=()):
-        if value is None:
-            value = []
-
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
-        id_ = final_attrs.get('id', None)
-        inputs = []
-        for i, v in enumerate(value):
-            input_attrs = dict(value=force_unicode(v), **final_attrs)
-            if id_:
-                input_attrs['id'] = '%s_%s' % (id_, i)
-            del input_attrs['type']
-            del input_attrs['value']
-            input_ = HiddenInput()
-            input_.is_required = self.is_required
-            inputs.append(input_.render(name, force_unicode(v), input_attrs))
-        return "\n".join(inputs)
-
-
-class SelectDateWidget(Widget):
+class SelectDateWidget(forms.Widget):
     """
     A Widget that splits date input into three <select> boxes.
 
@@ -404,7 +598,9 @@ class SelectDateWidget(Widget):
             if isinstance(value, basestring):
                 if settings.USE_L10N:
                     try:
-                        input_format = get_format('DATE_INPUT_FORMATS')[0]
+                        input_format = formats.get_format(
+                            'DATE_INPUT_FORMATS'
+                        )[0]
                         v = datetime.datetime.strptime(value, input_format)
                         year_val, month_val, day_val = v.year, v.month, v.day
                     except ValueError:
@@ -436,7 +632,7 @@ class SelectDateWidget(Widget):
             return None
         if y and m and d:
             if settings.USE_L10N:
-                input_format = get_format('DATE_INPUT_FORMATS')[0]
+                input_format = formats.get_format('DATE_INPUT_FORMATS')[0]
                 try:
                     date_value = datetime.date(int(y), int(m), int(d))
                 except ValueError:
