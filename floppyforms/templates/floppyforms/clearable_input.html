@@ -5,4 +5,4 @@
 {% endif %}<br />
 {% trans "Change:" %}
 {% endif %}
-<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>
+<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}{% include "floppyforms/attrs.html" %}>

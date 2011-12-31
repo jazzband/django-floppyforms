@@ -719,3 +719,15 @@ class WidgetRenderingTest(TestCase):
         rendered = form.as_p()
         self.assertTrue('Some error' in rendered, rendered)
         self.assertTrue(' required' in rendered, rendered)
+
+    def test_true_attr(self):
+        """widgets with attrs={'foo': True} should render as <input foo>"""
+        class Form(forms.Form):
+            text = forms.CharField(widget=forms.TextInput(attrs={
+                'foo': True,
+                'bar': False,
+            }))
+
+        rendered = Form().as_p()
+        self.assertFalse('True' in rendered, rendered)
+        self.assertTrue('False' in rendered, rendered)

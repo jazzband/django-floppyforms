@@ -1,1 +1,1 @@
-<input type="{{ type }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}{% if required %} required{% endif %}{% for attr in attrs.items %} {{ attr.0 }}{% if attr.1 %}="{{ attr.1 }}"{% endif %}{% endfor %}>
+<input type="{{ type }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}{% if required %} required{% endif %}{% include "floppyforms/attrs.html" %}>

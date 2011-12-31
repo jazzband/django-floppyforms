@@ -1,11 +1,11 @@
-<select name="{{ year_field }}" id="{{ year_id }}"{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>{% for option in year_choices %}
+<select name="{{ year_field }}" id="{{ year_id }}"{% include "floppyforms/attrs.html" %}>{% for option in year_choices %}
 	<option value="{{ option.0 }}"{% if option.0 == year_val %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}
 </select>
 
-<select name="{{ month_field }}" id="{{ month_id }}"{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>{% for option in month_choices %}
+<select name="{{ month_field }}" id="{{ month_id }}"{% include "floppyforms/attrs.html" %}>{% for option in month_choices %}
 	<option value="{{ option.0 }}"{% if option.0 == month_val %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}
 </select>
 
-<select name="{{ day_field }}" id="{{ day_id }}"{% for attr in attrs.items %} {{ attr.0 }}="{{ attr.1 }}"{% endfor %}>{% for option in day_choices %}
+<select name="{{ day_field }}" id="{{ day_id }}"{% include "floppyforms/attrs.html" %}>{% for option in day_choices %}
 	<option value="{{ option.0 }}"{% if option.0 == day_val %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}
 </select>

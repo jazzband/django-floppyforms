@@ -55,7 +55,10 @@ class Input(Widget):
             'name': name,
             'hidden': self.is_hidden,
             'required': self.is_required,
+            'True': True,
         }
+        # True is injected in the context to allow stricter comparisons
+        # for widget attrs. See #25.
         if self.is_hidden:
             context['hidden'] = True
 
@@ -67,12 +70,6 @@ class Input(Widget):
             context['value'] = self._format_value(value)
 
         context.update(self.get_context_data())
-
-        # for things like "checked", set the value to False so that the
-        # template doesn't render checked="".
-        for key, value in attrs.items():
-            if value == True:
-                attrs[key] = False
         context['attrs'] = self.build_attrs(attrs)
         return context
 
