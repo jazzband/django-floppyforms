@@ -39,22 +39,49 @@ with an ``attrs`` dictionary::
     class EmailForm(forms.Form):
         email = forms.EmailField(widget=OtherEmailInput())
 
-Add more template variables
----------------------------
+Adding more template variables
+------------------------------
 
 There is also a way to add extra context. This is done by subclassing the
-widget class and extending the ``get_context_data()`` method::
+widget class and extending the ``get_context()`` method::
 
     class OtherEmailInput(forms.EmailInput):
         template_name = 'path/to/other.html'
 
-        def get_context_data(self):
-            ctx = super(OtherEmailInput, self).get_context_data()
+        def get_context(self, name, value, attrs):
+            ctx = super(OtherEmailInput, self).get_context(name, value, attrs)
             ctx['foo'] = 'bar'
             return ctx
 
 And then the ``other.html`` template can make use of the ``{{ foo }}`` context
 variable.
 
-Note that the ``get_context_data()`` method can safely alter ``self.attrs`` so
-you can also define default attributes here.
+``get_context()`` takes ``name``, ``value`` and ``attrs`` as arguments, except
+for all ``Select`` widgets which take an additional ``choices`` argument.
+
+Altering the widget's ``attrs``
+-------------------------------
+
+All widget attibutes except for ``type``, ``name``, ``value`` and ``required``
+are put in the ``attrs`` context variable, which you can extend in
+``get_context()``:
+
+.. code-block:: python
+
+    def get_context(self, name, value, attrs):
+        ctx = super(MyWidget, self).get_context(name, value, attrs)
+        ctx['attrs']['class'] = 'mywidget'
+        return ctx
+
+This will render the widget with an additional ``class="mywidget"`` attribute.
+
+If you want only the attribute's key to be rendered, set it to ``True``:
+
+.. code-block:: python
+
+    def get_context(self, name, value, attrs):
+        ctx = super(MyWidget, self).get_context(name, value, attrs)
+        ctx['attrs']['awesome'] = True
+        return ctx
+
+This will simply add ``awesome`` as a key-only attribute.
