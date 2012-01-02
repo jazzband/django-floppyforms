@@ -16,6 +16,11 @@ to:
 
     import floppyforms as forms
 
+.. note:: ``django.forms.*`` modules
+
+    Other modules contained by ``django.forms``, such as ``forms``, ``utils``
+    and ``formsets`` have not been aliased.
+
 Standard forms
 --------------
 
