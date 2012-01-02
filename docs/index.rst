@@ -47,8 +47,21 @@ impatient reader, there's also an :doc:`examples <examples>` section.
 Additional notes
 ----------------
 
+Help
+````
+
+Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
+
 Changelog
 `````````
+
+* **v1.0** (not released yet):
+
+  * cleaned up the behaviour of ``attrs``
+  * compatible with Django 1.2 to 1.4
+  * ``<optgroup>`` support in select widgets
+  * ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``
+  * ``get_context()`` is more reliable
 
 * **v0.4**:
 
