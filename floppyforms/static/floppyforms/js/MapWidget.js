@@ -1,3 +1,4 @@
+(function() {
 /**
  * Transforms an array of features to a single feature with the merged
  * geometry of geom_type
@@ -373,3 +374,5 @@ MapWidget.prototype.getControls = function(layer) {
 		}
 	}
 };
+window.MapWidget = MapWidget;
+})();
