@@ -214,3 +214,8 @@ man_pages = [
     ('index', 'django-floppyforms', u'django-floppyforms Documentation',
      [u'Bruno Renié'], 1)
 ]
+
+# gorun
+DIRECTORIES = (
+    ('', 'make html'),
+)
