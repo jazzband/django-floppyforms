@@ -8,8 +8,7 @@ Default widgets for form fields
 
 The first column represents the name of a django.forms field. FloppyForms aims
 to implement all the Django fields with the same class name, in the
-``floppyforms`` namespace. Some widgets and fields are missing but the appropriate
-fields and widgets have been imported from the ``django.forms`` namespace.
+``floppyforms`` namespace.
 
 ======================== =================== ========================
 Fields                   Widgets             Specificities
@@ -47,6 +46,10 @@ SplitDateTimeField       SplitDateTimeWidget
     The ``ClearableFileInput`` widget has been added in Django 1.3. If you use
     django-floppyforms with Django 1.2, the ClearableFileInput will behave
     just like a traditional FileInput.
+
+    .. versionchanged:: 1.0
+       django-floppyforms 1.0 ships with a full backport of
+       ``ClearableFileInput``.
 
 
 .. note:: TypedMultipleChoiceField
