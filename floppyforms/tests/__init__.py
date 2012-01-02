@@ -656,10 +656,10 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(' id="id_dt_day"' in rendered, rendered)
 
         class SelectDateForm(forms.Form):
-            dt = forms.DateField(initial='2011-09-09',
+            dt = forms.DateField(initial='%s-09-09' % today.year,
                                  widget=forms.SelectDateWidget)
         rendered = SelectDateForm().as_p()
-        self.assertTrue('2011' in rendered, rendered)
+        self.assertTrue(str(today.year) in rendered, rendered)
 
     def test_no_attrs_rendering(self):
         widget = forms.TextInput()
