@@ -63,18 +63,18 @@ complex.
 
 Some widgets may provide extra context variables and extra attributes:
 
-====================== ===================================== ==============
-Widget                 Extra context                         Extra ``attrs``
-====================== ===================================== ==============
-Textarea                                                     ``rows``, ``cols``
-NumberInput                                                  ``min``, ``max``,  ``step``
-RangeInput                                                   ``min``, ``max``, ``step``
-Select                 ``choices``
-RadioSelect            ``choices``
-NullBooleanSelect      ``choices``
-SelectMultiple         ``choices``, ``multiple`` is ``True``
-CheckboxSelectMultiple ``choices``, ``multiple`` is ``True``
-====================== ===================================== ==============
+====================== ====================================== ==============
+Widget                 Extra context                          Extra ``attrs``
+====================== ====================================== ==============
+Textarea                                                      ``rows``, ``cols``
+NumberInput                                                   ``min``, ``max``,  ``step``
+RangeInput                                                    ``min``, ``max``, ``step``
+Select                 ``optgroups``, ``multiple``
+RadioSelect            ``optgroups``, ``multiple``
+NullBooleanSelect      ``optgroups``, ``multiple``
+SelectMultiple         ``optgroups``, ``multiple`` (``True``)
+CheckboxSelectMultiple ``optgroups``, ``multiple`` (``True``)
+====================== ====================================== ==============
 
 Furthermore, you can specify custom ``attrs`` during widget definition. For
 instance, with a field created this way::
