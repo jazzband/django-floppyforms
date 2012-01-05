@@ -2,12 +2,10 @@
 from distutils.core import setup
 from setuptools import find_packages
 
-VERSION = __import__('floppyforms').__version__
-
 
 setup(
     name='django-floppyforms',
-    version=VERSION,
+    version='0.4.7',
     author='Bruno Renie',
     author_email='bruno@renie.fr',
     packages=find_packages(),
