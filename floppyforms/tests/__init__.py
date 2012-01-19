@@ -6,6 +6,10 @@ from django.db import models
 from django.test import TestCase
 from django.utils.dates import MONTHS
 
+try:
+    from django.utils.timezone import now
+except ImportError:
+    now = datetime.datetime.now
 
 import floppyforms as forms
 from floppyforms.tests.gis import GisTests
@@ -621,7 +625,7 @@ class WidgetRenderingTest(TestCase):
     def test_datetime_with_initial(self):
         """SplitDateTimeWidget with an initial value"""
         class DateTimeForm(forms.Form):
-            dt = forms.DateTimeField(initial=datetime.datetime.now(),
+            dt = forms.DateTimeField(initial=now(),
                                      widget=forms.SplitDateTimeWidget)
 
         rendered = DateTimeForm().as_p()
