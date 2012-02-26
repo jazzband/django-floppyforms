@@ -1,0 +1,5 @@
+Fields: {{ fields|length }}
+{% for field in fields %}
+{{ forloop.counter }}. Field: {{ field.name }}
+{% endfor %}
+{% if extra_argument %}Extra argument: {{ extra_argument }}{% endif %}

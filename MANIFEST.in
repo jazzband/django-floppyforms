@@ -1,3 +1,4 @@
 include README.rst LICENCE
 recursive-include floppyforms/templates *.html
 recursive-include floppyforms/static *.js
+recursive-include floppyforms/tests/templates *.html

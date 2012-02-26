@@ -41,6 +41,10 @@ class Input(Widget):
     template_name = 'floppyforms/input.html'
     input_type = None
 
+    def __init__(self, *args, **kwargs):
+        super(Input, self).__init__(*args, **kwargs)
+        self.context_instance = None
+
     def get_context_data(self):
         return {}
 
@@ -79,7 +83,11 @@ class Input(Widget):
                 # See #25.
                 if not isinstance(attr, bool):
                     context['attrs'][key] = str(attr)
-        return context
+
+        if self.context_instance is None:
+            return context
+        self.context_instance.update(context)
+        return self.context_instance
 
     def render(self, name, value, attrs=None, **kwargs):
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
