@@ -17,7 +17,7 @@ try:
     from django.forms.util import to_current_timezone
 except ImportError:
     # Dummy timzone converter
-    to_current_timezone = lambda value: value
+    to_current_timezone = lambda value: value  # noqa
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
