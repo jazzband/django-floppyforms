@@ -1,9 +1,12 @@
+import difflib
 from copy import copy
 
-import django
 from django.test import TestCase
 from django.test.signals import template_rendered
 from django.test.utils import ContextList
+from django.utils.unittest.util import safe_repr
+
+from .html import HTMLParseError, parse_html
 
 
 class _AssertTemplateUsedContext(object):
@@ -105,12 +108,48 @@ class TemplatesTestCase(object):
             " the response" % template_name)
 
 
-if django.VERSION[:2] < (1, 4):
-    from django_tools.unittest_utils.unittest_base import BaseTestCase
+def assert_and_parse_html(self, html, user_msg, msg):
+    try:
+        dom = parse_html(html)
+    except HTMLParseError, e:
+        standardMsg = u'%s\n%s' % (msg, e.msg)
+        self.fail(self._formatMessage(user_msg, standardMsg))
+    return dom
 
-    class FloppyFormsTestCase(TemplatesTestCase, BaseTestCase, TestCase):
-        pass
 
-else:
-    class FloppyFormsTestCase(TemplatesTestCase, TestCase):
-        pass
+class HTMLTestCase(object):
+    def assertHTMLEqual(self, html1, html2, msg=None):
+        """
+        Asserts that two HTML snippets are semantically the same.
+        Whitespace in most cases is ignored, and attribute ordering is not
+        significant. The passed-in arguments must be valid HTML.
+        """
+        dom1 = assert_and_parse_html(self, html1, msg,
+            u'First argument is not valid HTML:')
+        dom2 = assert_and_parse_html(self, html2, msg,
+            u'Second argument is not valid HTML:')
+
+        if dom1 != dom2:
+            standardMsg = '%s != %s' % (
+                safe_repr(dom1, True), safe_repr(dom2, True))
+            diff = ('\n' + '\n'.join(difflib.ndiff(
+                           unicode(dom1).splitlines(),
+                           unicode(dom2).splitlines())))
+            standardMsg = self._truncateMessage(standardMsg, diff)
+            self.fail(self._formatMessage(msg, standardMsg))
+
+    def assertHTMLNotEqual(self, html1, html2, msg=None):
+        """Asserts that two HTML snippets are not semantically equivalent."""
+        dom1 = assert_and_parse_html(self, html1, msg,
+            u'First argument is not valid HTML:')
+        dom2 = assert_and_parse_html(self, html2, msg,
+            u'Second argument is not valid HTML:')
+
+        if dom1 == dom2:
+            standardMsg = '%s == %s' % (
+                safe_repr(dom1, True), safe_repr(dom2, True))
+            self.fail(self._formatMessage(msg, standardMsg))
+
+
+class FloppyFormsTestCase(HTMLTestCase, TemplatesTestCase, TestCase):
+    pass
