@@ -17,7 +17,7 @@ try:
     from django.forms.util import to_current_timezone
 except ImportError:
     # Dummy timzone converter
-    to_current_timezone = lambda value: value
+    to_current_timezone = lambda value: value  # noqa
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
@@ -40,6 +40,10 @@ class Widget(forms.Widget):
 class Input(Widget):
     template_name = 'floppyforms/input.html'
     input_type = None
+
+    def __init__(self, *args, **kwargs):
+        super(Input, self).__init__(*args, **kwargs)
+        self.context_instance = None
 
     def get_context_data(self):
         return {}
@@ -72,15 +76,18 @@ class Input(Widget):
         context.update(self.get_context_data())
         context['attrs'] = self.build_attrs(attrs)
 
-        for key in context['attrs']:
-            attr = context['attrs'][key]
+        for key, attr in context['attrs'].items():
             if attr == 1:
                 # 1 == True so 'key="1"' will show up only as 'key'
                 # Casting to a string so that it doesn't equal to True
                 # See #25.
                 if not isinstance(attr, bool):
                     context['attrs'][key] = str(attr)
-        return context
+
+        if self.context_instance is None:
+            return context
+        self.context_instance.update(context)
+        return self.context_instance
 
     def render(self, name, value, attrs=None, **kwargs):
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)

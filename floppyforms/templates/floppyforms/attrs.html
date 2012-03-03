@@ -1,1 +1,1 @@
-{% for attr in attrs.items %} {{ attr.0 }}{% if attr.1 != True %}="{{ attr.1 }}"{% endif %}{% endfor %}
+{% for name, value in attrs.iteritems %} {{ name }}{% if value != True %}="{{ value }}"{% endif %}{% endfor %}

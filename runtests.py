@@ -6,7 +6,7 @@ from django.conf import settings
 try:
     from django.utils.functional import empty
 except ImportError:
-    empty = None
+    empty = None  # noqa
 
 
 def setup_test_environment():
@@ -16,6 +16,7 @@ def setup_test_environment():
     apps = [
         'django.contrib.gis',
         'floppyforms',
+        'floppyforms.tests',
     ]
 
     settings_dict = {
