@@ -7,6 +7,7 @@ try:
 except ImportError:
     """GDAL / GEOS not installed. Tests will fail if contrib.gis
     is installed, and will be skipped otherwise"""
+    GEOSGeometry = None
 
 try:
     from django.utils import unittest as ut2
@@ -97,6 +98,10 @@ def skipUnlessInstalled(app):
     condition = lambda: app not in settings.INSTALLED_APPS
     return _deferredSkip(condition, "%s is not installed" % app)
 
+def skipUnlessGisAvailable():
+    condition = lambda: GEOSGeometry is None
+    return _deferredSkip(condition, "GEOSGeometry could not be imported")
+
 
 class GisTests(TestCase):
     """Tests for the GeoDjango widgets"""
@@ -116,6 +121,7 @@ class GisTests(TestCase):
         self.assertTrue(wkt in rendered, rendered)
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_point(self):
         class PointForm(forms.Form):
             p = forms.gis.PointField()
@@ -143,6 +149,7 @@ class GisTests(TestCase):
             self.assertFalse(PointForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_multipoint(self):
         class PointForm(forms.Form):
             p = forms.gis.MultiPointField()
@@ -166,6 +173,7 @@ class GisTests(TestCase):
             self.assertFalse(PointForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_linestring(self):
         class LineStringForm(forms.Form):
             l = forms.gis.LineStringField()
@@ -189,6 +197,7 @@ class GisTests(TestCase):
             self.assertFalse(LineStringForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_multilinestring(self):
         class LineStringForm(forms.Form):
             l = forms.gis.MultiLineStringField()
@@ -212,6 +221,7 @@ class GisTests(TestCase):
             self.assertFalse(LineStringForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_polygon(self):
         class PolygonForm(forms.Form):
             p = forms.gis.PolygonField()
@@ -236,6 +246,7 @@ class GisTests(TestCase):
             self.assertFalse(PolygonForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_multipolygon(self):
         class PolygonForm(forms.Form):
             p = forms.gis.MultiPolygonField()
@@ -259,6 +270,7 @@ class GisTests(TestCase):
             self.assertFalse(PolygonForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_geometry(self):
         class GeometryForm(forms.Form):
             g = forms.gis.GeometryField()
@@ -283,6 +295,7 @@ class GisTests(TestCase):
             self.assertFalse(GeometryForm(data=data).is_valid())
 
     @skipUnlessInstalled('django.contrib.gis')
+    @skipUnlessGisAvailable()
     def test_geometrycollection(self):
         class GeometryForm(forms.Form):
             g = forms.gis.GeometryCollectionField()
