@@ -24,14 +24,14 @@ to:
 Standard forms
 --------------
 
-Floppyforms adds a couple of things on top of the standard django widgets:
+Floppyforms adds a couple of things on top of the standard Django widgets:
 HTML syntax, more native widget types, the ``required`` attribute and
 client-side validation.
 
 HTML syntax
 ```````````
 
-Floppyforms uses an HTML syntax instead of django's XHTML syntax. You will see
+Floppyforms uses an HTML syntax instead of Django's XHTML syntax. You will see
 ``<input type="text" ... >`` and not ``<input type="text" />``.
 
 Native widget types
@@ -113,10 +113,10 @@ widget from floppyforms:
 However, the ``name`` and ``rank`` field will both get a widget from
 django.forms, in this case a ``TextInput``.
 
-Getting back django's behaviour
+Getting back Django's behaviour
 -------------------------------
 
-If you need to get the same output as standard django forms:
+If you need to get the same output as standard Django forms:
 
 * Override ``floppyforms/input.html``, ``floppyforms/radio.html``,
   ``floppyforms/clearable_input.html`` and

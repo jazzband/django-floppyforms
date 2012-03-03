@@ -1,0 +1,5 @@
+Forms: {{ forms|length }}
+{% for form in forms %}
+{{ forloop.counter }}. Form Fields: {% for field in form %}{{ field.name }} {% endfor %}
+{% endfor %}
+{% if extra_argument %}Extra argument: {{ extra_argument }}{% endif %}

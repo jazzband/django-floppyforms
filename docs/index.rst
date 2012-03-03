@@ -27,7 +27,7 @@ Django 1.2 or greater is required because of the smart *if* template tag.
 Two-step process:
 
 * ``pip install -U django-floppyforms``
-* Add ``floppyforms`` to your ``INSTALLED_APPS``
+* Add ``'floppyforms'`` to your ``INSTALLED_APPS``
 * (optional) run ``python manage.py test floppyforms``. Tests should pass.
 
 When you're done you can jump to the :doc:`usage <usage>` section. For the
@@ -41,6 +41,8 @@ impatient reader, there's also an :doc:`examples <examples>` section.
    customization
    widgets-reference
    geodjango
+   layouts
+   templatetags
    differences
    examples
 
@@ -62,10 +64,13 @@ Changelog
   * ``<optgroup>`` support in select widgets
   * ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``
   * ``get_context()`` is more reliable
+  * Added ``form``, ``formrow``, ``formfield`` and ``formconfig`` template
+    tags.
+  * Added template based form layout system.
 
 * **v0.4**:
 
-  * All widgets from django have their floppyforms equivalent
+  * All widgets from Django have their floppyforms equivalent
   * Added widgets for GeoDjango
 
 Why the name?
