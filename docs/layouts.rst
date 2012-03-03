@@ -2,6 +2,7 @@ Form layouts
 ============
 
 .. highlight:: html+django
+.. versionadded:: 1.0
 
 Form layouts are reusable templates that describe how a form is presented as
 HTML. See the :ref:`form templatetags <form>` for more information on how to
