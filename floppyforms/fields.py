@@ -34,6 +34,8 @@ class CharField(Field, forms.CharField):
 
     def widget_attrs(self, widget):
         attrs = super(CharField, self).widget_attrs(widget)
+        if attrs is None:
+            attrs = {}
         if self.max_length is not None and isinstance(widget, (TextInput, HiddenInput)):
             # The HTML attribute is maxlength, not max_length.
             attrs.update({'maxlength': str(self.max_length)})
