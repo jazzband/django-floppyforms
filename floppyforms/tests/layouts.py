@@ -1,9 +1,10 @@
+from __future__ import with_statement
 from django.core.exceptions import ValidationError
 from django.template import Context, Template
-from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 import floppyforms as forms
+from .base import FloppyFormsTestCase
 
 
 def render(template, context=None):
@@ -42,7 +43,7 @@ class RegistrationForm(forms.Form):
             raise ValidationError(u'Please correct the errors below.')
 
 
-class PLayoutTests(TestCase):
+class PLayoutTests(FloppyFormsTestCase):
     def test_default_layout_is_same_as_p_layout(self):
         form = RegistrationForm()
         default = render('{% form form %}', {'form': form})
@@ -144,7 +145,7 @@ class PLayoutTests(TestCase):
         """)
 
 
-class TableLayoutTests(TestCase):
+class TableLayoutTests(FloppyFormsTestCase):
     def test_layout(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/table.html'):
@@ -229,7 +230,7 @@ class TableLayoutTests(TestCase):
         """)
 
 
-class UlLayoutTests(TestCase):
+class UlLayoutTests(FloppyFormsTestCase):
     def test_layout(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/ul.html'):

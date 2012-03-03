@@ -1,9 +1,10 @@
+from __future__ import with_statement
 from django.template import Context, Template, TemplateSyntaxError
-from django.test import TestCase
 
 import floppyforms as forms
 from floppyforms.templatetags.floppyforms import (FormConfig, ConfigFilter,
     FormNode, RowModifier, FieldModifier)
+from .base import FloppyFormsTestCase
 
 
 def render(template, context=None, config=None):
@@ -39,7 +40,7 @@ class PersonForm(forms.Form):
     age = forms.IntegerField()
 
 
-class FormConfigNodeTests(TestCase):
+class FormConfigNodeTests(FloppyFormsTestCase):
     def test_enforce_form_tag(self):
         render('{% form myform using %}{% formconfig row using "my_row_template.html" %}{% endform %}')
         with self.assertRaises(TemplateSyntaxError):
@@ -213,7 +214,7 @@ class FormConfigNodeTests(TestCase):
             'field.html')
 
 
-class FormTagTests(TestCase):
+class FormTagTests(FloppyFormsTestCase):
     def test_valid_syntax(self):
         render('{% form myform %}')
         render('{% form myform using "myform_layout.html" %}')
@@ -382,7 +383,7 @@ class FormTagTests(TestCase):
             """)
 
 
-class FormRowTagTests(TestCase):
+class FormRowTagTests(FloppyFormsTestCase):
     def test_valid_syntax(self):
         render('{% formrow myform.field %}')
         render('{% formrow myform.field using "myrow_layout.html" %}')
@@ -539,7 +540,7 @@ class FormRowTagTests(TestCase):
         """)
 
 
-class FormFieldTagTests(TestCase):
+class FormFieldTagTests(FloppyFormsTestCase):
     def test_valid_syntax(self):
         render('{% formfield myform.name %}')
 
