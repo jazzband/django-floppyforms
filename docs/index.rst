@@ -14,7 +14,7 @@ features of HTML5 forms, such as the ``placeholder`` and ``required``
 attribute, as well as the new ``<input>`` types. For more information, read
 `this`_ if you haven't yet.
 
-.. _this: http://diveintohtml5.org/forms.html
+.. _this: http://diveintohtml5.info/forms.html
 
 The source code is hosted on `github`_.
 
