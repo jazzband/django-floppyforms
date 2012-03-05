@@ -85,8 +85,8 @@ as such:
     from django.db import models
 
     class Hi(models.Model):
-        name = forms.CharField(max_length=255)
-        timestamp = forms.DateTimeField()
+        name = models.CharField(max_length=255)
+        timestamp = models.DateTimeField()
         rank = models.PositiveIntegerField()
 
 And a ModelForm written like this:
