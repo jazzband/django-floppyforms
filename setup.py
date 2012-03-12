@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     url='https://github.com/brutasse/django-floppyforms',
-    license='BSD licence, see LICENCE file',
+    license='BSD licence, see LICENSE file',
     description='Full control of form rendering in the templates',
     long_description=open('README.rst').read(),
     classifiers=[
