@@ -353,6 +353,10 @@ class NumberInput(Input):
         default_attrs = {'min': self.min, 'max': self.max, 'step': self.step}
         if attrs:
             default_attrs.update(attrs)
+        # Popping attrs if they're not set
+        for key in default_attrs.keys():
+            if default_attrs[key] is None:
+                default_attrs.pop(key)
         super(NumberInput, self).__init__(default_attrs)
 
 

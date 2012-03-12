@@ -67,7 +67,7 @@ class PLayoutTests(FloppyFormsTestCase):
          <span class="helptext">Make sure to use a secure password.</span></p>
         <p><label for="id_password2">Retype password:</label> <input type="password" name="password2" id="id_password2" required />
         </p>
-        <p><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <p><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" />
         <input type="hidden" name="honeypot" id="id_honeypot" />
         </p>
         """)
@@ -91,7 +91,7 @@ class PLayoutTests(FloppyFormsTestCase):
         </p>
         <ul class="errorlist"><li>This field is required.</li></ul>
         <p><label for="id_password2">Retype password:</label> <input type="password" name="password2" id="id_password2" required /></p>
-        <p><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <p><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" id="id_honeypot" /></p>
         """)
 
@@ -115,7 +115,7 @@ class PLayoutTests(FloppyFormsTestCase):
         </p>
         <ul class="errorlist"><li>This field is required.</li></ul>
         <p><label for="id_password2">Retype password:</label> <input type="password" name="password2" id="id_password2" required /></p>
-        <p><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <p><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" id="id_honeypot" value="1" /></p>
         """)
 
@@ -160,7 +160,7 @@ class TableLayoutTests(FloppyFormsTestCase):
             <br /><span class="helptext">Make sure to use a secure password.</span></td></tr>
         <tr><th><label for="id_password2">Retype password:</label></th><td><input type="password" name="password2" id="id_password2" required /></td></tr>
         <tr><th>
-            <label for="id_age">Age:</label></th><td><input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+            <label for="id_age">Age:</label></th><td><input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" id="id_honeypot" />
         </td></tr>
         """)
@@ -185,7 +185,7 @@ class TableLayoutTests(FloppyFormsTestCase):
             <th><label for="id_password2">Retype password:</label></th>
             <td><ul class="errorlist"><li>This field is required.</li></ul><input type="password" name="password2" id="id_password2" required /></td>
         </tr>
-        <tr><th><label for="id_age">Age:</label></th><td><input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <tr><th><label for="id_age">Age:</label></th><td><input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" id="id_honeypot" /></td></tr>
         """)
 
@@ -198,7 +198,7 @@ class TableLayoutTests(FloppyFormsTestCase):
         <tr><th><label for="id_username">Username:</label></th><td><ul class="errorlist"><li>This field is required.</li></ul><input type="text" name="username" id="id_username" maxlength="30" required /></td></tr>
         <tr><th><label for="id_password">Password:</label></th><td><ul class="errorlist"><li>This field is required.</li></ul><input type="password" name="password" id="id_password" required /><br /><span class="helptext">Make sure to use a secure password.</span></td></tr>
         <tr><th><label for="id_password2">Retype password:</label></th><td><ul class="errorlist"><li>This field is required.</li></ul><input type="password" name="password2" id="id_password2" required /></td></tr>
-        <tr><th><label for="id_age">Age:</label></th><td><input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <tr><th><label for="id_age">Age:</label></th><td><input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" value="1" id="id_honeypot" /></td></tr>
         """)
 
@@ -243,7 +243,7 @@ class UlLayoutTests(FloppyFormsTestCase):
         <li><label for="id_password">Password:</label> <input type="password" name="password" id="id_password" required />
             <span class="helptext">Make sure to use a secure password.</span></li>
         <li><label for="id_password2">Retype password:</label> <input type="password" name="password2" id="id_password2" required /></li>
-        <li><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <li><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" id="id_honeypot" /></li>
         """)
 
@@ -258,7 +258,7 @@ class UlLayoutTests(FloppyFormsTestCase):
         <li><ul class="errorlist"><li>This field is required.</li></ul><label for="id_password">Password:</label> <input type="password" name="password" id="id_password" required />
             <span class="helptext">Make sure to use a secure password.</span></li>
         <li><ul class="errorlist"><li>This field is required.</li></ul><label for="id_password2">Retype password:</label> <input type="password" name="password2" id="id_password2" required /></li>
-        <li><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <li><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" id="id_honeypot" /></li>
         """)
 
@@ -272,7 +272,7 @@ class UlLayoutTests(FloppyFormsTestCase):
         <li><ul class="errorlist"><li>This field is required.</li></ul><label for="id_password">Password:</label> <input type="password" name="password" id="id_password" required />
             <span class="helptext">Make sure to use a secure password.</span></li>
         <li><ul class="errorlist"><li>This field is required.</li></ul><label for="id_password2">Retype password:</label> <input type="password" name="password2" id="id_password2" required /></li>
-        <li><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" max="None" min="None" step="None" />
+        <li><label for="id_age">Age:</label> <input type="number" name="age" id="id_age" />
             <input type="hidden" name="honeypot" value="1" id="id_honeypot" /></li>
         """)
 
