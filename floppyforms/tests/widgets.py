@@ -3,7 +3,6 @@ import os
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
-from django.test import TestCase
 from django.utils.dates import MONTHS
 
 try:
@@ -11,11 +10,14 @@ try:
 except ImportError:
     now = datetime.datetime.now  # noqa
 
+from .base import FloppyFormsTestCase
+
 import floppyforms as forms
 
 
-class WidgetRenderingTest(TestCase):
+class WidgetRenderingTest(FloppyFormsTestCase):
     """Testing the rendering of the different widgets."""
+    maxDiff = None
 
     def test_text_input(self):
         """<input type="text">"""
@@ -23,10 +25,11 @@ class WidgetRenderingTest(TestCase):
             text = forms.CharField(label='My text field')
 
         rendered = TextForm().as_p()
-        # Checking for ' required ' to make sure it's rendered by floppyforms
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('name="text"' in rendered, rendered)
-        self.assertTrue('>My text field:</label>' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">My text field:</label>
+            <input type="text" name="text" id="id_text" required>
+        </p>""")
 
         form = TextForm(data={'text': ''})
         self.assertFalse(form.is_valid())
@@ -38,7 +41,11 @@ class WidgetRenderingTest(TestCase):
             text = forms.CharField(required=False)
 
         rendered = TextForm().as_p()
-        self.assertFalse(' required ' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">Text:</label>
+            <input type="text" name="text" id="id_text">
+        </p>""")
 
         class TextForm(forms.Form):
             text = forms.CharField(
@@ -46,8 +53,11 @@ class WidgetRenderingTest(TestCase):
             )
 
         rendered = TextForm(initial={'text': 'some initial text'}).as_p()
-        self.assertTrue('placeholder="Heheheh"' in rendered, rendered)
-        self.assertTrue('value="some initial text"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">Text:</label>
+            <input type="text" name="text" id="id_text" value="some initial text" placeholder="Heheheh" required>
+        </p>""")
 
         invalid = lambda: forms.CharField(max_length=5).clean('foo bar')
         self.assertRaises(forms.ValidationError, invalid)
@@ -59,7 +69,11 @@ class WidgetRenderingTest(TestCase):
 
         # Bug #7 - values should be passed as unicode strings
         rendered = TextForm(data={'text': 0}).as_p()
-        self.assertTrue(' value="0"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">Text:</label>
+            <input type="text" name="text" id="id_text" value="0" required maxlength="2">
+        </p>""")
 
     def test_password(self):
         """<input type="password">"""
@@ -67,8 +81,11 @@ class WidgetRenderingTest(TestCase):
             pw = forms.CharField(widget=forms.PasswordInput)
 
         rendered = PwForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="password"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_pw">Pw:</label>
+            <input type="password" name="pw" id="id_pw" required>
+        </p>""")
 
         class PwForm(forms.Form):
             text = forms.CharField()
@@ -77,7 +94,18 @@ class WidgetRenderingTest(TestCase):
         form = PwForm(data={'pw': 'some-pwd'})
         self.assertFalse(form.is_valid())  # missing text
         rendered = form.as_p()
-        self.assertFalse('some-pwd' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_text">Text:</label>
+            <input type="text" name="text" id="id_text" required>
+        </p>
+        <p>
+            <label for="id_pw">Pw:</label>
+            <input type="password" name="pw" id="id_pw" required>
+        </p>""")
 
         class PwForm(forms.Form):
             text = forms.CharField()
@@ -88,7 +116,18 @@ class WidgetRenderingTest(TestCase):
         form = PwForm(data={'pw': 'some-pwd'})
         self.assertFalse(form.is_valid())  # missing text
         rendered = form.as_p()
-        self.assertTrue('some-pwd' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_text">Text:</label>
+            <input type="text" name="text" id="id_text" required>
+        </p>
+        <p>
+            <label for="id_pw">Pw:</label>
+            <input type="password" name="pw" id="id_pw" required value="some-pwd">
+        </p>""")
 
     def test_hidden(self):
         """<input type="hidden">"""
@@ -96,13 +135,16 @@ class WidgetRenderingTest(TestCase):
             hide = forms.CharField(widget=forms.HiddenInput())
 
         rendered = HiddenForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="hidden"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="hide" id="id_hide" required>
+        """)
 
         form = HiddenForm(data={'hide': 'what for?'})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
-        self.assertTrue('value="what for?"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="hide" id="id_hide" required value="what for?">
+        """)
 
     def test_textarea(self):
         """<textarea>"""
@@ -111,8 +153,12 @@ class WidgetRenderingTest(TestCase):
             text = forms.CharField(widget=forms.Textarea)
 
         rendered = TextForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('<textarea ' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">Text:</label>
+            <textarea name="text" id="id_text" cols="40" rows="10" required></textarea>
+        </p>
+        """)
 
         class TextForm(forms.Form):
             text = forms.CharField(
@@ -120,8 +166,12 @@ class WidgetRenderingTest(TestCase):
             )
 
         rendered = TextForm().as_p()
-        self.assertTrue('rows="42"' in rendered, rendered)
-        self.assertTrue('cols="55"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">Text:</label>
+            <textarea name="text" id="id_text" rows="42" cols="55" required></textarea>
+        </p>
+        """)
 
     def test_file(self):
         """"<input type="file">"""
@@ -129,14 +179,23 @@ class WidgetRenderingTest(TestCase):
             file_ = forms.FileField()
 
         rendered = FileForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="file"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            <input type="file" name="file_" id="id_file_" required>
+        </p>
+        """)
 
         class FileForm(forms.Form):
             file_ = forms.FileField(required=False)
 
         rendered = FileForm().as_p()
-        self.assertFalse('required' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            <input type="file" name="file_" id="id_file_">
+        </p>
+        """)
 
     def test_date(self):
         """<input type="date">"""
@@ -144,8 +203,12 @@ class WidgetRenderingTest(TestCase):
             date = forms.DateField()
 
         rendered = DateForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="date"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_date">Date:</label>
+            <input type="date" name="date" id="id_date" required>
+        </p>
+        """)
 
     def test_datetime(self):
         """<input type="datetime">"""
@@ -153,8 +216,12 @@ class WidgetRenderingTest(TestCase):
             date = forms.DateTimeField()
 
         rendered = DateTimeForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="datetime"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_date">Date:</label>
+            <input type="datetime" name="date" id="id_date" required>
+        </p>
+        """)
 
     def test_time(self):
         """<input type="time">"""
@@ -162,8 +229,12 @@ class WidgetRenderingTest(TestCase):
             date = forms.TimeField()
 
         rendered = TimeForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="time"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_date">Date:</label>
+            <input type="time" name="date" id="id_date" required>
+        </p>
+        """)
 
     def test_search(self):
         """<input type="search">"""
@@ -171,8 +242,12 @@ class WidgetRenderingTest(TestCase):
             query = forms.CharField(widget=forms.SearchInput)
 
         rendered = SearchForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="search"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_query">Query:</label>
+            <input type="search" name="query" id="id_query" required>
+        </p>
+        """)
 
     def test_email(self):
         """<input type="email">"""
@@ -180,8 +255,12 @@ class WidgetRenderingTest(TestCase):
             email = forms.EmailField()
 
         rendered = EmailForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="email"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" id="id_email" required>
+        </p>
+        """)
 
         form = EmailForm(data={'email': 'foo@bar.com'})
         self.assertTrue(form.is_valid())
@@ -194,8 +273,12 @@ class WidgetRenderingTest(TestCase):
             url = forms.URLField()
 
         rendered = URLForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="url"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_url">Url:</label>
+            <input type="url" name="url" id="id_url" required>
+        </p>
+        """)
 
         form = URLForm(data={'url': 'http://example.com'})
         self.assertTrue(form.is_valid())
@@ -205,11 +288,15 @@ class WidgetRenderingTest(TestCase):
     def test_color(self):
         """<input type="color">"""
         class ColorForm(forms.Form):
-            Color = forms.CharField(widget=forms.ColorInput)
+            color = forms.CharField(widget=forms.ColorInput)
 
         rendered = ColorForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="color"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_color">Color:</label>
+            <input type="color" name="color" id="id_color" required>
+        </p>
+        """)
 
     def test_number(self):
         """<input type="number">"""
@@ -217,8 +304,12 @@ class WidgetRenderingTest(TestCase):
             num = forms.DecimalField()
 
         rendered = NumberForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="number"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_num">Num:</label>
+            <input type="number" name="num" id="id_num" required>
+        </p>
+        """)
 
         form = NumberForm(data={'num': 10})
         self.assertTrue(form.is_valid())
@@ -231,8 +322,12 @@ class WidgetRenderingTest(TestCase):
             )
 
         rendered = NumberForm().as_p()
-        self.assertTrue('min="5"' in rendered, rendered)
-        self.assertTrue('max="10"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_num">Num:</label>
+            <input type="number" name="num" id="id_num" required min="5" max="10">
+        </p>
+        """)
 
         class NumInput(forms.NumberInput):
             min = 9
@@ -243,14 +338,22 @@ class WidgetRenderingTest(TestCase):
             num = forms.DecimalField(widget=NumInput)
 
         rendered = NumberForm().as_p()
-        self.assertTrue('min="9"' in rendered, rendered)
-        self.assertTrue('max="99"' in rendered, rendered)
-        self.assertTrue('step="10"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_num">Num:</label>
+            <input type="number" name="num" id="id_num" required min="9" max="99" step="10">
+        </p>
+        """)
 
         class NumberForm(forms.Form):
             num = forms.DecimalField(widget=NumInput(attrs={'step': 12}))
         rendered = NumberForm().as_p()
-        self.assertTrue('step="12"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_num">Num:</label>
+            <input type="number" name="num" id="id_num" required min="9" max="99" step="12">
+        </p>
+        """)
 
     def test_range(self):
         """<input type="range">"""
@@ -258,8 +361,12 @@ class WidgetRenderingTest(TestCase):
             range_ = forms.DecimalField(widget=forms.RangeInput)
 
         rendered = RangeForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="range"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_range_">Range :</label>
+            <input type="range" name="range_" id="id_range_" required>
+        </p>
+        """)
 
     def test_phone(self):
         """<input type="tel">"""
@@ -267,8 +374,12 @@ class WidgetRenderingTest(TestCase):
             tel = forms.CharField(widget=forms.PhoneNumberInput)
 
         rendered = PhoneForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="tel"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_tel">Tel:</label>
+            <input type="tel" name="tel" id="id_tel" required>
+        </p>
+        """)
 
     def test_checkbox(self):
         """<input type="checkbox">"""
@@ -276,31 +387,55 @@ class WidgetRenderingTest(TestCase):
             cb = forms.BooleanField()
 
         rendered = CBForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="checkbox"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required>
+        </p>
+        """)
 
-        form = CBForm(data={'cb': 0})
+        form = CBForm(data={'cb': False})
         self.assertFalse(form.is_valid())
         rendered = form.as_p()
-        self.assertFalse('value=' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required>
+        </p>
+        """)
 
         form = CBForm(data={'cb': 1})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
-        self.assertFalse('value=' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required checked>
+        </p>
+        """)
 
         form = CBForm(data={'cb': True})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
-        self.assertFalse('value=' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required checked>
+        </p>
+        """)
 
         form = CBForm(data={'cb': 'foo'})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
-        self.assertTrue('value="foo"' in rendered, rendered)
-
-        rendered = CBForm(initial={'cb': True}).as_p()
-        self.assertTrue('checked' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required checked value="foo">
+        </p>
+        """)
 
     def test_select(self):
         """<select>"""
@@ -313,10 +448,26 @@ class WidgetRenderingTest(TestCase):
             select = forms.ChoiceField(choices=CHOICES)
 
         rendered = SelectForm().as_p()
-        self.assertFalse('selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_select">Select:</label>
+            <select name="select" id="id_select" required>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </p>
+        """)
 
         rendered = SelectForm(initial={'select': 'en'}).as_p()
-        self.assertTrue('selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_select">Select:</label>
+            <select name="select" id="id_select" required>
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </p>
+        """)
 
     def test_nbselect(self):
         """NullBooleanSelect"""
@@ -324,11 +475,28 @@ class WidgetRenderingTest(TestCase):
             nb = forms.NullBooleanField()
 
         rendered = NBForm().as_p()
-        self.assertTrue('<select ' in rendered, rendered)
-        self.assertTrue('value="1" selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_nb">Nb:</label>
+            <select name="nb" id="id_nb" required>
+                <option value="1" selected>Unknown</option>
+                <option value="2">Yes</option>
+                <option value="3">No</option>
+            </select>
+        </p>
+        """)
 
         rendered = NBForm(data={'nb': True}).as_p()
-        self.assertTrue('value="2" selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_nb">Nb:</label>
+            <select name="nb" id="id_nb" required>
+                <option value="1">Unknown</option>
+                <option value="2" selected>Yes</option>
+                <option value="3">No</option>
+            </select>
+        </p>
+        """)
 
     def test_select_multiple(self):
         """<select multiple>"""
@@ -342,11 +510,28 @@ class WidgetRenderingTest(TestCase):
             multi = forms.MultipleChoiceField(choices=CHOICES)
 
         rendered = MultiForm().as_p()
-        self.assertTrue('multiple' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_multi">Multi:</label>
+            <select name="multi" id="id_multi" required multiple>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Francais</option>
+            </select>
+        </p>
+        """)
 
         rendered = MultiForm(data={'multi': ['fr', 'en']}).as_p()
-        self.assertTrue('"fr" selected' in rendered, rendered)
-        self.assertTrue('"en" selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_multi">Multi:</label>
+            <select name="multi" id="id_multi" required multiple>
+                <option value="en" selected>English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr" selected>Francais</option>
+            </select>
+        </p>
+        """)
 
     def test_select_multiple_values(self):
         """<select multiple>"""
@@ -360,12 +545,28 @@ class WidgetRenderingTest(TestCase):
             multi = forms.MultipleChoiceField(choices=CHOICES)
 
         rendered = MultiForm().as_p()
-        self.assertTrue('multiple' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_multi">Multi:</label>
+            <select name="multi" id="id_multi" required multiple>
+                <option value="1">English</option>
+                <option value="12">Deutsch</option>
+                <option value="123">Francais</option>
+            </select>
+        </p>
+        """)
 
         rendered = MultiForm(data={'multi': ['123']}).as_p()
-        self.assertFalse('"1" selected' in rendered, rendered)
-        self.assertFalse('"12" selected' in rendered, rendered)
-        self.assertTrue('"123" selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_multi">Multi:</label>
+            <select name="multi" id="id_multi" required multiple>
+                <option value="1">English</option>
+                <option value="12">Deutsch</option>
+                <option value="123" selected>Francais</option>
+            </select>
+        </p>
+        """)
 
     def test_optgroup(self):
         """<optgroup> in select widgets"""
@@ -385,11 +586,34 @@ class WidgetRenderingTest(TestCase):
             lang = forms.ChoiceField(choices=CHOICES)
 
         rendered = LangForm().as_p()
-        self.assertTrue('<optgroup label="Asian">' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_lang">Lang:</label>
+            <select name="lang" id="id_lang" required>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Francais</option>
+                <optgroup label="Asian">
+                    <option value="jp">Japanese</option>
+                    <option value="bn">Bengali</option>
+                </optgroup>
+            </select>
+        </p>""")
 
         rendered = LangForm(data={'lang': 'jp'}).as_p()
-        expected = '<option value="jp" selected="selected">Japanese</option>'
-        self.assertTrue(expected in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_lang">Lang:</label>
+            <select name="lang" id="id_lang" required>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Francais</option>
+                <optgroup label="Asian">
+                    <option value="jp" selected>Japanese</option>
+                    <option value="bn">Bengali</option>
+                </optgroup>
+            </select>
+        </p>""")
 
     def test_cb_multiple(self):
         """CheckboxSelectMultiple"""
@@ -406,9 +630,27 @@ class WidgetRenderingTest(TestCase):
             )
 
         rendered = MultiForm().as_p()
-        self.assertTrue('checkbox' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_multi">Multi:</label>
+            <ul>
+                <li><label for="id_multi_1"><input type="checkbox" id="id_multi_1" name="multi" value="en">English</label></li>
+                <li><label for="id_multi_2"><input type="checkbox" id="id_multi_2" name="multi" value="de">Deutsch</label></li>
+                <li><label for="id_multi_3"><input type="checkbox" id="id_multi_3" name="multi" value="fr">Francais</label></li>
+            </ul>
+        </p>
+        """)
         rendered = MultiForm(data={'multi': ['fr', 'en']}).as_p()
-        self.assertTrue(len(rendered.split('checked="checked"')), 4)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_multi">Multi:</label>
+            <ul>
+                <li><label for="id_multi_1"><input type="checkbox" id="id_multi_1" name="multi" value="en" checked>English</label></li>
+                <li><label for="id_multi_2"><input type="checkbox" id="id_multi_2" name="multi" value="de">Deutsch</label></li>
+                <li><label for="id_multi_3"><input type="checkbox" id="id_multi_3" name="multi" value="fr" checked>Francais</label></li>
+            </ul>
+        </p>
+        """)
 
     def test_radio_select(self):
         """<input type="radio">"""
@@ -425,12 +667,26 @@ class WidgetRenderingTest(TestCase):
             )
 
         rendered = RadioForm().as_p()
-        self.assertTrue(' required>' in rendered, rendered)
-        self.assertTrue('type="radio"' in rendered, rendered)
-        self.assertFalse('checked' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_radio">Radio:</label>
+            <ul>
+                <li><label for="id_radio_1"><input type="radio" name="radio" id="id_radio_1" value="en" required>English</label></li>
+                <li><label for="id_radio_2"><input type="radio" name="radio" id="id_radio_2" value="de" required>Deutsch</label></li>
+                <li><label for="id_radio_3"><input type="radio" name="radio" id="id_radio_3" value="fr" required>Francais</label></li>
+            </ul>
+        </p>""")
 
         rendered = RadioForm(data={'radio': 'fr'}).as_p()
-        self.assertTrue('checked> Francais' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_radio">Radio:</label>
+            <ul>
+                <li><label for="id_radio_1"><input type="radio" name="radio" id="id_radio_1" value="en" required>English</label></li>
+                <li><label for="id_radio_2"><input type="radio" name="radio" id="id_radio_2" value="de" required>Deutsch</label></li>
+                <li><label for="id_radio_3"><input type="radio" name="radio" id="id_radio_3" value="fr" required checked>Francais</label></li>
+            </ul>
+        </p>""")
 
     def test_slug(self):
         """<input type="text" pattern="[-\w]+">"""
@@ -438,8 +694,11 @@ class WidgetRenderingTest(TestCase):
             slug = forms.SlugField()
 
         rendered = SlugForm().as_p()
-        self.assertTrue(' required' in rendered, rendered)
-        self.assertTrue('pattern="[-\w]+"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_slug">Slug:</label>
+            <input type="text" name="slug" id="id_slug" pattern="[-\w]+" required>
+        </p>""")
         self.assertFalse(SlugForm(data={'slug': '123 foo'}).is_valid())
         self.assertTrue(SlugForm(data={'slug': '123-foo'}).is_valid())
 
@@ -451,8 +710,14 @@ class WidgetRenderingTest(TestCase):
             re_field_ = forms.RegexField(r'^[a-z]{2}$')
 
         rendered = RegexForm().as_p()
-        self.assertTrue(' required' in rendered, rendered)
-        self.assertTrue('pattern="\d{3}-[a-z]+"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_re_field">Re field:</label>
+            <input type="text" name="re_field" id="id_re_field" pattern="\d{3}-[a-z]+" required>
+        </p><p>
+            <label for="id_re_field_">Re field :</label>
+            <input type="text" name="re_field_" id="id_re_field_" required>
+        </p>""")
 
         self.assertFalse(RegexForm(data={'re_field': 'meh',
                                          're_field_': 'fr'}).is_valid())
@@ -465,8 +730,11 @@ class WidgetRenderingTest(TestCase):
             ip = forms.IPAddressField()
 
         rendered = IPv4Form().as_p()
-        self.assertTrue(' required' in rendered, rendered)
-        self.assertTrue('pattern="' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_ip">Ip:</label>
+            <input type="text" name="ip" pattern="%s" id="id_ip" required>
+        </p>""" % forms.IPAddressInput.ip_pattern)
 
         self.assertFalse(IPv4Form(data={'ip': '500.500.1.1'}).is_valid())
         self.assertTrue(IPv4Form(data={'ip': '250.100.1.8'}).is_valid())
@@ -485,10 +753,19 @@ class WidgetRenderingTest(TestCase):
                                            choices=TYPE_CHOICES)
 
         rendered = TypedForm().as_p()
-        self.assertTrue('<select ' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_typed">Typed:</label>
+            <select name="typed" id="id_typed" required>
+                <option value="0">Some value</option>
+                <option value="1">Other value</option>
+                <option value="2">A third one</option>
+            </select>
+        </p>""")
+
         form = TypedForm(data={'typed': '0'})
         self.assertTrue(form.is_valid())
-        self.assertEquals(form.cleaned_data['typed'], False)
+        self.assertEqual(form.cleaned_data['typed'], False)
 
     def test_file_path_field(self):
         """foo = forms.FilePathField()"""
@@ -515,8 +792,15 @@ class WidgetRenderingTest(TestCase):
                                                    choices=TYPE_CHOICES)
 
         rendered = TypedMultiForm().as_p()
-        self.assertTrue('<select ' in rendered, rendered)
-        self.assertTrue(' multiple="multiple"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_thing">Thing:</label>
+            <select name="thing" id="id_thing" required multiple>
+                <option value="0">Some value</option>
+                <option value="1">Other value</option>
+                <option value="2">A third one</option>
+            </select>
+        </p>""")
 
     def test_model_choice_field(self):
         """ModelChoiceField and ModelMultipleChoiceField"""
@@ -547,19 +831,48 @@ class WidgetRenderingTest(TestCase):
             mod = forms.ModelChoiceField(queryset=queryset)
 
         rendered = ModelChoiceForm().as_p()
-        self.assertTrue('<option value="1">Meh</option>' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_mod">Mod:</label>
+            <select name="mod" id="id_mod" required>
+                <option value="">---------</option>
+                <option value="1">Meh</option>
+                <option value="2">Bah</option>
+            </select>
+        </p>""")
 
         rendered = ModelChoiceForm(data={'mod': 1}).as_p()
-        self.assertTrue('<option value="1" selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_mod">Mod:</label>
+            <select name="mod" id="id_mod" required>
+                <option value="">---------</option>
+                <option value="1" selected>Meh</option>
+                <option value="2">Bah</option>
+            </select>
+        </p>""")
 
         class MultiModelForm(forms.Form):
             mods = forms.ModelMultipleChoiceField(queryset=queryset)
 
         rendered = MultiModelForm().as_p()
-        self.assertTrue('<option value="1">Meh</option>' in rendered, rendered)
-        self.assertTrue('multiple="multiple"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_mods">Mods:</label>
+            <select name="mods" id="id_mods" required multiple>
+                <option value="1">Meh</option>
+                <option value="2">Bah</option>
+            </select>
+        </p>""")
         rendered = MultiModelForm(data={'mods': [1]}).as_p()
-        self.assertTrue('<option value="1" selected' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_mods">Mods:</label>
+            <select name="mods" id="id_mods" required multiple>
+                <option value="1" selected>Meh</option>
+                <option value="2">Bah</option>
+            </select>
+        </p>""")
 
     def test_combo_field(self):
         """Combo field"""
@@ -578,17 +891,23 @@ class WidgetRenderingTest(TestCase):
             split = forms.SplitDateTimeField()
 
         rendered = SplitForm().as_p()
-        self.assertTrue(' required ' in rendered, rendered)
-        self.assertTrue('type="date"' in rendered, rendered)
-        self.assertTrue('type="time"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_split_0">Split:</label>
+            <input type="date" name="split_0" required id="id_split_0">
+            <input type="time" name="split_1" required id="id_split_1">
+        </p>""")
 
         class SplitForm(forms.Form):
             split = forms.SplitDateTimeField(required=False)
 
         rendered = SplitForm().as_p()
-        self.assertFalse(' required ' in rendered, rendered)
-        self.assertTrue('type="date"' in rendered, rendered)
-        self.assertTrue('type="time"' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_split_0">Split:</label>
+            <input type="date" name="split_0" id="id_split_0">
+            <input type="time" name="split_1" id="id_split_1">
+        </p>""")
 
         valid = {'split_0': '2011-02-06', 'split_1': '12:12'}
         self.assertTrue(SplitForm(data=valid).is_valid())
@@ -602,7 +921,10 @@ class WidgetRenderingTest(TestCase):
             )
 
         rendered = SplitForm().as_p()
-        self.assertEquals(len(rendered.split('type="hidden"')), 3)
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="split_0" required id="id_split_0">
+        <input type="hidden" name="split_1" required id="id_split_1">
+        """)
 
     def test_multiple_hidden(self):
         """<input type="hidden"> for fields with a list of values"""
@@ -618,17 +940,25 @@ class WidgetRenderingTest(TestCase):
                                               choices=some_choices)
 
         rendered = MultiForm(data={'multi': ['heh', 'foo']}).as_p()
-        self.assertEquals(len(rendered.split('type="hidden"')), 3, rendered)
-        self.assertTrue(' required ' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="multi" value="heh" required id="id_multi_0">
+        <input type="hidden" name="multi" value="foo" required id="id_multi_1">
+        """)
 
     def test_datetime_with_initial(self):
         """SplitDateTimeWidget with an initial value"""
+        value = now()
         class DateTimeForm(forms.Form):
-            dt = forms.DateTimeField(initial=now(),
+            dt = forms.DateTimeField(initial=value,
                                      widget=forms.SplitDateTimeWidget)
 
         rendered = DateTimeForm().as_p()
-        self.assertTrue('value="' in rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_dt_0">Dt:</label>
+            <input type="date" name="dt_0" value="%s" id="id_dt_0">
+            <input type="time" name="dt_1" value="%s" id="id_dt_1">
+        </p>""" % (value.strftime("%Y-%m-%d"), value.strftime("%H:%M:%S")))
 
     def test_select_date_widget(self):
         """SelectDateWidget"""
@@ -639,7 +969,6 @@ class WidgetRenderingTest(TestCase):
                                  widget=forms.SelectDateWidget)
 
         rendered = SelectDateForm().as_p()
-
         option_year = (u'<option value="%(year)d" selected="selected">'
                        u'%(year)d</option>') % {'year': today.year}
         self.assertTrue(option_year in rendered, rendered)
@@ -668,7 +997,7 @@ class WidgetRenderingTest(TestCase):
         widget = forms.TextInput()
         try:
             rendered = widget.render('name', 'value')
-            self.assertEquals(
+            self.assertEqual(
                 rendered,
                 '<input type="text" name="name" value="value">\n',
             )
@@ -684,14 +1013,28 @@ class WidgetRenderingTest(TestCase):
             foo = forms.CharField(widget=forms.Select(choices=choices))
 
         rendered = SelectForm().as_p()
-        self.assertTrue('required' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_foo">Foo:</label>
+            <select name="foo" required id="id_foo">
+                <option value="foo">foo</option>
+                <option value="bar">bar</option>
+            </select>
+        </p>""")
 
         class SelectForm(forms.Form):
             foo = forms.CharField(widget=forms.Select(choices=choices),
                                   required=False)
 
         rendered = SelectForm().as_p()
-        self.assertFalse('required' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_foo">Foo:</label>
+            <select name="foo" id="id_foo">
+                <option value="foo">foo</option>
+                <option value="bar">bar</option>
+            </select>
+        </p>""")
 
     def test_clearable_file_input(self):
         class Form(forms.Form):
@@ -699,7 +1042,14 @@ class WidgetRenderingTest(TestCase):
 
         fake_instance = {'url': 'test test'}
         rendered = Form(initial={'file_': fake_instance}).as_p()
-        self.assertTrue('type="checkbox" name="file_-clear"' in rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            Currently: <a target="_blank" href="test test">{&#39;url&#39;: &#39;test test&#39;}</a>
+            <input type="checkbox" name="file_-clear" id="file_-clear_id">
+            <label for="file_-clear_id">Clear</label><br>Change:
+            <input type="file" name="file_" id="id_file_">
+        </p>""")
 
         form = Form(initial={'file_': fake_instance},
                     data={'file_-clear': True})
@@ -720,8 +1070,14 @@ class WidgetRenderingTest(TestCase):
         valid = form.is_valid()
         self.assertFalse(valid)
         rendered = form.as_p()
-        self.assertTrue('Some error' in rendered, rendered)
-        self.assertTrue(' required' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>Some error</li>
+        </ul>
+        <p>
+            <label for="id_file_">File :</label>
+            <input type="file" name="file_" id="id_file_" required>
+        </p>""")
 
     def test_true_attr(self):
         """widgets with attrs={'foo': True} should render as <input foo>"""
@@ -732,8 +1088,11 @@ class WidgetRenderingTest(TestCase):
             }))
 
         rendered = Form().as_p()
-        self.assertFalse('True' in rendered, rendered)
-        self.assertTrue('False' in rendered, rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_text">Text:</label>
+            <input type="text" foo bar="False" id="id_text" name="text" required>
+        </p>""")
 
     def test_range_input(self):
         class Form(forms.Form):
@@ -742,7 +1101,8 @@ class WidgetRenderingTest(TestCase):
             }))
 
         rendered = Form(initial={'foo': 5}).as_p()
-        self.assertTrue('step="1"' in rendered)
-        self.assertTrue('min="1"' in rendered)
-        self.assertTrue('max="10"' in rendered)
-        self.assertTrue('bar="1.0"' in rendered)
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_foo">Foo:</label>
+            <input type="range" name="foo" value="5" required max="10" step="1" bar="1.0" id="id_foo" min="1">
+        </p>""")

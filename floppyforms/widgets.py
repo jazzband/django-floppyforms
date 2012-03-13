@@ -154,10 +154,12 @@ class SlugInput(TextInput):
 
 class IPAddressInput(TextInput):
     """<input type="text"> validating IP addresses with a pattern"""
+    ip_pattern = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25"
+                  "[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}")
+
     def get_context(self, name, value, attrs):
         context = super(IPAddressInput, self).get_context(name, value, attrs)
-        context['attrs']['pattern'] = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25"
-                                       "[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}")
+        context['attrs']['pattern'] = self.ip_pattern
         return context
 
 
