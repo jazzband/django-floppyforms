@@ -1,4 +1,3 @@
-from __future__ import with_statement
 from django.core.exceptions import ValidationError
 from django.template import Context, Template
 from django.utils.translation import ugettext_lazy as _

@@ -1,4 +1,3 @@
-from __future__ import with_statement
 from django.forms import TextInput
 from django.template import Context, Template, TemplateSyntaxError
 
