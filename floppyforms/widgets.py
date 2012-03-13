@@ -376,11 +376,8 @@ class CheckboxInput(Input, forms.CheckboxInput):
     def __init__(self, attrs=None, check_test=None):
         super(CheckboxInput, self).__init__(attrs)
         if check_test is None:
-            self.check_test = lambda v: not (v is False or
-                                             v is None or
-                                             v == '')
-        else:
-            self.check_test = check_test
+            check_test = lambda v: not (v is False or v is None or v == '')
+        self.check_test = check_test
 
     def get_context(self, name, value, attrs):
         result = False
