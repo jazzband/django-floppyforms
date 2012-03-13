@@ -66,6 +66,8 @@ Changelog
   * Added ``form``, ``formrow``, ``formfield`` and ``formconfig`` template
     tags.
   * Added template based form layout system.
+  * Added ability to render widgets with the broader page context, for
+    instance for django-sekizai compatibility.
 
 * **v0.4**:
 

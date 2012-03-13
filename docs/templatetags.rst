@@ -157,3 +157,29 @@ The ``formrow`` tag is usually only used in form layouts.
 
 See the documentation on :doc:`row templates and how they are customized
 </layouts>` for more details.
+
+widget
+------
+
+.. versionadded:: 1.0
+
+The ``widget`` tag lets you render a widget with the outer template context
+available. By default widgets are rendered using a completely isolated
+context. In some cases you might want to access the outer context, for
+instance for using floppyforms widgets with `django-sekizai`_::
+
+    {% for field in form %}
+        {% if not field.is_hidden %}
+            {{ field.label_tag }}
+            {% widget field %}
+            {{ field.errors }}
+        {% else %}
+            {% widget field %}
+        {% endif %}
+    {% endfor %}
+
+.. _django-sekizai: http://django-sekizai.readthedocs.org/en/latest/
+
+You can safely use the ``widget`` tag with non-floppyforms widgets, they will
+be properly rendered. However, since they're not template-based, they won't be
+able to access any template context.

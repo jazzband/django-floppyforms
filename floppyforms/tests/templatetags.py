@@ -1,4 +1,5 @@
 from __future__ import with_statement
+from django.forms import TextInput
 from django.template import Context, Template, TemplateSyntaxError
 
 import floppyforms as forms
@@ -606,3 +607,27 @@ class FormFieldTagTests(FloppyFormsTestCase):
         self.assertHTMLEqual(render("""{% form myform using %}
             {% formfield form.name %}
         {% endform %}""", {'myform': form}, config), """<input type="password" name="name" id="id_name" />""")
+
+
+class WidgetTagTest(FloppyFormsTestCase):
+    def test_widget_tag(self):
+        class MediaWidget(forms.TextInput):
+            template_name = 'media_widget.html'
+
+        class TestForm(forms.Form):
+            test = forms.CharField(widget=MediaWidget)
+            test2 = forms.CharField(widget=TextInput)
+
+        self.assertHTMLEqual(render("""
+        {% for field in form %}
+            {% widget field %}
+        {% endfor %}""", {'form': TestForm(), 'STATIC_URL': '/static/'}), """
+        <input type="text" name="test" id="id_test" required>
+        <script type="text/javascript" src="/static/foo.js"></script>
+        <input type="text" name="test2" id="id_test2">""")
+
+        with self.assertRaises(TemplateSyntaxError):
+            render("""{% widget %}""")
+
+        with self.assertRaises(TemplateSyntaxError):
+            render("""{% widget stuff 12 %}""")

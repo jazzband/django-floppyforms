@@ -691,6 +691,43 @@ class FormFieldNode(BaseFormRenderNode):
         return variables
 
 
+class WidgetNode(Node):
+    """A template tag for rendering a widget with the outer context available.
+
+    This is useful for for instance for using floppyforms with
+    django-sekizai."""
+
+    def __init__(self, field):
+        self.field = Variable(field)
+
+    def render(self, context):
+        field = self.field.resolve(context)
+
+        if callable(getattr(field.field.widget, 'get_context', None)):
+            name = field.html_name
+            attrs = {'id': field.auto_id}
+            value = field.value()
+            widget_ctx = field.field.widget.get_context(name, value, attrs)
+            template = field.field.widget.template_name
+        else:
+            widget_ctx = {'field': field}
+            template = 'floppyforms/dummy.html'
+
+        template = get_template(template)
+        context.update(widget_ctx)
+        rendered = template.render(context)
+        context.pop()
+        return rendered
+
+    @classmethod
+    def parse(cls, parser, tokens):
+        bits = tokens.split_contents()
+        if len(bits) != 2:
+            raise TemplateSyntaxError("{% widget %} takes one and only one argument")
+        field = bits.pop(1)
+        return cls(field)
+
+
 @register.filter
 def hidden_field_errors(form):
     hidden_field_errors = ErrorList()
@@ -712,3 +749,4 @@ register.tag('formconfig', FormConfigNode.parse)
 register.tag('form', FormNode.parse)
 register.tag('formrow', FormRowNode.parse)
 register.tag('formfield', FormFieldNode.parse)
+register.tag('widget', WidgetNode.parse)
