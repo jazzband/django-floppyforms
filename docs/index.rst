@@ -1,7 +1,7 @@
 Django-floppyforms
 ==================
 
-Django-foppyforms is an application that gives you full control of the output
+Django-floppyforms is an application that gives you full control of the output
 of forms rendering. This is more a **widgets** library than a forms library
 but form fields are provided for convenience. The forms API and features are
 exactly the same as Django's, the key difference is that widgets are rendered
