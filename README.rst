@@ -1,6 +1,8 @@
 Django-floppyforms
 ==================
 
+.. image:: https://secure.travis-ci.org/brutasse/django-floppyforms.png
+
 Full control of form rendering in the templates.
 
 * Author: Bruno Renie and `contributors`_
