@@ -3,6 +3,11 @@ Template tags
 
 .. highlight:: html+django
 
+To load the floppyforms template library you have to load it on
+top of your templates first::
+
+    {% load floppyforms %}
+
 .. _form:
 
 form
