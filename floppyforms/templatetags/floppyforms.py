@@ -20,7 +20,7 @@ except ImportError:
     # Regex for token keyword arguments
     kwarg_re = re.compile(r"(?:(\w+)=)?(.+)")
 
-    def token_kwargs(bits, parser, support_legacy=False):
+    def token_kwargs(bits, parser, support_legacy=False):  # noqa
         """
         A utility method for parsing token keyword arguments.
 

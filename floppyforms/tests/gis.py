@@ -7,7 +7,7 @@ try:
 except ImportError:
     """GDAL / GEOS not installed. Tests will fail if contrib.gis
     is installed, and will be skipped otherwise"""
-    GEOSGeometry = None
+    GEOSGeometry = None  # noqa
 
 try:
     from django.utils import unittest as ut2
@@ -97,6 +97,7 @@ def skipUnlessInstalled(app):
     """Skips the test if ``app`` is not installed"""
     condition = lambda: app not in settings.INSTALLED_APPS
     return _deferredSkip(condition, "%s is not installed" % app)
+
 
 def skipUnlessGisAvailable():
     condition = lambda: GEOSGeometry is None

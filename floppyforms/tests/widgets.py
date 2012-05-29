@@ -948,6 +948,7 @@ class WidgetRenderingTest(FloppyFormsTestCase):
     def test_datetime_with_initial(self):
         """SplitDateTimeWidget with an initial value"""
         value = now()
+
         class DateTimeForm(forms.Form):
             dt = forms.DateTimeField(initial=value,
                                      widget=forms.SplitDateTimeWidget)

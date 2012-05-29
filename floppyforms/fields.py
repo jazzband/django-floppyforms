@@ -79,7 +79,7 @@ class FileField(Field, forms.FileField):
 
     def clean(self, data, initial=None):
         if data is FILE_INPUT_CONTRADICTION:
-            raise ValidationError(self.error_messages['contradiction'])
+            raise forms.ValidationError(self.error_messages['contradiction'])
         if data is False:
             if not self.required:
                 return False
