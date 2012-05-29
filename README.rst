@@ -2,6 +2,8 @@ Django-floppyforms
 ==================
 
 .. image:: https://secure.travis-ci.org/brutasse/django-floppyforms.png
+   :alt: Build Status
+   :target: https://secure.travis-ci.org/brutasse/django-floppyforms
 
 Full control of form rendering in the templates.
 
