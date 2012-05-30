@@ -2,3 +2,6 @@ include README.rst
 recursive-include floppyforms/templates *.html
 recursive-include floppyforms/static *.js
 recursive-include floppyforms/tests/templates *.html
+recursive-include requirements *.txt
+recursive-include docs *.rst *.png
+include docs/Makefile docs/conf.py
