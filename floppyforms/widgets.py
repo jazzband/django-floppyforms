@@ -495,7 +495,7 @@ class SelectMultiple(Select):
     allow_multiple_selected = True
 
     def _format_value(self, value):
-        if value is None:
+        if len(value) == 1 and value[0] is None:
             value = []
         return [force_unicode(v) for v in value]
 
