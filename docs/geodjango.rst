@@ -31,19 +31,10 @@ If the tests don't pass, check your GEOS/GDAL installation.
 Next, you need to serve the javascript library provided by django-floppyforms
 (located in ``floppyforms/static/floppyforms/js/MapWidget.js``).
 
-* If you use Django 1.3, you don't have anything to do: the javascript library
-  will be picked up by ``django.contrib.staticfiles`` and will be
-  automatically served by the development server. Just make sure you run
-  ``manage.py collectstatic`` once you deploy your project.
-
-* If you use Django 1.2, either use `django-staticfiles`_ (``pip install
-  django-staticfiles``), which is the equivalent of ``contrib.staticfiles``,
-  or copy the ``floppyforms/static/floppyforms`` directory to your
-  ``MEDIA_ROOT``. The file must be accessible under the following URL::
-
-      <MEDIA_URL>floppyforms/js/MapWidget.js
-
-.. _django-staticfiles: http://pypi.python.org/pypi/django-staticfiles/
+You might want to use ``django.contrib.staticfiles``, so that the javascript
+library will be picked up automatically and gets served by the development
+server. Just make sure you run ``manage.py collectstatic`` once you deploy
+your project.
 
 Widget types
 ------------

@@ -23,8 +23,8 @@ The source code is hosted on `github`_.
 Installation
 -------------
 
-Django 1.2 or greater is required because of the smart *if* template tag.
-Two-step process:
+Django 1.3 or greater is required.
+Two-step process to install django-floppyforms:
 
 * ``pip install -U django-floppyforms``
 * Add ``'floppyforms'`` to your ``INSTALLED_APPS``
@@ -59,7 +59,7 @@ Changelog
 * **v1.0** (not released yet):
 
   * cleaned up the behaviour of ``attrs``
-  * compatible with Django 1.2 to 1.4
+  * compatible with Django 1.3 and 1.4
   * ``<optgroup>`` support in select widgets
   * ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``
   * ``get_context()`` is more reliable

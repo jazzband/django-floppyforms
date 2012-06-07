@@ -9,7 +9,7 @@ Full control of form rendering in the templates.
 
 * Author: Bruno Renie and `contributors`_
 * Licence: BSD
-* Compatibility: Django 1.2+ (smart *if* template tag needed)
+* Compatibility: Django 1.3+
 * Requirements: homework -- read `this`_.
 
 .. _contributors: https://github.com/brutasse/django-floppyforms/contributors
