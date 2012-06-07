@@ -8,7 +8,7 @@ top of your templates first::
 
     {% load floppyforms %}
 
-.. _form:
+.. _form templatetag:
 
 form
 ----
@@ -38,15 +38,17 @@ You can use a default layout by leaving the ``using ...`` out::
 In this case the ``floppyforms/layouts/default.html`` template will be used,
 which by default is the same as ``floppyforms/layouts/p.html``.
 
-Sometimes it's necessary to pass additional template variables into the
+Sometimes it is necessary to pass additional template variables into the
 context of a form layout. This can be done in the same way and with the same
-syntax as the ``include`` template tag::
+syntax as django's `include template tag`_::
 
     {% form myform using "layout_with_title.html" with title="Please fill in the form" only %}
 
 The ``only`` keyword, as shown in the example above, acts also the same way as
 it does in the ``include`` tag. It prevents other, not explicitly
 specified, variables from being available in the layout's template context.
+
+.. _include template tag: https://docs.djangoproject.com/en/dev/ref/templates/builtins/#std:templatetag-include
 
 Inline layouts
 ~~~~~~~~~~~~~~
@@ -58,6 +60,8 @@ somewhere else. This is done by not specifying a template name after the
     {% form myform using %}
         ... your form layout here ...
     {% endform %}
+
+.. _formconfig templatetag:
 
 formconfig
 ----------
@@ -127,6 +131,8 @@ configuration either to a specific field name or a field type::
     {% formconfig field using "forms/widgets/textarea.html" for "CharField" %}
     {% formfield myform.comment %}
 
+.. _formfield templatetag:
+
 formfield
 ---------
 
@@ -140,8 +146,10 @@ It also accepts ``include``-like parameters::
 
     {% formfield userform.password using "input.html" with type="password" %}
 
-The ``formfield`` tag should only be used in a form layout, usually in a row
-template.
+The ``formfield`` tag should only be used inside a form layout, usually in a
+row template.
+
+.. _formrow templatetag:
 
 formrow
 -------
@@ -162,6 +170,8 @@ The ``formrow`` tag is usually only used in form layouts.
 
 See the documentation on :doc:`row templates and how they are customized
 </layouts>` for more details.
+
+.. _widget templatetag:
 
 widget
 ------
