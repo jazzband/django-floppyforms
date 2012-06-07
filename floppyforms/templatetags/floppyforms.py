@@ -483,10 +483,11 @@ class BaseFormRenderNode(BaseFormNode):
         for variable in self.variables:
             try:
                 variable = variable.resolve(context)
-                if self.is_list_variable(variable):
-                    variables.extend(variable)
-                else:
-                    variables.append(variable)
+                if variable is not None:
+                    if self.is_list_variable(variable):
+                        variables.extend(variable)
+                    else:
+                        variables.append(variable)
             except VariableDoesNotExist:
                 pass
 
