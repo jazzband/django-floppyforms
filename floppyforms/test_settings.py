@@ -14,3 +14,5 @@ INSTALLED_APPS = [
 STATIC_URL = '/static/'
 
 TEST_RUNNER = 'discover_runner.DiscoverRunner'
+
+SECRET_KEY = '0'

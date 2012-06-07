@@ -483,10 +483,11 @@ class BaseFormRenderNode(BaseFormNode):
         for variable in self.variables:
             try:
                 variable = variable.resolve(context)
-                if self.is_list_variable(variable):
-                    variables.extend(variable)
-                else:
-                    variables.append(variable)
+                if variable is not None:
+                    if self.is_list_variable(variable):
+                        variables.extend(variable)
+                    else:
+                        variables.append(variable)
             except VariableDoesNotExist:
                 pass
 
@@ -531,11 +532,14 @@ class FormNode(BaseFormRenderNode):
     def is_list_variable(self, var):
         if not hasattr(var, '__iter__'):
             return False
-        # we assume its a form if the var has these fields
+        # we assume it is a formset if the var has these fields
+        significant_attributes = ('forms', 'management_form')
+        if all(hasattr(var, attr) for attr in significant_attributes):
+            return True
+        # we assume it is a form if the var has these fields
         significant_attributes = ('is_bound', 'data', 'fields')
-        for attr in significant_attributes:
-            if hasattr(var, attr):
-                return False
+        if any(hasattr(var, attr) for attr in significant_attributes):
+            return False
         # form duck-typing was not successful so it must be a list
         return True
 
