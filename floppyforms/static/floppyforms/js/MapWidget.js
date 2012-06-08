@@ -170,7 +170,7 @@ function MapWidget(options) {
 
 	// Default options
 	this.options = {
-		base_layer: new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'}),
+		base_layer: new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://vmap0.tiles.osgeo.org/wms/vmap0', {layers: 'basic'}),
 		color: 'ee9900',
 		default_lat: 0,
 		default_lon: 0,
