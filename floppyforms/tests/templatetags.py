@@ -1,4 +1,5 @@
 from django.forms import TextInput
+from django.forms.formsets import formset_factory
 from django.template import Context, Template, TemplateSyntaxError
 
 import floppyforms as forms
@@ -380,6 +381,32 @@ class FormTagTests(FloppyFormsTestCase):
             1. Form Fields: firstname lastname age
             2. Form Fields: name
             3. Form Fields: name
+            """)
+
+    def test_formset_rendering(self):
+        PersonFormSet = formset_factory(PersonForm, extra=3)
+        formset = PersonFormSet()
+        self.assertHTMLEqual(
+            render('{% form formset using "simple_form_tag.html" %}', {
+                'formset': formset,
+            }), """
+            Forms: 3
+            1. Form Fields: firstname lastname age
+            2. Form Fields: firstname lastname age
+            3. Form Fields: firstname lastname age
+            """)
+
+        formset = PersonFormSet(initial=[{}, {}])
+        self.assertHTMLEqual(
+            render('{% form formset using "simple_form_tag.html" %}', {
+                'formset': formset,
+            }), """
+            Forms: 5
+            1. Form Fields: firstname lastname age
+            2. Form Fields: firstname lastname age
+            3. Form Fields: firstname lastname age
+            4. Form Fields: firstname lastname age
+            5. Form Fields: firstname lastname age
             """)
 
 

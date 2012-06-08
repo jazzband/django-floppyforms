@@ -41,23 +41,6 @@ MultiValueField          None (*abstract*)
 SplitDateTimeField       SplitDateTimeWidget
 ======================== =================== ========================
 
-.. note:: ClearableFileInput
-
-    The ``ClearableFileInput`` widget has been added in Django 1.3. If you use
-    django-floppyforms with Django 1.2, the ClearableFileInput will behave
-    just like a traditional FileInput.
-
-    .. versionchanged:: 1.0
-       django-floppyforms 1.0 ships with a full backport of
-       ``ClearableFileInput``.
-
-
-.. note:: TypedMultipleChoiceField
-
-    The ``TypedMultipleChoiceField`` has also been added in Django 1.3, it
-    will behave like a normal ``MultipleChoiceField`` on Django 1.2.
-
-
 .. note:: RegexField
 
     In Django, ``RegexField`` takes a required ``regex`` argument. The version
