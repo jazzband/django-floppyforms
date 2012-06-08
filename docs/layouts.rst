@@ -7,7 +7,7 @@ Form layouts
 Using form layouts
 ------------------
 
-django-floppyforms tries to make displaying django forms in a template a bit
+django-floppyforms tries to make displaying Django forms in a template a bit
 easier by using the concept of a reusable form layout. A layout is basically
 just a single template that knows how to render a form into HTML. Here is a
 simple example demonstrating how to use a layout::

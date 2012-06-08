@@ -6,8 +6,8 @@ Provided widgets
 Default widgets for form fields
 -------------------------------
 
-The first column represents the name of a django.forms field. FloppyForms aims
-to implement all the Django fields with the same class name, in the
+The first column represents the name of a ``django.forms`` field. FloppyForms
+aims to implement all the Django fields with the same class name, in the
 ``floppyforms`` namespace.
 
 ======================== =================== ========================
