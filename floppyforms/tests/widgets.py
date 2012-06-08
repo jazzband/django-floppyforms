@@ -652,6 +652,41 @@ class WidgetRenderingTest(FloppyFormsTestCase):
         </p>
         """)
 
+    def test_checkbox_select_multiple_with_iterable_initial(self):
+        """Passing iterable objects to initial data, not only lists or tuples.
+        This is useful for ValuesQuerySet for instance."""
+        choices = (
+            ('en', 'En'),
+            ('fr', 'Fr'),
+            ('de', 'De'),
+        )
+
+        class iterable_choices(object):
+            def __init__(self, choices):
+                self.choices = choices
+
+            def __iter__(self):
+                for choice in self.choices:
+                    yield choice
+
+            def __len__(self):
+                return len(self.choices)
+
+        class Form(forms.Form):
+            key = forms.MultipleChoiceField(
+                widget=forms.CheckboxSelectMultiple,
+                choices=choices,
+            )
+
+        form = Form(initial={'key': iterable_choices(['fr', 'en'])})
+        self.assertHTMLEqual(form.as_p(), """
+            <p><label for="id_key">Key:</label><ul>
+                <li><label for="id_key_1"><input id="id_key_1" name="key" type="checkbox" value="en" checked="checked">En</label></li>
+                <li><label for="id_key_2"><input id="id_key_2" name="key" type="checkbox" value="fr" checked="checked">Fr</label></li>
+                <li><label for="id_key_3"><input id="id_key_3" name="key" type="checkbox" value="de">De</label></li>
+            </ul></p>
+        """)
+
     def test_radio_select(self):
         """<input type="radio">"""
         CHOICES = (

@@ -419,7 +419,7 @@ class Select(Input):
         self.choices = list(choices)
 
     def get_context(self, name, value, attrs=None, choices=()):
-        if not isinstance(value, (list, tuple)):
+        if not hasattr(value, '__iter__'):
             value = [value]
         context = super(Select, self).get_context(name, value, attrs)
 
