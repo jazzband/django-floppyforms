@@ -23,6 +23,9 @@ With some template code:
         <p><input type="submit" value="Yay!"></p>
     </form>
 
+The form will be rendered using the ``floppyforms/layouts/p.html`` template.
+See the :doc:`documentation about layouts <layouts>` for details.
+
 Each field has a default widget and widgets are rendered using a template.
 Each widget is rendered using an isolated context containing all the relevant
 information.
