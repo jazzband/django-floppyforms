@@ -122,7 +122,9 @@ def default_widget(bound_field, **kwargs):
 
 def default_widget_template(bound_field, **kwargs):
     if bound_field:
-        return bound_field.field.widget.template_name
+        if hasattr(bound_field.field.widget, 'template_name'):
+            return bound_field.field.widget.template_name
+        return None
 
 
 class ConfigPopException(Exception):

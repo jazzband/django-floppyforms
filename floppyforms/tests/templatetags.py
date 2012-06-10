@@ -41,6 +41,15 @@ class PersonForm(forms.Form):
     age = forms.IntegerField()
 
 
+class HardcodedWidget(forms.Widget):
+    def render(self, *args, **kwargs):
+        return u'Hardcoded widget.'
+
+
+class HardcodedForm(forms.Form):
+    name = forms.CharField(widget=HardcodedWidget())
+
+
 class FormConfigNodeTests(FloppyFormsTestCase):
     def test_enforce_form_tag(self):
         render('{% form myform using %}{% formconfig row using "my_row_template.html" %}{% endform %}')
@@ -633,6 +642,12 @@ class FormFieldTagTests(FloppyFormsTestCase):
         self.assertHTMLEqual(render("""{% form myform using %}
             {% formfield form.name %}
         {% endform %}""", {'myform': form}, config), """<input type="password" name="name" id="id_name" />""")
+
+    def test_hardcoded_widget(self):
+        form = HardcodedForm()
+        self.assertHTMLEqual(render("""{% form myform using %}
+            {% formfield form.name %}
+        {% endform %}""", {'myform': form}), """Hardcoded widget.""")
 
 
 class WidgetTagTest(FloppyFormsTestCase):
