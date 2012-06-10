@@ -24,7 +24,7 @@ class LayoutRenderer(object):
         return self._template_node.render(context)
 
     def __unicode__(self):
-        return self._render_as('floppyforms/layouts/table.html')
+        return self._render_as('floppyforms/layouts/default.html')
 
     def as_p(self):
         return self._render_as('floppyforms/layouts/p.html')

@@ -50,7 +50,7 @@ class PLayoutTests(FloppyFormsTestCase):
     def test_default_layout_is_same_as_p_layout(self):
         form = RegistrationForm()
         default = render('{% form form %}', {'form': form})
-        layout = render('{% form form using "floppyforms/layouts/p.html" %}', {'form': form})
+        layout = render('{% form form using "floppyforms/layouts/table.html" %}', {'form': form})
         self.assertEqual(default, layout)
 
     def test_layout(self):

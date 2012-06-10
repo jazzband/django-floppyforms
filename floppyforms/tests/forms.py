@@ -35,14 +35,16 @@ class RegistrationModelForm(forms.ModelForm):
 class FormRenderAsMethodsTests(FloppyFormsTestCase):
     def test_default_rendering(self):
         form = RegistrationForm()
-        with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-            rendered = unicode(form)
-            self.assertTrue(' name="firstname"' in rendered)
+        with self.assertTemplateUsed('floppyforms/layouts/default.html'):
+            with self.assertTemplateUsed('floppyforms/layouts/table.html'):
+                rendered = unicode(form)
+                self.assertTrue(' name="firstname"' in rendered)
 
         form = RegistrationModelForm()
-        with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-            rendered = unicode(form)
-            self.assertTrue(' name="firstname"' in rendered)
+        with self.assertTemplateUsed('floppyforms/layouts/default.html'):
+            with self.assertTemplateUsed('floppyforms/layouts/table.html'):
+                rendered = unicode(form)
+                self.assertTrue(' name="firstname"' in rendered)
 
     def test_as_p(self):
         form = RegistrationForm()
