@@ -9,6 +9,7 @@ from django.contrib.localflavor.generic.forms import (
 )
 
 from floppyforms.fields import *
+from floppyforms.forms import *
 from floppyforms.models import *
 from floppyforms.widgets import *
 from floppyforms import gis
