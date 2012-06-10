@@ -14,6 +14,10 @@ def render(template, context=None):
     return t.render(c)
 
 
+class HiddenForm(forms.Form):
+    hide = forms.CharField(widget=forms.HiddenInput())
+
+
 class OneFieldForm(forms.Form):
     text = forms.CharField()
 
@@ -143,6 +147,13 @@ class PLayoutTests(FloppyFormsTestCase):
         </p>
         """)
 
+    def test_hidden_only_fields(self):
+        form = HiddenForm()
+        rendered = render("""{% form form using "floppyforms/layouts/p.html" %}""", {'form': form})
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="hide" id="id_hide" required>
+        """)
+
 
 class TableLayoutTests(FloppyFormsTestCase):
     def test_layout(self):
@@ -228,6 +239,13 @@ class TableLayoutTests(FloppyFormsTestCase):
         </td></tr>
         """)
 
+    def test_hidden_only_fields(self):
+        form = HiddenForm()
+        rendered = render("""{% form form using "floppyforms/layouts/table.html" %}""", {'form': form})
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="hide" id="id_hide" required>
+        """)
+
 
 class UlLayoutTests(FloppyFormsTestCase):
     def test_layout(self):
@@ -299,4 +317,11 @@ class UlLayoutTests(FloppyFormsTestCase):
             <input type="text" name="text" id="id_text" required />
             <span class="helptext">Would you mind entering text here?</span>
         </li>
+        """)
+
+    def test_hidden_only_fields(self):
+        form = HiddenForm()
+        rendered = render("""{% form form using "floppyforms/layouts/ul.html" %}""", {'form': form})
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="hide" id="id_hide" required>
         """)
