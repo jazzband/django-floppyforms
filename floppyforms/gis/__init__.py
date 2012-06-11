@@ -1,3 +1,3 @@
 # flake8: noqa
-from floppyforms.gis.fields import *
-from floppyforms.gis.widgets import *
+from .fields import *
+from .widgets import *

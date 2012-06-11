@@ -8,10 +8,10 @@ from django.contrib.localflavor.generic.forms import (
                           DEFAULT_DATETIME_INPUT_FORMATS,
 )
 
-from floppyforms.fields import *
-from floppyforms.forms import *
-from floppyforms.models import *
-from floppyforms.widgets import *
-from floppyforms import gis
+from .fields import *
+from .forms import *
+from .models import *
+from .widgets import *
+from . import gis
 
 __version__ = '1.0a1'

@@ -1,6 +1,7 @@
 from django import forms
 from django import template
-from floppyforms.templatetags.floppyforms import FormNode
+
+from .templatetags.floppyforms import FormNode
 
 
 __all__ = ('BaseForm', 'Form',)

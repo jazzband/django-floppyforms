@@ -1,7 +1,7 @@
 # flake8: noqa
-from floppyforms.tests.forms import *
-from floppyforms.tests.gis import GisTests
-from floppyforms.tests.layouts import *
-from floppyforms.tests.rendering import *
-from floppyforms.tests.templatetags import *
-from floppyforms.tests.widgets import *
+from .forms import *
+from .gis import GisTests
+from .layouts import *
+from .rendering import *
+from .templatetags import *
+from .widgets import *
