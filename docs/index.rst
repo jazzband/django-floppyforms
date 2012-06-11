@@ -61,7 +61,7 @@ Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
 Changelog
 `````````
 
-* **v1.0** (not released yet):
+* **v1.0**:
 
   * cleaned up the behaviour of ``attrs``
   * compatible with Django 1.3 and 1.4
