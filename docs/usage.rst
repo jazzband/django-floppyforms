@@ -26,12 +26,10 @@ With some template code:
 The form will be rendered using the ``floppyforms/layouts/p.html`` template.
 See the :doc:`documentation about layouts <layouts>` for details.
 
-Each field has a default widget and widgets are rendered using a template.
-Each widget is rendered using an isolated context containing all the relevant
-information.
+Each field has a default widget and widgets are rendered using templates.
 
 Default templates are provided and their output is relatively similar to
-Django widgets, with a few minor differences:
+Django widgets, with a few :doc:`minor differences</differences>`:
 
 * HTML5 ``<input>`` types are supported: ``url``, ``email``, ``date``,
   ``datetime``, ``time``, ``number``, ``range``, ``search``, ``color``,
@@ -54,8 +52,8 @@ look like:
 
 .. code-block:: jinja
 
-    <input {% for attr in attrs.items %}
-             {{ attr.0 }}="{{ attr.1 }}"
+    <input {% for key, val in attrs.iteritems %}
+             {{ key }}="{{ val }}"
            {% endfor %}
            type="{{ type }}"
            name="{{ name }}"
