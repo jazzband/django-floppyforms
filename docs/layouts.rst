@@ -164,6 +164,12 @@ Renders the form fields in ``<p>`` tags using the
 
 The **default row template** is ``floppyforms/rows/p.html``.
 
+The recommended way to use layouts is by using the :ref:`{% form %}
+templatetag <form templatetag>`.  However django-floppyforms will hook for
+your convenience into django's ``as_*`` methods so that they use templates and
+can be modified to your needs. The ``p`` layout will be used for all ``{{
+form.as_p }}``.
+
 Unordered list
 ~~~~~~~~~~~~~~
 
@@ -172,6 +178,8 @@ Renders the form fields as ``<li>`` tags using the
 ``<ul>``. So infact you also can use it with a ``<ol>``.
 
 The **default row template** is ``floppyforms/rows/li.html``.
+
+This layout will be used for all ``{{ form.as_ul }}``.
 
 Table
 ~~~~~
@@ -182,6 +190,8 @@ surrounding ``<table>`` or ``<tbody>``. Please take care of that.
 
 The **default row template** is ``floppyforms/rows/tr.html``.
 
+This layout will be used for all ``{{ form.as_table }}``.
+
 Default template
 ~~~~~~~~~~~~~~~~
 
@@ -191,13 +201,15 @@ without the ``using`` parameter.
 
 The actual code in the default layout looks like::
 
-    {% extends "floppyforms/layouts/p.html" %}
+    {% extends "floppyforms/layouts/table.html" %}
 
 You can drop in your own default form layout, for use when no specific layout
 is defined, by placing a ``floppyforms/layouts/default.html`` in your
 templates directory.
 
 The **default row template** is ``floppyforms/rows/default.html``
+
+This layout will be used as default for all ``{{ form }}``.
 
 .. _layout reference:
 

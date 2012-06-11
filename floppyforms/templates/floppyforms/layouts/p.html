@@ -8,5 +8,7 @@
 {% block rows %}{% for field in form.visible_fields %}
 {% if forloop.last %}{% formconfig row with hidden_fields=form.hidden_fields %}{% endif %}
 {% block row %}{% formrow field %}{% endblock %}
-{% endfor %}{% endblock %}
+{% endfor %}
+{% if not form.visible_fields %}{% for field in form.hidden_fields %}{% formfield field %}{% endfor %}{% endif %}
+{% endblock %}
 {% endfor %}{% endblock %}
