@@ -1,7 +1,7 @@
 # flake8: noqa
-from django.forms import (BaseForm, Form, ModelForm, BaseModelForm,
-                          model_to_dict, fields_for_model, save_instance,
-                          ValidationError, Media, MediaDefiningClass)
+from django.forms import (BaseModelForm, model_to_dict, fields_for_model,
+                          save_instance, ValidationError, Media,
+                          MediaDefiningClass)
 
 from django.contrib.localflavor.generic.forms import (
                           DEFAULT_DATE_INPUT_FORMATS,
