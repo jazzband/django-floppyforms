@@ -25,17 +25,25 @@ with each field and accompanying label wrapped in a paragraph and is meant as
 a replacement for django's ``{{ myform.as_p }}`` method. Here is the possible
 output for our example::
 
-   <form action="/contact/" method="post">
-   <p><label for="id_subject">Subject:</label>
-       <input id="id_subject" type="text" name="subject" maxlength="100" /></p>
-   <p><label for="id_message">Message:</label>
-       <input type="text" name="message" id="id_message" /></p>
-   <p><label for="id_sender">Sender:</label>
-       <input type="text" name="sender" id="id_sender" /></p>
-   <p><label for="id_cc_myself">Cc myself:</label>
-       <input type="checkbox" name="cc_myself" id="id_cc_myself" /></p>
-   <input type="submit" value="Submit" />
-   </form>
+    <form action="/contact/" method="post">
+        <p>
+            <label for="id_subject">Subject:</label>
+            <input id="id_subject" type="text" name="subject" maxlength="100" />
+        </p>
+        <p>
+            <label for="id_message">Message:</label>
+            <input type="text" name="message" id="id_message" />
+        </p>
+        <p>
+            <label for="id_sender">Sender:</label>
+            <input type="text" name="sender" id="id_sender" />
+        </p>
+        <p>
+            <label for="id_cc_myself">Cc myself:</label>
+            <input type="checkbox" name="cc_myself" id="id_cc_myself" />
+        </p>
+        <input type="submit" value="Submit" />
+    </form>
 
 You can also use ``floppyforms/layouts/table.html`` to output table rows (you'll
 need to provide your own ``<table>`` tags) and ``floppyforms/layouts/ul.html`` to
