@@ -61,11 +61,13 @@ Changelog
   * cleaned up the behaviour of ``attrs``
   * compatible with Django 1.3 and 1.4
   * ``<optgroup>`` support in select widgets
-  * ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``
+  * ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``.
+    This is **backwards-incompatible**: if you have custom templates for
+    ``Select`` widgets, they need to be updated.
   * ``get_context()`` is more reliable
-  * Added ``form``, ``formrow``, ``formfield`` and ``formconfig`` template
-    tags.
-  * Added template based form layout system.
+  * Added ``form``, ``formrow``, ``formfield``, ``formconfig`` and ``widget``
+    template tags.
+  * Added template-based form layout system.
   * Added ability to render widgets with the broader page context, for
     instance for django-sekizai compatibility.
 
