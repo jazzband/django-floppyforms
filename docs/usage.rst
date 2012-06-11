@@ -4,11 +4,11 @@ Usage
 Forms
 `````
 
-FloppyForms are supposed to work just like Django forms::
+Floppyforms are supposed to work just like Django forms::
 
     import floppyforms as forms
 
-    class FlopForm(forms.Form):
+    class ProfileForm(forms.Form):
         name = forms.CharField()
         email = forms.EmailField()
         url = forms.URLField()
@@ -59,7 +59,7 @@ look like:
            name="{{ name }}"
            {% if value %}value="{{ value }}"{% endif %}>
 
-The default FloppyForms template for an ``<input>`` widget is slightly more
+The default floppyforms template for an ``<input>`` widget is slightly more
 complex.
 
 Some widgets may provide extra context variables and extra attributes:
@@ -88,20 +88,20 @@ variable.
 ModelForms
 ``````````
 
-With ``ModelForms``, you need to override the widgets to pick FloppyForms'
-widgets. Say we have a ``Flop`` model::
+With ``ModelForms``, you need to override the widgets to pick floppyforms'
+widgets. Say we have a ``Profile`` model::
 
-    class Flop(models.Model):
+    class Profile(models.Model):
         name = models.CharField(max_length=255)
         url = models.URLField()
 
-Creating a ``ModelForm`` with widgets from FloppyForms is easy::
+Creating a ``ModelForm`` with widgets from floppyforms is easy::
 
     import floppyforms as forms
 
-    class FlopForm(forms.ModelForm):
+    class ProfileForm(forms.ModelForm):
         class Meta:
-            model = Flop
+            model = Profile
             widgets = {
                 'name': forms.TextInput,
                 'url': forms.URLInput,
