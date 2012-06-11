@@ -59,6 +59,16 @@ variable.
 ``get_context()`` takes ``name``, ``value`` and ``attrs`` as arguments, except
 for all ``Select`` widgets which take an additional ``choices`` argument.
 
+In case you don't need the arguments passed to ``get_context()``, you can
+extend ``get_context_data()`` which doesn't take any arguments::
+
+    class EmailInput(forms.EmailInput):
+        def get_context_data(self):
+            ctx = super(EmailInput, self).get_context_data()
+            ctx.update({
+                'placeholder': 'hello@example.com',
+            })
+
 Altering the widget's ``attrs``
 -------------------------------
 
