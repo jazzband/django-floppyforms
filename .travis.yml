@@ -22,3 +22,9 @@ script:
 branches:
   only:
     - master
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.org#django-floppyforms"
+    on_success: change
+    on_failure: always
