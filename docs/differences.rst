@@ -113,6 +113,33 @@ widget from floppyforms:
 However, the ``name`` and ``rank`` field will both get a widget from
 ``django.forms``, in this case a ``TextInput``.
 
+TEMPLATE_STRING_IF_INVALID caveats
+----------------------------------
+
+django-floppyforms embraces and uses the benefits of the django template
+engine to render widgets and forms. But this might have some sideeffects
+to using django's traditional form rendering. One is that template
+variables in the template that do not exist will be rendered with the
+contents of the ``TEMPLATE_STRING_IF_INVALID`` setting and filters used
+on those non-existing variables won't be applied (see `django's
+documentation on how invalid template variables are handled`__ for more details).
+
+__ https://docs.djangoproject.com/en/dev/ref/templates/api/#invalid-template-variables
+
+But django-floppyforms relies in its predefined form layouts that all
+filters are beeing applied. You can work around this by making your
+``TEMPLATE_STRING_IF_INVALID`` evaluate to ``False`` but still keep its
+string representation. Here is an example how you could achieve this in
+your ``settings.py``:
+
+.. code-block:: python
+
+    class InvalidVariable(unicode):
+        def __nonzero__(self):
+            return False
+
+    TEMPLATE_STRING_IF_INVALID = InvalidVariable(u'INVALID')
+
 Getting back Django's behaviour
 -------------------------------
 

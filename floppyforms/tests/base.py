@@ -9,6 +9,11 @@ from django.utils.unittest.util import safe_repr
 from .html import HTMLParseError, parse_html
 
 
+class InvalidVariable(unicode):
+    def __nonzero__(self):
+        return False
+
+
 class _AssertTemplateUsedContext(object):
     def __init__(self, test_case, template_name):
         self.test_case = test_case

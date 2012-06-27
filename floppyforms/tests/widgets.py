@@ -1,6 +1,7 @@
 import datetime
 import os
 
+from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
 from django.utils.dates import MONTHS
@@ -13,6 +14,7 @@ except ImportError:
 from .base import FloppyFormsTestCase
 
 import floppyforms as forms
+from .base import InvalidVariable
 
 
 class WidgetRenderingTest(FloppyFormsTestCase):
@@ -1142,3 +1144,14 @@ class WidgetRenderingTest(FloppyFormsTestCase):
             <label for="id_foo">Foo:</label>
             <input type="range" name="foo" value="5" required max="10" step="1" bar="1.0" id="id_foo" min="1">
         </p>""")
+
+
+class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
+    def setUp(self):
+        super(WidgetRenderingTestWithTemplateStringIfInvalidSet, self).setUp()
+        self.original_TEMPLATE_STRING_IF_INVALID = settings.TEMPLATE_STRING_IF_INVALID
+        settings.TEMPLATE_STRING_IF_INVALID = InvalidVariable(u'INVALID')
+
+    def tearDown(self):
+        super(WidgetRenderingTestWithTemplateStringIfInvalidSet, self).tearDown()
+        settings.TEMPLATE_STRING_IF_INVALID = self.original_TEMPLATE_STRING_IF_INVALID

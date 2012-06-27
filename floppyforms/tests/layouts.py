@@ -1,9 +1,10 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.template import Context, Template
 from django.utils.translation import ugettext_lazy as _
 
 import floppyforms as forms
-from .base import FloppyFormsTestCase
+from .base import FloppyFormsTestCase, InvalidVariable
 
 
 def render(template, context=None):
@@ -326,4 +327,31 @@ class UlLayoutTests(FloppyFormsTestCase):
         rendered = render("""{% form form using "floppyforms/layouts/ul.html" %}""", {'form': form})
         self.assertHTMLEqual(rendered, """
         <input type="hidden" name="hide" id="id_hide" required>
+        """)
+
+
+class TemplateStringIfInvalidTests(FloppyFormsTestCase):
+    '''
+    Regression tests for issue #37.
+    '''
+    def setUp(self):
+        self.original_TEMPLATE_STRING_IF_INVALID = settings.TEMPLATE_STRING_IF_INVALID
+
+    def tearDown(self):
+        settings.TEMPLATE_STRING_IF_INVALID = self.original_TEMPLATE_STRING_IF_INVALID
+
+    def test_none(self):
+        settings.TEMPLATE_STRING_IF_INVALID = None
+
+        layout = OneFieldForm().as_p()
+        self.assertHTMLEqual(layout, """
+        <p><label for="id_text">Text:</label> <input type="text" name="text" id="id_text" required /></p>
+        """)
+
+    def test_non_empty(self):
+        settings.TEMPLATE_STRING_IF_INVALID = InvalidVariable(u'INVALID')
+
+        layout = OneFieldForm().as_p()
+        self.assertHTMLEqual(layout, """
+        <p><label for="id_text">Text:</label> <input type="text" name="text" id="id_text" required /></p>
         """)
