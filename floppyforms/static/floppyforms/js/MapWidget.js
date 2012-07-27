@@ -31,7 +31,7 @@ OpenLayers.Util.properFeatures = function(features, geom_type) {
 OpenLayers.Format.DjangoWKT = OpenLayers.Class(OpenLayers.Format.WKT, {
 	initialize: function(options) {
 		OpenLayers.Format.WKT.prototype.initialize.apply(this, [options]);
-		this.regExes.justComma = /\s*, \s*/;
+		this.regExes.justComma = /\s*,\s*/;
 	},
 
 	parse: {
