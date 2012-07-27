@@ -78,10 +78,12 @@ class TemplatesTestCase(object):
         template_names = [t.name for t in response.templates]
         if not template_names:
             self.fail(msg_prefix + "No templates used to render the response")
-        self.assertTrue(template_name in template_names,
+        self.assertTrue(
+            template_name in template_names,
             msg_prefix + "Template '%s' was not a template used to render"
             " the response. Actual template(s) used: %s" %
-                (template_name, u', '.join(template_names)))
+            (template_name, u', '.join(template_names))
+        )
 
     def assertTemplateNotUsed(self, response=None, template_name=None, msg_prefix=''):
         """
@@ -103,7 +105,8 @@ class TemplatesTestCase(object):
             return context
 
         template_names = [t.name for t in response.templates]
-        self.assertFalse(template_name in template_names,
+        self.assertFalse(
+            template_name in template_names,
             msg_prefix + "Template '%s' was used unexpectedly in rendering"
             " the response" % template_name)
 
@@ -125,9 +128,9 @@ class HTMLTestCase(object):
         significant. The passed-in arguments must be valid HTML.
         """
         dom1 = assert_and_parse_html(self, html1, msg,
-            u'First argument is not valid HTML:')
+                                     u'First argument is not valid HTML:')
         dom2 = assert_and_parse_html(self, html2, msg,
-            u'Second argument is not valid HTML:')
+                                     u'Second argument is not valid HTML:')
 
         if dom1 != dom2:
             standardMsg = '%s != %s' % (
@@ -141,9 +144,9 @@ class HTMLTestCase(object):
     def assertHTMLNotEqual(self, html1, html2, msg=None):
         """Asserts that two HTML snippets are not semantically equivalent."""
         dom1 = assert_and_parse_html(self, html1, msg,
-            u'First argument is not valid HTML:')
+                                     u'First argument is not valid HTML:')
         dom2 = assert_and_parse_html(self, html2, msg,
-            u'Second argument is not valid HTML:')
+                                     u'Second argument is not valid HTML:')
 
         if dom1 == dom2:
             standardMsg = '%s == %s' % (

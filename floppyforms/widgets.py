@@ -596,7 +596,7 @@ class SelectDateWidget(forms.Widget):
         # for things like "checked", set the value to False so that the
         # template doesn't render checked="".
         for key, value in attrs.items():
-            if value == True:
+            if value is True:
                 attrs[key] = False
         context['year_id'] = self.year_field % attrs['id']
         context['month_id'] = self.month_field % attrs['id']

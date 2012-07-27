@@ -163,9 +163,9 @@ class BaseGMapWidget(BaseGeometryWidget):
     template_name = 'floppyforms/gis/google.html'
 
     class Media:
+        # FIXME: use proper Openlayers release
         js = (
-            'http://openlayers.org/dev/OpenLayers.js',  # FIXME: use 2.11
-                                                        # when it's out
+            'http://openlayers.org/dev/OpenLayers.js',
             'floppyforms/js/MapWidget.js',
             'http://maps.google.com/maps/api/js?sensor=false',
         )

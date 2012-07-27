@@ -11,8 +11,10 @@ class RegistrationForm(forms.Form):
     firstname = forms.CharField(label=_(u'Your first name?'))
     lastname = forms.CharField(label=_(u'Your last name:'))
     username = forms.CharField(max_length=30)
-    password = forms.CharField(widget=forms.PasswordInput,
-        help_text=_(u'Make sure to use a secure password.'))
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        help_text=_(u'Make sure to use a secure password.'),
+    )
     password2 = forms.CharField(label=_(u'Retype password'), widget=forms.PasswordInput)
     age = forms.IntegerField(required=False)
 

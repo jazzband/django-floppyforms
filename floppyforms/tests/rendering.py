@@ -12,7 +12,7 @@ class AgeField(forms.IntegerField):
 class RegistrationForm(forms.Form):
     name = forms.CharField(label='First- and Lastname', max_length=50)
     email = forms.EmailField(max_length=50,
-        help_text='Please enter a valid email.')
+                             help_text='Please enter a valid email.')
     age = AgeField()
     short_biography = forms.CharField(max_length=200)
     comment = forms.CharField(widget=widgets.Textarea)
@@ -90,10 +90,14 @@ class FormConfigTests(FloppyFormsTestCase):
         form = RegistrationForm()
         config = FormConfig()
 
-        config.configure('widget', widgets.Textarea(),
-            filter=ConfigFilter('CharField'))
-        config.configure('widget', widgets.HiddenInput(),
-            filter=ConfigFilter('short_biography'))
+        config.configure(
+            'widget', widgets.Textarea(),
+            filter=ConfigFilter('CharField'),
+        )
+        config.configure(
+            'widget', widgets.HiddenInput(),
+            filter=ConfigFilter('short_biography'),
+        )
 
         widget = config.retrieve('widget', bound_field=form['name'])
         self.assertEqual(widget.__class__, widgets.Textarea)
@@ -110,12 +114,16 @@ class FormConfigTests(FloppyFormsTestCase):
         config = FormConfig()
 
         config.push()
-        config.configure('widget', widgets.Textarea(),
-            filter=ConfigFilter("CharField"))
+        config.configure(
+            'widget', widgets.Textarea(),
+            filter=ConfigFilter("CharField"),
+        )
 
         config.push()
-        config.configure('widget', widgets.HiddenInput(),
-            filter=ConfigFilter('short_biography'))
+        config.configure(
+            'widget', widgets.HiddenInput(),
+            filter=ConfigFilter('short_biography'),
+        )
 
         widget = config.retrieve('widget', bound_field=form['short_biography'])
         self.assertEqual(widget.__class__, widgets.HiddenInput)
@@ -132,8 +140,10 @@ class FormConfigTests(FloppyFormsTestCase):
         form = RegistrationForm()
         config = FormConfig()
 
-        config.configure('widget', widgets.HiddenInput(),
-            filter=ConfigFilter("IntegerField"))
+        config.configure(
+            'widget', widgets.HiddenInput(),
+            filter=ConfigFilter("IntegerField"),
+        )
 
         widget = config.retrieve('widget', bound_field=form['age'])
         self.assertEqual(widget.__class__, widgets.HiddenInput)

@@ -4,7 +4,8 @@ from django.template import Context, Template, TemplateSyntaxError
 
 import floppyforms as forms
 from floppyforms.templatetags.floppyforms import (FormConfig, ConfigFilter,
-    FormNode, RowModifier, FieldModifier)
+                                                  FormNode, RowModifier,
+                                                  FieldModifier)
 from .base import FloppyFormsTestCase
 
 
@@ -288,7 +289,8 @@ class FormTagTests(FloppyFormsTestCase):
             """, {'f1': SimpleForm(), 'f2': SimpleForm()}), 'Equals!')
 
         # none forms are not included in form list
-        self.assertHTMLEqual(render("""
+        self.assertHTMLEqual(
+            render("""
             {% form f1 nothing f2 more_of_nothing using %}
                 {% if f1 == forms.0 and f2 == forms.1 %}
                 {% if forms.2 == None and more_of_nothing == None %}
@@ -612,27 +614,30 @@ class FormFieldTagTests(FloppyFormsTestCase):
     def test_configure_template_with_extra_context(self):
         form = SimpleForm()
         with self.assertTemplateUsed('simple_formfield_tag.html'):
-            self.assertHTMLEqual(render("""{% form myform using %}
+            self.assertHTMLEqual(
+                render("""{% form myform using %}
                 {% formconfig field using "simple_formfield_tag.html" %}
                 {% formfield form.name with extra_argument="I want bacon!" %}
             {% endform %}""", {'myform': form}),
-            "Type: text Extra argument: I want bacon!")
+                "Type: text Extra argument: I want bacon!")
 
     def test_configure_extra_context(self):
         form = SimpleForm()
-        self.assertHTMLEqual(render("""{% form myform using %}
+        self.assertHTMLEqual(
+            render("""{% form myform using %}
             {% formconfig field with extra_argument="I want spam!" %}
             {% formconfig field with extra_argument="I want ham!" %}
             {% formfield form.name using "simple_formfield_tag.html" %}
         {% endform %}""", {'myform': form}),
-        "Type: text Extra argument: I want ham!")
+            "Type: text Extra argument: I want ham!")
 
         context = Context({'myform': form})
-        self.assertHTMLEqual(render("""{% form myform using %}
+        self.assertHTMLEqual(
+            render("""{% form myform using %}
             {% formconfig field using "simple_formfield_tag.html" with extra_argument="I want ham!" %}
             {% formfield form.name %}
         {% endform %}""", context),
-        "Type: text Extra argument: I want ham!")
+            "Type: text Extra argument: I want ham!")
 
     def test_change_widget(self):
         form = SimpleForm()
