@@ -2,6 +2,7 @@ from .base import FloppyFormsTestCase
 
 import floppyforms as forms
 
+
 class IntegerFieldTests(FloppyFormsTestCase):
     def test_parse_int(self):
         int_field = forms.IntegerField()
