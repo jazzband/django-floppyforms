@@ -122,7 +122,7 @@ class FloatField(Field, forms.FloatField):
     widget = NumberInput
 
 
-class IntegerField(FloatField, forms.IntegerField):
+class IntegerField(Field, forms.IntegerField):
     widget = NumberInput
 
 
