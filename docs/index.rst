@@ -63,7 +63,7 @@ Changelog
 
 * **v1.0.1**:
 
-  * Fixing ``Textarea`` widget template to work with a non-empty
+  * Fixed ``Textarea`` widget template to work with a non-empty
     ``TEMPLATE_STRING_IF_INVALID`` setting. Thanks to Leon Matthews for the
     report.
 
