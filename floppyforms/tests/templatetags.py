@@ -275,8 +275,7 @@ class FormTagTests(FloppyFormsTestCase):
                 <ins>{% cycle "foo" "bar" as value %}</ins>
             {% endform %}
             <del>{% firstof value "NO VALUE" %}</del>
-            """),
-            '<ins>foo</ins><del>NO VALUE</del>')
+            """), '<ins>foo</ins><del>NO VALUE</del>')
         # form variable equals the first argument in form tag
         self.assertHTMLEqual(render("""
             {% form myform using %}{% if myform == form %}Equals!{% endif %}{% endform %}
