@@ -41,6 +41,12 @@ MultiValueField          None (*abstract*)
 SplitDateTimeField       SplitDateTimeWidget
 ======================== =================== ========================
 
+.. note:: Textarea
+
+    The ``Textarea`` widget renders a ``<textarea>`` HTML element and is
+    available with django-floppyforms. It doesn't appear on the table above
+    since no field has it as a default widget.
+
 .. note:: RegexField
 
     In Django, ``RegexField`` takes a required ``regex`` argument. The version
@@ -58,8 +64,8 @@ SplitDateTimeField       SplitDateTimeWidget
     regexes as a ``regex`` argument.
 
 
-Extra widget
-------------
+Extra widgets
+-------------
 
 Django provides "extra" widgets in ``django.forms.extras.widgets``. In fact, a
 single extra widget is implemented: ``SelectDateWidget``. The template-based
