@@ -40,3 +40,25 @@ Bugs
 ----
 
 Really? Oh well... Please Report. Or better, fix :)
+
+Development
+-----------
+
+Thanks for asking!
+
+Get the code::
+
+    git clone git@github.com:brutasse/django-floppyforms.git
+    cd django-floppyforms
+    virtualenv -p python2 env
+    source env/bin/activate
+    add2virtualenv .
+
+Install the development requirements::
+
+    pip install -r requirements/tests.txt
+    pip install django  # must be django 1.3 or above
+
+Run the tests::
+
+    DJANGO_SETTINGS_MODULE=floppyforms.test_settings make test
