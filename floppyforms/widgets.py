@@ -86,8 +86,11 @@ class Input(Widget):
 
         if self.context_instance is None:
             return context
-        self.context_instance.update(context)
-        return self.context_instance
+        # update() does a push, which needs to be poped somewhere outside
+        # ...so we work with a copy (yay, fun!)
+        context_instance = copy(self.context_instance)
+        context_instance.update(context)
+        return context_instance
 
     def render(self, name, value, attrs=None, **kwargs):
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
