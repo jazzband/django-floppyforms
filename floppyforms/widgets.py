@@ -84,14 +84,14 @@ class Input(Widget):
                 if not isinstance(attr, bool):
                     context['attrs'][key] = str(attr)
 
-        if self.context_instance is None:
-            return context
-        self.context_instance.update(context)
-        return self.context_instance
+        return context
 
     def render(self, name, value, attrs=None, **kwargs):
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
-        return loader.render_to_string(self.template_name, context)
+        return loader.render_to_string(
+            self.template_name,
+            dictionary=context,
+            context_instance=self.context_instance)
 
 
 class TextInput(Input):

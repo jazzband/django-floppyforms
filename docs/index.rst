@@ -66,6 +66,10 @@ Changelog
   * Fixed ``Textarea`` widget template to work with a non-empty
     ``TEMPLATE_STRING_IF_INVALID`` setting. Thanks to Leon Matthews for the
     report.
+  * Fixed context handling in widget rendering. It didn't take care of popping
+    the context as often as it was pushed onto. This could cause strange
+    behaviour in the template by leaking variables into outer scopes. Thanks to
+    David Danier for the report.
 
 * **v1.0**:
 

@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
 from django.utils.dates import MONTHS
+from django.template import Context, Template
 
 try:
     from django.utils.timezone import now
@@ -1155,3 +1156,48 @@ class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
     def tearDown(self):
         super(WidgetRenderingTestWithTemplateStringIfInvalidSet, self).tearDown()
         settings.TEMPLATE_STRING_IF_INVALID = self.original_TEMPLATE_STRING_IF_INVALID
+
+
+class WidgetContextTests(FloppyFormsTestCase):
+    def test_widget_render_method_should_not_clutter_the_context(self):
+        '''
+        Make sure that the widget rendering pops the context as often as it
+        pushed onto it. Otherwise this would lead to leaking variables into
+        outer scopes.
+
+        See issue #43 for more information.
+        '''
+        context = Context({
+            'one': 1,
+        })
+        context_levels = len(context.dicts)
+        widget = forms.TextInput()
+        widget.context_instance = context
+        widget.render('text', '')
+        self.assertEqual(len(context.dicts), context_levels)
+
+    def test_widget_should_not_clutter_the_context(self):
+        class TextForm(forms.Form):
+            text = forms.CharField(label='My text field')
+        context = Context({
+            'form': TextForm(),
+        })
+        context_levels = len(context.dicts)
+        rendered = Template('''
+            {% load floppyforms %}
+            {% form form using %}
+                {% formrow form.text with label="Textfield" %}
+                {% formrow form.text %}
+            {% endform %}
+        ''').render(context)
+        self.assertEqual(len(context.dicts), context_levels)
+        self.assertHTMLEqual(rendered, '''
+            <p>
+                <label for="id_text">Textfield:</label>
+                <input type="text" name="text" id="id_text" required />
+            </p>
+            <p>
+                <label for="id_text">My text field:</label>
+                <input type="text" name="text" id="id_text" required />
+            </p>
+        ''')
