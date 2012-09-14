@@ -636,6 +636,11 @@ class SelectDateWidget(forms.Widget):
         context['day_choices'] = [(i, i) for i in range(1, 32)]
         context['day_val'] = day_val
 
+        if not (self.required and value):
+            context['year_choices'].insert(0, self.none_value)
+            context['month_choices'].insert(0, self.none_value)
+            context['day_choices'].insert(0, self.none_value)
+
         return loader.render_to_string(self.template_name, context)
 
     def value_from_datadict(self, data, files, name):

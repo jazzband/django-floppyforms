@@ -1023,12 +1023,19 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(' id="id_dt_year"' in rendered, rendered)
         self.assertTrue(' id="id_dt_month"' in rendered, rendered)
         self.assertTrue(' id="id_dt_day"' in rendered, rendered)
+        self.assertEqual(rendered.count('<option value="0">---</option>'), 0)
 
         class SelectDateForm(forms.Form):
             dt = forms.DateField(initial='%s-09-09' % today.year,
                                  widget=forms.SelectDateWidget)
         rendered = SelectDateForm().as_p()
         self.assertTrue(str(today.year) in rendered, rendered)
+        self.assertEqual(rendered.count('<option value="0">---</option>'), 0)
+
+        class SelectDateForm(forms.Form):
+            dt = forms.DateField(widget=forms.SelectDateWidget, required=False)
+        rendered = SelectDateForm().as_p()
+        self.assertEqual(rendered.count('<option value="0">---</option>'), 3)
 
     def test_no_attrs_rendering(self):
         widget = forms.TextInput()

@@ -89,6 +89,8 @@ Changelog
     the context as often as it was pushed onto. This could cause strange
     behaviour in the template by leaking variables into outer scopes. Thanks to
     David Danier for the report.
+  * Added missing empty choice for selectboxes in ``SelectDateWidget``. Thanks
+    fsx999 for the report.
 
   * ``IntegerField`` now automatically passes its ``min_value`` and
     ``max_value`` (if provided) to the ``NumberInput`` widget.
