@@ -370,21 +370,19 @@ class PhoneNumberInput(Input):
     input_type = 'tel'
 
 
+def boolean_check(v):
+    return not (v is False or v is None or v == '')
+
+
 class CheckboxInput(Input, forms.CheckboxInput):
     input_type = 'checkbox'
 
     def __init__(self, attrs=None, check_test=None):
         super(CheckboxInput, self).__init__(attrs)
-        if check_test is None:
-            check_test = lambda v: not (v is False or v is None or v == '')
-        self.check_test = check_test
+        self.check_test = boolean_check if check_test is None else check_test
 
     def get_context(self, name, value, attrs):
-        result = False
-        try:
-            result = self.check_test(value)
-        except:  # That bare except is in the Django code...
-            pass
+        result = self.check_test(value)
         context = super(CheckboxInput, self).get_context(name, value, attrs)
         if result:
             context['attrs']['checked'] = True
