@@ -1,1 +1,1 @@
-{% if errors %}<ul class="errorlist">{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+{% if errors %}<span class="help-inline">{% for error in errors %}{{ error }}{% if not forloop.last %}<br />{% endif %}{% endfor %}</span>{% endif %}
