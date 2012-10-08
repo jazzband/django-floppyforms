@@ -49,6 +49,7 @@ impatient reader, there's also an :doc:`examples <examples>` section.
    templatetags
    differences
    examples
+   bootstrap
 
 Additional notes
 ----------------
