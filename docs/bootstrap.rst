@@ -1,10 +1,10 @@
 Layout example with Bootstrap
 =============================
 
-If you use Floppyforms with Bootstrap you might be interested to use a
+If you use Floppyforms with Bootstrap you might be interested in using a
 bootstrap layout for your form.
 
-What you have to do is to create thoso two templates:
+What you have to do is to create those two templates:
 
 **floppyforms/templates/floppyforms/layouts/bootstrap.html**:
 
