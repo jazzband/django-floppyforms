@@ -48,8 +48,8 @@ What you have to do is to create those two templates:
             <div class="controls {{ classes }} field-{{ field.name }}">
                 {% block widget %}{% formfield field %}{% endblock %}
                 {% block errors %}{% include "floppyforms/errors.html" with errors=field.errors %}{% endblock %}
-                {% block help_text %}{% if help_text %}
-                    <p class="help-block">{{ help_text }}</p>
+                {% block help_text %}{% if field.help_text %}
+                    <p class="help-block">{{ field.help_text }}</p>
                 {% endif %}{% endblock %}
                 {% block hidden_fields %}{% for field in hidden_fields %}{{ field.as_hidden }}{% endfor %}{% endblock %}
             </div><!--- .controls -->
