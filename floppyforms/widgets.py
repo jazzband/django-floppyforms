@@ -3,6 +3,7 @@ import re
 import datetime
 
 from django import forms
+from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.conf import settings
 from django.template import loader
 from django.utils.datastructures import MultiValueDict, MergeDict
@@ -181,9 +182,6 @@ class FileInput(Input):
         if data is None:
             return False
         return True
-
-
-FILE_INPUT_CONTRADICTION = object()
 
 
 class ClearableFileInput(FileInput):
