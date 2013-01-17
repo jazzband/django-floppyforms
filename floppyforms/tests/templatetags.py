@@ -447,8 +447,6 @@ class FormRowTagTests(FloppyFormsTestCase):
         with self.assertRaises(TemplateSyntaxError):
             render('{% formrow myform.name using "myform_layout.html" too_many_arguments %}')
         with self.assertRaises(TemplateSyntaxError):
-            render('{% formrow myform.name using %}{% endformrow %}')
-        with self.assertRaises(TemplateSyntaxError):
             render('{% formrow myform.name using %}{% endform %}')
 
     def test_include_content(self):
