@@ -139,7 +139,7 @@ class BaseMetacartaWidget(BaseGeometryWidget):
 
     class Media:
         js = (
-            'http://openlayers.org/api/2.10/OpenLayers.js',
+            'http://openlayers.org/api/OpenLayers.js',
             'floppyforms/js/MapWidget.js',
         )
 
@@ -151,7 +151,7 @@ class BaseOsmWidget(BaseGeometryWidget):
 
     class Media:
         js = (
-            'http://openlayers.org/api/2.10/OpenLayers.js',
+            'http://openlayers.org/api/OpenLayers.js',
             'http://www.openstreetmap.org/openlayers/OpenStreetMap.js',
             'floppyforms/js/MapWidget.js',
         )
@@ -163,9 +163,8 @@ class BaseGMapWidget(BaseGeometryWidget):
     template_name = 'floppyforms/gis/google.html'
 
     class Media:
-        # FIXME: use proper Openlayers release
         js = (
-            'http://openlayers.org/dev/OpenLayers.js',
+            'http://openlayers.org/api/OpenLayers.js',
             'floppyforms/js/MapWidget.js',
             'http://maps.google.com/maps/api/js?sensor=false',
         )
