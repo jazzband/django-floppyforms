@@ -1,8 +1,10 @@
 from django.core.exceptions import ValidationError
+from django.test import TestCase
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 import floppyforms as forms
-from .base import FloppyFormsTestCase
+
 from .models import Registration
 
 
@@ -33,18 +35,18 @@ class RegistrationModelForm(forms.ModelForm):
         model = Registration
 
 
-class FormRenderAsMethodsTests(FloppyFormsTestCase):
+class FormRenderAsMethodsTests(TestCase):
     def test_default_rendering(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/default.html'):
             with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-                rendered = unicode(form)
+                rendered = six.text_type(form)
                 self.assertTrue(' name="firstname"' in rendered)
 
         form = RegistrationModelForm()
         with self.assertTemplateUsed('floppyforms/layouts/default.html'):
             with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-                rendered = unicode(form)
+                rendered = six.text_type(form)
                 self.assertTrue(' name="firstname"' in rendered)
 
     def test_as_p(self):

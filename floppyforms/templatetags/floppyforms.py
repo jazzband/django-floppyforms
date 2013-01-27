@@ -377,7 +377,7 @@ class ModifierBase(BaseFormNode):
         if self.options['with']:
             extra_context = dict([
                 (name, var.resolve(context))
-                for name, var in self.options['with'].iteritems()])
+                for name, var in self.options['with'].items()])
             config.configure(self.context_config_name,
                              extra_context, filter=filter)
         return u''
@@ -502,7 +502,7 @@ class BaseFormRenderNode(BaseFormNode):
         if self.options['with']:
             extra_context.update(dict([
                 (name, var.resolve(context))
-                for name, var in self.options['with'].iteritems()]))
+                for name, var in self.options['with'].items()]))
 
         return extra_context
 
@@ -613,11 +613,11 @@ class FormRowNode(BaseFormRenderNode):
 @contextmanager
 def attributes(widget, **kwargs):
     old = {}
-    for name, value in kwargs.iteritems():
+    for name, value in kwargs.items():
         old[name] = getattr(widget, name, empty)
         setattr(widget, name, value)
     yield widget
-    for name, value in old.iteritems():
+    for name, value in old.items():
         if value is not empty:
             setattr(widget, name, value)
 

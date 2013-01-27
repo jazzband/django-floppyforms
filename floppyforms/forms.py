@@ -1,5 +1,5 @@
-from django import forms
-from django import template
+from django import forms, template
+from django.utils.encoding import python_2_unicode_compatible
 
 from .templatetags.floppyforms import FormNode
 
@@ -7,6 +7,7 @@ from .templatetags.floppyforms import FormNode
 __all__ = ('BaseForm', 'Form',)
 
 
+@python_2_unicode_compatible
 class LayoutRenderer(object):
     _template_node = FormNode(
         'form',
@@ -24,7 +25,7 @@ class LayoutRenderer(object):
         })
         return self._template_node.render(context)
 
-    def __unicode__(self):
+    def __str__(self):
         return self._render_as('floppyforms/layouts/default.html')
 
     def as_p(self):

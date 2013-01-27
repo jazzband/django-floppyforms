@@ -1,12 +1,12 @@
 from django.forms import TextInput
 from django.forms.formsets import formset_factory
 from django.template import Context, Template, TemplateSyntaxError
+from django.test import TestCase
 
 import floppyforms as forms
 from floppyforms.templatetags.floppyforms import (FormConfig, ConfigFilter,
                                                   FormNode, RowModifier,
                                                   FieldModifier)
-from .base import FloppyFormsTestCase
 
 
 def render(template, context=None, config=None):
@@ -51,7 +51,7 @@ class HardcodedForm(forms.Form):
     name = forms.CharField(widget=HardcodedWidget())
 
 
-class FormConfigNodeTests(FloppyFormsTestCase):
+class FormConfigNodeTests(TestCase):
     def test_enforce_form_tag(self):
         render('{% form myform using %}{% formconfig row using "my_row_template.html" %}{% endform %}')
         with self.assertRaises(TemplateSyntaxError):
@@ -225,7 +225,7 @@ class FormConfigNodeTests(FloppyFormsTestCase):
             'field.html')
 
 
-class FormTagTests(FloppyFormsTestCase):
+class FormTagTests(TestCase):
     def test_valid_syntax(self):
         render('{% form myform %}')
         render('{% form myform using "myform_layout.html" %}')
@@ -421,7 +421,7 @@ class FormTagTests(FloppyFormsTestCase):
             """)
 
 
-class FormRowTagTests(FloppyFormsTestCase):
+class FormRowTagTests(TestCase):
     def test_valid_syntax(self):
         render('{% formrow myform.field %}')
         render('{% formrow myform.field using "myrow_layout.html" %}')
@@ -578,7 +578,7 @@ class FormRowTagTests(FloppyFormsTestCase):
         """)
 
 
-class FormFieldTagTests(FloppyFormsTestCase):
+class FormFieldTagTests(TestCase):
     def test_valid_syntax(self):
         render('{% formfield myform.name %}')
 
@@ -655,7 +655,7 @@ class FormFieldTagTests(FloppyFormsTestCase):
         {% endform %}""", {'myform': form}), """Hardcoded widget.""")
 
 
-class WidgetTagTest(FloppyFormsTestCase):
+class WidgetTagTest(TestCase):
     def test_widget_tag(self):
         class MediaWidget(forms.TextInput):
             template_name = 'media_widget.html'

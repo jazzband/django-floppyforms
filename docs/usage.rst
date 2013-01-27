@@ -52,7 +52,7 @@ look like:
 
 .. code-block:: jinja
 
-    <input {% for key, val in attrs.iteritems %}
+    <input {% for key, val in attrs.items %}
              {{ key }}="{{ val }}"
            {% endfor %}
            type="{{ type }}"

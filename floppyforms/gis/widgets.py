@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.utils import translation
+from django.utils import translation, six
 
 try:
     from django.contrib.gis import gdal, geos
@@ -59,7 +59,7 @@ class BaseGeometryWidget(forms.Textarea):
     def get_context(self, name, value, attrs=None, extra_context={}):
         # If a string reaches here (via a validation error on another
         # field) then just reconstruct the Geometry.
-        if isinstance(value, basestring):
+        if isinstance(value, six.text_type):
             try:
                 value = geos.GEOSGeometry(value)
             except (geos.GEOSException, ValueError):

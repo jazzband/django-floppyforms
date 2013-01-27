@@ -8,11 +8,10 @@ from django.conf import settings
 from django.template import loader
 from django.utils.datastructures import MultiValueDict, MergeDict
 from django.utils.html import conditional_escape
-from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
-from django.utils import datetime_safe
+from django.utils import datetime_safe, formats, six
 from django.utils.dates import MONTHS
-from django.utils import formats
+from django.utils.encoding import force_text
 
 try:
     from django.forms.util import to_current_timezone
@@ -52,7 +51,7 @@ class Input(Widget):
     def _format_value(self, value):
         if self.is_localized:
             value = formats.localize_input(value)
-        return force_unicode(value)
+        return force_text(value)
 
     def get_context(self, name, value, attrs=None):
         context = {
@@ -136,7 +135,7 @@ class MultipleHiddenInput(HiddenInput):
                 input_attrs['id'] = '%s_%s' % (id_, i)
             input_ = HiddenInput()
             input_.is_required = self.is_required
-            inputs.append(input_.render(name, force_unicode(v), input_attrs))
+            inputs.append(input_.render(name, force_text(v), input_attrs))
         return "\n".join(inputs)
 
     def value_from_datadict(self, data, files, name):
@@ -232,7 +231,7 @@ class Textarea(Input):
         super(Textarea, self).__init__(default_attrs)
 
     def _format_value(self, value):
-        return conditional_escape(force_unicode(value))
+        return conditional_escape(force_text(value))
 
 
 class DateInput(Input):
@@ -354,7 +353,7 @@ class NumberInput(Input):
         if attrs:
             default_attrs.update(attrs)
         # Popping attrs if they're not set
-        for key in default_attrs.keys():
+        for key in list(default_attrs.keys()):
             if default_attrs[key] is None:
                 default_attrs.pop(key)
         super(NumberInput, self).__init__(default_attrs)
@@ -390,7 +389,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
         if value in ('', True, False, None):
             value = None
         else:
-            value = force_unicode(value)
+            value = force_text(value)
         return value
 
     def value_from_datadict(self, data, files, name):
@@ -398,7 +397,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
             return False
         value = data.get(name)
         values = {'true': True, 'false': False}
-        if isinstance(value, basestring):
+        if isinstance(value, six.text_type):
             value = values.get(value.lower(), value)
         return value
 
@@ -415,7 +414,8 @@ class Select(Input):
         self.choices = list(choices)
 
     def get_context(self, name, value, attrs=None, choices=()):
-        if not hasattr(value, '__iter__'):
+        if not hasattr(value, '__iter__') or isinstance(value,
+                                                        six.string_types):
             value = [value]
         context = super(Select, self).get_context(name, value, attrs)
 
@@ -438,10 +438,10 @@ class Select(Input):
             if isinstance(option_label, (list, tuple)):
                 group = []
                 for val, lab in option_label:
-                    group.append((force_unicode(val), lab))
+                    group.append((force_text(val), lab))
                 groups.append((option_value, group))
             else:
-                option_value = force_unicode(option_value)
+                option_value = force_text(option_value)
                 if groups and groups[-1][0] is None:
                     groups[-1][1].append((option_value, option_label))
                 else:
@@ -452,7 +452,7 @@ class Select(Input):
     def _format_value(self, value):
         if len(value) == 1 and value[0] is None:
             return []
-        return set(force_unicode(v) for v in value)
+        return set(force_text(v) for v in value)
 
 
 class NullBooleanSelect(Select):
@@ -493,7 +493,7 @@ class SelectMultiple(Select):
     def _format_value(self, value):
         if len(value) == 1 and value[0] is None:
             value = []
-        return [force_unicode(v) for v in value]
+        return [force_text(v) for v in value]
 
     def value_from_datadict(self, data, files, name):
         if isinstance(data, (MultiValueDict, MergeDict)):
@@ -507,8 +507,8 @@ class SelectMultiple(Select):
             data = []
         if len(initial) != len(data):
             return True
-        initial_set = set([force_unicode(value) for value in initial])
-        data_set = set([force_unicode(value) for value in data])
+        initial_set = set([force_text(value) for value in initial])
+        data_set = set([force_text(value) for value in data])
         return data_set != initial_set
 
 
@@ -607,7 +607,7 @@ class SelectDateWidget(forms.Widget):
             year_val, month_val, day_val = value.year, value.month, value.day
         except AttributeError:
             year_val = month_val = day_val = None
-            if isinstance(value, basestring):
+            if isinstance(value, six.text_type):
                 if settings.USE_L10N:
                     try:
                         input_format = formats.get_format(

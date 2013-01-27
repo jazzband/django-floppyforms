@@ -1,3 +1,3 @@
 coverage
 flake8
-django-discover-runner
+https://github.com/rafales/django-discover-runner/tarball/py3-support#egg=django-discover-runner

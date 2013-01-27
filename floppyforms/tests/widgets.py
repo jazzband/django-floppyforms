@@ -1,24 +1,33 @@
 import datetime
 import os
 
-from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
-from django.utils.dates import MONTHS
 from django.template import Context, Template
+from django.test import TestCase
+from django.test.utils import override_settings
+from django.utils.dates import MONTHS
+from django.utils.encoding import python_2_unicode_compatible
 
 try:
     from django.utils.timezone import now
 except ImportError:
     now = datetime.datetime.now  # noqa
 
-from .base import FloppyFormsTestCase
-
 import floppyforms as forms
+
 from .base import InvalidVariable
 
 
-class WidgetRenderingTest(FloppyFormsTestCase):
+@python_2_unicode_compatible
+class SomeModel(models.Model):
+    some_field = models.CharField(max_length=255)
+
+    def __str__(self):
+        return u'%s' % self.some_field
+
+
+class WidgetRenderingTest(TestCase):
     """Testing the rendering of the different widgets."""
     maxDiff = None
 
@@ -842,31 +851,11 @@ class WidgetRenderingTest(FloppyFormsTestCase):
 
     def test_model_choice_field(self):
         """ModelChoiceField and ModelMultipleChoiceField"""
-
-        class SomeModel(models.Model):
-            some_field = models.CharField(max_length=255)
-
-            def __unicode__(self):
-                return u'%s' % self.some_field
-
-        fake_items = [
-            SomeModel(some_field='Meh', pk=1),
-            SomeModel(some_field='Bah', pk=2),
-        ]
-
-        class HackedQuerySet(models.query.QuerySet):
-            """Yield results with no DB"""
-            def iterator(self):
-                for obj in fake_items:
-                    yield obj
-
-            def get(self, *args, **kwargs):
-                return fake_items[0]
-
-        queryset = HackedQuerySet(model=SomeModel)
+        SomeModel.objects.create(some_field='Meh')
+        SomeModel.objects.create(some_field='Bah')
 
         class ModelChoiceForm(forms.Form):
-            mod = forms.ModelChoiceField(queryset=queryset)
+            mod = forms.ModelChoiceField(queryset=SomeModel.objects.all())
 
         rendered = ModelChoiceForm().as_p()
         self.assertHTMLEqual(rendered, """
@@ -891,7 +880,7 @@ class WidgetRenderingTest(FloppyFormsTestCase):
         </p>""")
 
         class MultiModelForm(forms.Form):
-            mods = forms.ModelMultipleChoiceField(queryset=queryset)
+            mods = forms.ModelMultipleChoiceField(queryset=SomeModel.objects.all())
 
         rendered = MultiModelForm().as_p()
         self.assertHTMLEqual(rendered, """
@@ -1103,7 +1092,7 @@ class WidgetRenderingTest(FloppyFormsTestCase):
             def clean_file_(self):
                 raise forms.ValidationError('Some error')
 
-        file_ = SimpleUploadedFile('name', 'some contents')
+        file_ = SimpleUploadedFile('name', b'some contents')
 
         form = Form(files={'file_': file_})
         valid = form.is_valid()
@@ -1136,7 +1125,7 @@ class WidgetRenderingTest(FloppyFormsTestCase):
     def test_range_input(self):
         class Form(forms.Form):
             foo = forms.CharField(widget=forms.RangeInput(attrs={
-                'min': 1, 'max': 10L, 'step': 1, 'bar': 1.0
+                'min': 1, 'max': 10, 'step': 1, 'bar': 1.0
             }))
 
         rendered = Form(initial={'foo': 5}).as_p()
@@ -1148,17 +1137,12 @@ class WidgetRenderingTest(FloppyFormsTestCase):
 
 
 class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
-    def setUp(self):
-        super(WidgetRenderingTestWithTemplateStringIfInvalidSet, self).setUp()
-        self.original_TEMPLATE_STRING_IF_INVALID = settings.TEMPLATE_STRING_IF_INVALID
-        settings.TEMPLATE_STRING_IF_INVALID = InvalidVariable(u'INVALID')
+    pass
 
-    def tearDown(self):
-        super(WidgetRenderingTestWithTemplateStringIfInvalidSet, self).tearDown()
-        settings.TEMPLATE_STRING_IF_INVALID = self.original_TEMPLATE_STRING_IF_INVALID
+WidgetRenderingTestWithTemplateStringIfInvalidSet = override_settings(TEMPLATE_STRING_IF_INVALID=InvalidVariable(u'INVALID'))(WidgetRenderingTestWithTemplateStringIfInvalidSet)
 
 
-class WidgetContextTests(FloppyFormsTestCase):
+class WidgetContextTests(TestCase):
     def test_widget_render_method_should_not_clutter_the_context(self):
         '''
         Make sure that the widget rendering pops the context as often as it

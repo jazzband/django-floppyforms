@@ -7,7 +7,8 @@ from setuptools import find_packages
 
 
 def read(*parts):
-    return codecs.open(path.join(path.dirname(__file__), *parts)).read()
+    return codecs.open(path.join(path.dirname(__file__), *parts),
+                       encoding='utf-8').read()
 
 
 def find_version(*file_paths):
@@ -31,13 +32,14 @@ setup(
     description='Full control of form rendering in the templates',
     long_description=read('README.rst'),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
     ],
     zip_safe=False,
 )

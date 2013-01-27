@@ -1,8 +1,9 @@
+from django.test import TestCase
+
 import floppyforms as forms
+
 from floppyforms import widgets
 from floppyforms.templatetags.floppyforms import ConfigFilter, FormConfig
-
-from .base import FloppyFormsTestCase
 
 
 class AgeField(forms.IntegerField):
@@ -18,7 +19,7 @@ class RegistrationForm(forms.Form):
     comment = forms.CharField(widget=widgets.Textarea)
 
 
-class FormConfigTests(FloppyFormsTestCase):
+class FormConfigTests(TestCase):
     def test_default_retrieve(self):
         """
         Test if FormConfig returns the correct default values if no

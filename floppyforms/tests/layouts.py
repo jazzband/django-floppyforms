@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.template import Context, Template
+from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 import floppyforms as forms
-from .base import FloppyFormsTestCase, InvalidVariable
+
+from .base import InvalidVariable
 
 
 def render(template, context=None):
@@ -49,7 +51,7 @@ class RegistrationForm(forms.Form):
             raise ValidationError(u'Please correct the errors below.')
 
 
-class PLayoutTests(FloppyFormsTestCase):
+class PLayoutTests(TestCase):
     def test_default_layout_is_same_as_p_layout(self):
         form = RegistrationForm()
         default = render('{% form form %}', {'form': form})
@@ -158,7 +160,7 @@ class PLayoutTests(FloppyFormsTestCase):
         """)
 
 
-class TableLayoutTests(FloppyFormsTestCase):
+class TableLayoutTests(TestCase):
     def test_layout(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/table.html'):
@@ -250,7 +252,7 @@ class TableLayoutTests(FloppyFormsTestCase):
         """)
 
 
-class UlLayoutTests(FloppyFormsTestCase):
+class UlLayoutTests(TestCase):
     def test_layout(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/ul.html'):
@@ -330,7 +332,7 @@ class UlLayoutTests(FloppyFormsTestCase):
         """)
 
 
-class TemplateStringIfInvalidTests(FloppyFormsTestCase):
+class TemplateStringIfInvalidTests(TestCase):
     '''
     Regression tests for issue #37.
     '''
