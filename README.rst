@@ -56,7 +56,7 @@ Get the code::
 Install the development requirements::
 
     pip install -r requirements/tests.txt
-    pip install django  # must be django 1.3 or above
+    pip install django  # must be django 1.4.2 or above
 
 Run the tests::
 

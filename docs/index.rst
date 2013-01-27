@@ -71,11 +71,18 @@ Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
 Changelog
 `````````
 
-* **v1.0.1**:
+* **v1.1** (NOT RELEASED YET):
+
+  * Django 1.5 and Python 3.3 support added.
+
+  * Django 1.3 support dropped.
+
+  * GIS widgets switched to stable OpenLayers release instead of a dev build.
 
   * Fixed ``Textarea`` widget template to work with a non-empty
     ``TEMPLATE_STRING_IF_INVALID`` setting. Thanks to Leon Matthews for the
     report.
+
   * Fixed context handling in widget rendering. It didn't take care of popping
     the context as often as it was pushed onto. This could cause strange
     behaviour in the template by leaking variables into outer scopes. Thanks to
