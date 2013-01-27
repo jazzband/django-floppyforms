@@ -18,7 +18,7 @@ install:
   - pip install -e .
   - pip install -r requirements/tests.txt Django==$DJANGO_VERSION
 before_script:
-  - flake8 floppyforms --ignore=E5,E123,E125,E126
+  - (python --version 2>&1 | grep -q "Python 2" && flake8 floppyforms --ignore=E5,E123,E125,E126) || echo "Skipped flake8 check (python 3)"
 script:
   - make test
 branches:
