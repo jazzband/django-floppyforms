@@ -28,10 +28,19 @@ The source code is hosted on `github`_.
 Installation
 ------------
 
-Django 1.3 or greater is required. Two-step process to install
-django-floppyforms:
+Depending on your Django and python versions, you might want to install a
+specific version of django-floppyforms instead of the latest and greatest.
 
-* ``pip install -U django-floppyforms``
+=================== ====================== ===============
+Floppyforms version Minimal Django version Python versions
+=================== ====================== ===============
+1.0                 1.3                    2.5 - 2.7
+1.1                 1.4.2                  2.6, 2.7, 3.3
+=================== ====================== ===============
+
+Two-step process to install django-floppyforms:
+
+* ``pip install django-floppyforms==<version_number>``
 * Add ``'floppyforms'`` to your ``INSTALLED_APPS``
 
 When you're done you can jump to the :doc:`usage <usage>` section. For the

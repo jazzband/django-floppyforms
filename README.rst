@@ -9,11 +9,10 @@ Full control of form rendering in the templates.
 
 * Author: Bruno Renié and `contributors`_
 * Licence: BSD
-* Compatibility: Django 1.3+
 * Requirements: homework -- read `this`_.
 
 .. _contributors: https://github.com/brutasse/django-floppyforms/contributors
-.. _this: http://diveintohtml5.ep.io/forms.html
+.. _this: http://diveintohtml5.info/forms.html
 
 Installation
 ------------
