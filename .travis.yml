@@ -30,3 +30,7 @@ notifications:
       - "irc.freenode.org#django-floppyforms"
     on_success: change
     on_failure: always
+matrix:
+  exclude:
+    - python: 3.3
+      env: DJANGO_VERSION=1.4.3
