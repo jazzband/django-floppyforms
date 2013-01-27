@@ -32,5 +32,5 @@ notifications:
     on_failure: always
 matrix:
   exclude:
-    - python: 3.3
+    - python: "3.3"
       env: DJANGO_VERSION=1.4.3
