@@ -93,6 +93,9 @@ Changelog
   * ``IntegerField`` now automatically passes its ``min_value`` and
     ``max_value`` (if provided) to the ``NumberInput`` widget.
 
+  * Added basic support for ``<datalist>`` elements for suggestions in
+    ``Input`` widgets.
+
 * **v1.0**:
 
   * cleaned up the behaviour of ``attrs``

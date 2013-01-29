@@ -1144,6 +1144,24 @@ class WidgetRenderingTest(TestCase):
             <input type="range" name="foo" value="5" required max="10" step="1" bar="1.0" id="id_foo" min="1">
         </p>""")
 
+    def test_datalist(self):
+        class Form(forms.Form):
+            foo = forms.CharField(widget=forms.TextInput(
+                datalist=['Foo', 'Bar', 'Baz'],
+            ))
+
+        rendered = Form().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_foo">Foo:</label>
+            <input type="text" name="foo" required id="id_foo" list="id_foo_list">
+            <datalist id="id_foo_list">
+                <option value="Foo">
+                <option value="Bar">
+                <option value="Baz">
+            </datalist>
+        </p>""")
+
 
 class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
     pass

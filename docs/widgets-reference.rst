@@ -6,6 +6,15 @@ For each widgets, the default class attributes.
 .. module:: floppyforms.widgets
    :synopsis: FloppyForm's form widgets
 
+.. class:: Input
+
+    .. attribute:: Input.datalist
+
+        A list of possible values, which will be rendered as a ``<datalist>``
+        element tied to the input. Note that the list of options passed as
+        ``datalist`` elements are only **suggestions** and are not related to
+        form validation.
+
 .. class:: TextInput
 
     .. attribute:: TextInput.template_name

@@ -36,8 +36,12 @@ class Widget(forms.Widget):
 class Input(Widget):
     template_name = 'floppyforms/input.html'
     input_type = None
+    datalist = None
 
     def __init__(self, *args, **kwargs):
+        datalist = kwargs.pop('datalist', None)
+        if datalist is not None:
+            self.datalist = datalist
         super(Input, self).__init__(*args, **kwargs)
         self.context_instance = None
 
@@ -80,6 +84,8 @@ class Input(Widget):
                 if not isinstance(attr, bool):
                     context['attrs'][key] = str(attr)
 
+        if self.datalist is not None:
+            context['datalist'] = self.datalist
         return context
 
     def render(self, name, value, attrs=None, **kwargs):
