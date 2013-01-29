@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.test import TestCase
+from django.utils import unittest
 from django.utils.functional import wraps
 
 try:
@@ -8,12 +9,6 @@ except ImportError:
     """GDAL / GEOS not installed. Tests will fail if contrib.gis
     is installed, and will be skipped otherwise"""
     GEOSGeometry = None  # noqa
-
-try:
-    from django.utils import unittest as ut2
-    HAS_UT2 = True
-except ImportError:
-    HAS_UT2 = False
 
 import floppyforms as forms
 
@@ -81,9 +76,7 @@ def _deferredSkip(condition, reason):
             @wraps(test_func)
             def skip_wrapper(*args, **kwargs):
                 if condition():
-                    if HAS_UT2:
-                        raise ut2.SkipTest(reason)
-                    return True  # Reporting as success but actually skipped
+                    raise unittest.SkipTest(reason)
                 return test_func(*args, **kwargs)
             test_item = skip_wrapper
         else:
