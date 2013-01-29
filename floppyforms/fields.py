@@ -1,12 +1,10 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 
 from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                       ClearableFileInput, SelectMultiple, DateInput,
                       DateTimeInput, TimeInput, URLInput, NumberInput,
                       EmailInput, NullBooleanSelect, SlugInput, IPAddressInput,
-                      SplitDateTimeWidget, SplitHiddenDateTimeWidget,
-                      FILE_INPUT_CONTRADICTION)
+                      SplitDateTimeWidget, SplitHiddenDateTimeWidget)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
