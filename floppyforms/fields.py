@@ -22,12 +22,6 @@ class Field(forms.Field):
     widget = TextInput
     hidden_widget = HiddenInput
 
-    def __init__(self, *args, **kwargs):
-        super(Field, self).__init__(*args, **kwargs)
-        self.widget.is_required = self.required  # fallback to support
-                                                 # is_required with
-                                                 # Django < 1.3
-
 
 class CharField(Field, forms.CharField):
     widget = TextInput
