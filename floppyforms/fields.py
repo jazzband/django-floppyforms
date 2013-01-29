@@ -95,6 +95,14 @@ class FloatField(Field, forms.FloatField):
 class IntegerField(Field, forms.IntegerField):
     widget = NumberInput
 
+    def widget_attrs(self, widget):
+        attrs = super(IntegerField, self).widget_attrs(widget) or {}
+        if self.min_value is not None:
+            attrs['min'] = self.min_value
+        if self.max_value is not None:
+            attrs['max'] = self.max_value
+        return attrs
+
 
 class EmailField(Field, forms.EmailField):
     widget = EmailInput

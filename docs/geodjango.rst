@@ -283,7 +283,7 @@ using the google projection.
     {# forms/google_map.html #}
     {% extends "floppyforms/gis/openlayers.html" %}
 
-    {% block options %}
+    {% block options %}
     {{ block.super }}
     options['base_layer'] = new OpenLayers.Layer.Google("Google Streets",
                                                         {numZoomLevels: 20,
