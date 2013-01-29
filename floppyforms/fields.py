@@ -58,29 +58,6 @@ class FilePathField(ChoiceField, forms.FilePathField):
 
 class FileField(Field, forms.FileField):
     widget = ClearableFileInput
-    default_error_messages = {
-        'invalid': _(u"No file was submitted. Check the encoding type on the form."),
-        'missing': _(u"No file was submitted."),
-        'empty': _(u"The submitted file is empty."),
-        'max_length': _(u'Ensure this filename has at most %(max)d characters (it has %(length)d).'),
-        'contradiction': _(u'Please either submit a file or check the clear checkbox, not both.')
-    }
-
-    def __init__(self, *args, **kwargs):
-        self.max_length = kwargs.pop('max_length', None)
-        self.allow_empty_file = kwargs.pop('allow_empty_file', False)
-        super(FileField, self).__init__(*args, **kwargs)
-
-    def clean(self, data, initial=None):
-        if data is FILE_INPUT_CONTRADICTION:
-            raise forms.ValidationError(self.error_messages['contradiction'])
-        if data is False:
-            if not self.required:
-                return False
-            data = None
-        if not data and initial:
-            return initial
-        return super(FileField, self).clean(data)
 
 
 class ImageField(Field, forms.ImageField):
