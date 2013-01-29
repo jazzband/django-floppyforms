@@ -1,7 +1,4 @@
-try:
-    from django.contrib.gis.forms import GeometryField as BaseGeometryField
-except ImportError:
-    from floppyforms.fields import CharField as BaseGeometryField  # noqa
+from django.contrib.gis.forms import GeometryField as BaseGeometryField
 
 from . import widgets
 
