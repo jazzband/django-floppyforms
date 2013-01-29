@@ -636,7 +636,15 @@ class SelectDateWidget(forms.Widget):
         context['day_choices'] = [(i, i) for i in range(1, 32)]
         context['day_val'] = day_val
 
-        if not (self.required and value):
+        # Theoretically the widget should use self.is_required to determine
+        # whether the field is required. For some reason this widget gets a
+        # required parameter. The Django behaviour is preferred in this
+        # implementation.
+
+        # Django also adds none_value only if there is no value. The choice
+        # here is to treat the Django behaviour as a bug: if the value isn't
+        # required, then it can be unset.
+        if self.required is False:
             context['year_choices'].insert(0, self.none_value)
             context['month_choices'].insert(0, self.none_value)
             context['day_choices'].insert(0, self.none_value)

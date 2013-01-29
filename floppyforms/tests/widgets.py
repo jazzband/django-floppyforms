@@ -1033,7 +1033,7 @@ class WidgetRenderingTest(TestCase):
         self.assertEqual(rendered.count('<option value="0">---</option>'), 0)
 
         class SelectDateForm(forms.Form):
-            dt = forms.DateField(widget=forms.SelectDateWidget, required=False)
+            dt = forms.DateField(widget=forms.SelectDateWidget(required=False))
         rendered = SelectDateForm().as_p()
         self.assertEqual(rendered.count('<option value="0">---</option>'), 3)
 
