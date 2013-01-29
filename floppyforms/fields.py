@@ -11,8 +11,9 @@ __all__ = (
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
     'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
-    'TypedChoiceField', 'FilePathField', 'TypedMultipleChoiceField',
-    'ComboField', 'MultiValueField', 'SplitDateTimeField',
+    'GenericIPAddressField', 'TypedChoiceField', 'FilePathField',
+    'TypedMultipleChoiceField', 'ComboField', 'MultiValueField',
+    'SplitDateTimeField',
 )
 
 
@@ -125,6 +126,10 @@ class RegexField(Field, forms.RegexField):
 
 class IPAddressField(Field, forms.IPAddressField):
     widget = IPAddressInput
+
+
+class GenericIPAddressField(Field, forms.GenericIPAddressField):
+    pass
 
 
 class ComboField(Field, forms.ComboField):

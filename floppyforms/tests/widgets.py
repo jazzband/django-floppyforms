@@ -782,6 +782,19 @@ class WidgetRenderingTest(TestCase):
         self.assertFalse(IPv4Form(data={'ip': '500.500.1.1'}).is_valid())
         self.assertTrue(IPv4Form(data={'ip': '250.100.1.8'}).is_valid())
 
+    def test_generic_ip_address(self):
+        """<input type=text>"""
+        class GenericIPForm(forms.Form):
+            ip = forms.GenericIPAddressField()
+
+        with self.assertTemplateUsed('floppyforms/input.html'):
+            rendered = GenericIPForm().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_ip">Ip:</label>
+            <input type="text" name="ip" id="id_ip" required>
+        </p>""")
+
     def test_typed_choice_field(self):
         """foo = forms.TypedChoiceField()"""
         TYPE_CHOICES = (

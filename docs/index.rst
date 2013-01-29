@@ -73,6 +73,8 @@ Changelog
 
 * **v1.1** (NOT RELEASED YET):
 
+  * Added GenericIPAddressField.
+
   * Django 1.5 and Python 3.3 support added.
 
   * Django 1.3 support dropped.

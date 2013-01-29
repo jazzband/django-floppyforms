@@ -37,6 +37,7 @@ URLField                 URLInput            <input type="url">
 SlugField                SlugInput           <input pattern="[-\\w]+">
 RegexField               TextInput           <input [pattern=...]>
 IPAddressField           IPAddressInput      <input pattern=...>
+GenericIPAddressField    TextInput
 MultiValueField          None (*abstract*)
 SplitDateTimeField       SplitDateTimeWidget
 ======================== =================== ========================
