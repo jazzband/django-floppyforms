@@ -3,6 +3,7 @@ import re
 import datetime
 
 from django import forms
+from django.forms.util import to_current_timezone
 from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.conf import settings
 from django.template import loader
@@ -13,11 +14,6 @@ from django.utils import datetime_safe, formats, six
 from django.utils.dates import MONTHS
 from django.utils.encoding import force_text
 
-try:
-    from django.forms.util import to_current_timezone
-except ImportError:
-    # Dummy timzone converter
-    to_current_timezone = lambda value: value  # noqa
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 

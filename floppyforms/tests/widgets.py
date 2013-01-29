@@ -8,11 +8,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils.dates import MONTHS
 from django.utils.encoding import python_2_unicode_compatible
-
-try:
-    from django.utils.timezone import now
-except ImportError:
-    now = datetime.datetime.now  # noqa
+from django.utils.timezone import now
 
 import floppyforms as forms
 
