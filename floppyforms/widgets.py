@@ -630,7 +630,7 @@ class SelectDateWidget(forms.Widget):
         context['year_choices'] = [(i, i) for i in self.years]
         context['year_val'] = year_val
 
-        context['month_choices'] = MONTHS.items()
+        context['month_choices'] = list(MONTHS.items())
         context['month_val'] = month_val
 
         context['day_choices'] = [(i, i) for i in range(1, 32)]
