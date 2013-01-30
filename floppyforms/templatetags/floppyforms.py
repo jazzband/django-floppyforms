@@ -201,8 +201,9 @@ class BaseFormNode(Node):
                             tagname)
                     options['using'] = Variable(bits.pop(0))
                 else:
-                    raise TemplateSyntaxError('%s: expected a template name '
-                                              'after "using".' % tagname)
+                    nodelist = parser.parse(('end%s' % tagname,))
+                    parser.delete_first_token()
+                    options['nodelist'] = nodelist
             elif not cls.optional_using_parameter:
                 raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
                                           (tagname, bits[0]))
@@ -496,29 +497,6 @@ class FormNode(BaseFormRenderNode):
             return super(FormNode, self).render(context)
         finally:
             context.pop()
-
-    @classmethod
-    def parse_using(cls, tagname, parser, bits, options):
-        """
-        Parses content until ``{% endform %}`` if no template name is
-        specified after "using".
-        """
-        if bits:
-            if bits[0] == 'using':
-                bits.pop(0)
-                if len(bits):
-                    if bits[0] in ('with', 'only'):
-                        raise TemplateSyntaxError(
-                            '%s: you must provide one template after "using" '
-                            'and before "with" or "only".')
-                    options['using'] = Variable(bits.pop(0))
-                else:
-                    nodelist = parser.parse(('end%s' % tagname,))
-                    parser.delete_first_token()
-                    options['nodelist'] = nodelist
-            else:
-                raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
-                                          (tagname, bits[0]))
 
 
 class FormRowNode(BaseFormRenderNode):
