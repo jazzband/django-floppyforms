@@ -99,6 +99,12 @@ Changelog
   * Added basic support for ``<datalist>`` elements for suggestions in
     ``Input`` widgets.
 
+  * ``date``, ``datetime`` and ``time`` inputs are not localized anymore. The
+    HTML5 spec requires the rendered values to be RFC3339-compliant and the
+    browsers are in charge of localization. If you still want localized
+    date/time inputs, use those provided by Django or override the
+    ``_format_value()`` method of the relevant widgets.
+
 * **v1.0**:
 
   * cleaned up the behaviour of ``attrs``

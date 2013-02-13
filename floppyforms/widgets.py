@@ -279,9 +279,7 @@ class DateTimeInput(Input):
             self.manual_format = False
 
     def _format_value(self, value):
-        if self.is_localized and not self.manual_format:
-            return formats.localize_input(value)
-        elif hasattr(value, 'strftime'):
+        if hasattr(value, 'strftime'):
             value = datetime_safe.new_datetime(value)
             return value.strftime(self.format)
         return value
@@ -310,9 +308,7 @@ class TimeInput(Input):
             self.manual_format = False
 
     def _format_value(self, value):
-        if self.is_localized and not self.manual_format:
-            return formats.localize_input(value)
-        elif hasattr(value, 'strftime'):
+        if hasattr(value, 'strftime'):
             return value.strftime(self.format)
         return value
 
