@@ -26,6 +26,7 @@ __all__ = (
     'ColorInput', 'EmailInput', 'URLInput', 'PhoneNumberInput', 'NumberInput',
     'IPAddressInput', 'MultiWidget', 'Widget', 'SplitDateTimeWidget',
     'SplitHiddenDateTimeWidget', 'MultipleHiddenInput', 'SelectDateWidget',
+    'SlugInput',
 )
 
 
