@@ -9,4 +9,4 @@ from .models import *
 from .widgets import *
 from . import gis
 
-__version__ = '1.0'
+__version__ = '1.1'

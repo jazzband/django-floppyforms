@@ -71,7 +71,7 @@ Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
 Changelog
 `````````
 
-* **v1.1** (NOT RELEASED YET):
+* **v1.1**:
 
   * Added GenericIPAddressField.
 
