@@ -164,7 +164,6 @@ function MapWidget(options) {
 	this.map = null;
 	this.controls = null;
 	this.panel = null;
-	this.re = new RegExp("^SRID=\d+;(.+)", "i");
 	this.layers = {};
 	this.wkt_f = new OpenLayers.Format.DjangoWKT();
 
@@ -263,9 +262,9 @@ MapWidget.prototype.get_ewkt = function(feat) {
 };
 
 MapWidget.prototype.read_wkt = function(wkt) {
-	var match = this.re.exec(wkt);
-	if (match) {
-		wkt = match[1];
+	var prefix = 'SRID=' + this.options.map_srid + ';'
+	if (wkt.indexOf(prefix) === 0) {
+		wkt = wkt.slice(prefix.length);
 	}
 	return this.wkt_f.read(wkt);
 };
