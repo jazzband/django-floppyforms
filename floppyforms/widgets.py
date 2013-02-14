@@ -399,6 +399,9 @@ class CheckboxInput(Input, forms.CheckboxInput):
         return value
 
     def _has_changed(self, initial, data):
+        if initial == 'False':
+            # show_hidden_initial may have transformed False to 'False'
+            initial = False
         return bool(initial) != bool(data)
 
 
