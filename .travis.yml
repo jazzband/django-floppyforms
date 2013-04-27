@@ -5,12 +5,11 @@ python:
   - "3.3"
 #  - "pypy"
 env:
-  - DJANGO_VERSION=1.4.3
-  - DJANGO_VERSION=1.5c1
+  - DJANGO_VERSION=1.4.5
+  - DJANGO_VERSION=1.5.1
 before_install:
   - export PIP_USE_MIRRORS=true
   - export PIP_INDEX_URL=https://simple.crate.io/
-  - export PIP_FIND_LINKS=http://pypi.renie.fr/Django/
   - export DJANGO_SETTINGS_MODULE=floppyforms.test_settings
   - sudo apt-get update
   - sudo apt-get install binutils gdal-bin libproj-dev libgeos-c1
