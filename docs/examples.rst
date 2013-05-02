@@ -230,7 +230,7 @@ If we have an image set for the field, display the image and propose to clear or
         template_name = 'floppyforms/image_thumbnail.html'
 
 
-	class ImageForm(forms.ModelForm):
+    class ImageForm(forms.ModelForm):
         class Meta:
             model = Item
             fields = ('image',)
@@ -251,6 +251,6 @@ If we have an image set for the field, display the image and propose to clear or
     {% endif %}
     <input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}{% include "floppyforms/attrs.html" %}>
 
-You know have your image:
+You now have your image:
 
 .. image:: images/image_with_thumbnail.png
