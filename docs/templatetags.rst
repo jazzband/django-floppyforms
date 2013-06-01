@@ -114,22 +114,42 @@ A form field takes the same arguments as a form row does, so the same
 configuration options are available here, in addition to a ``for`` keyword to
 limit which fields the specified configuration will apply to.
 
-List a form field after the ``for`` keyword to only configure the arguments of
-that particular field. The following ``formconfig`` example will only affect
-the second ``formfield`` tag but the first one will be left untouched::
+Using the ``for`` keyword allows you to limit the configuration to a specific
+field or a set of fields. After the ``for`` keyword, you can give:
+
+* a form field, like ``form.field_name``
+* the name of a specific field, like ``"username"``
+* a class name of a form field, like ``"CharField"``
+* a class name of a widget, like ``"Textarea"``
+
+The configuration applied by ``{% formconfig field ... %}`` is then only
+available on those fields that match the given criteria.
+
+Here is an example to clarify things. The ``formconfig`` in the snippet below
+will only affect the second ``formfield`` tag but the first one will be left
+untouched::
 
     {% formconfig field using "input.html" with type="password" for userform.password %}
     {% formfield userform.username %}
     {% formfield userform.password %}
 
-Some more generic field filters are available. A string can be used to limit
-configuration either to a specific field name or a field type::
+And some more examples showing the filtering applied on field names, field
+types and widget types::
 
     {% formconfig field with placeholder="Type to search ..." for "search" %}
     {% formfield myform.search %}
 
     {% formconfig field using "forms/widgets/textarea.html" for "CharField" %}
     {% formfield myform.comment %}
+
+    {% formconfig field using class="text_input" for "TextInput" %}
+    {% formfield myform.username %}
+
+.. note:: Please note that the filterings that act on the field class name and
+   widget class name (like ``"CharField"``) also match on subclasses of those
+   field. This means if your class inherits from
+   ``django.forms.fields.CharField`` it will also get the configuration applied
+   specified by ``{% formconfig field ... for "CharField" %}``.
 
 .. _formfield templatetag:
 
