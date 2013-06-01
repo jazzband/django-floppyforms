@@ -23,6 +23,7 @@ class ConfigFilter(object):
     * the bound field passed into the constructor equals the filtered field.
     * the string passed into the constructor equals the fields name.
     * the string passed into the constructor equals the field's class name.
+    * the string passed into the constructor equals the field's widget class name.
     """
     def __init__(self, var):
         self.var = var
@@ -38,6 +39,9 @@ class ConfigFilter(object):
         if self.var == bound_field.name:
             return True
         for class_ in bound_field.field.__class__.__mro__:
+            if self.var == class_.__name__:
+                return True
+        for class_ in bound_field.field.widget.__class__.__mro__:
             if self.var == class_.__name__:
                 return True
 
