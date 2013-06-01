@@ -40,6 +40,7 @@ class PersonForm(forms.Form):
     firstname = forms.CharField()
     lastname = forms.CharField()
     age = forms.IntegerField()
+    bio = forms.CharField(widget=forms.Textarea)
 
 
 class HardcodedWidget(forms.Widget):
@@ -189,6 +190,9 @@ class FormConfigNodeTests(TestCase):
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
             'floppyforms/input.html')
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['bio']),
+            'floppyforms/textarea.html')
 
     def test_field_config_for_field_name(self):
         form = PersonForm()
@@ -206,6 +210,9 @@ class FormConfigNodeTests(TestCase):
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
             'floppyforms/input.html')
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['bio']),
+            'floppyforms/textarea.html')
 
     def test_field_config_for_field_type(self):
         form = PersonForm()
@@ -222,6 +229,29 @@ class FormConfigNodeTests(TestCase):
             'floppyforms/input.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
+            'field.html')
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['bio']),
+            'floppyforms/textarea.html')
+
+    def test_field_config_for_widget_type(self):
+        form = PersonForm()
+        context = Context({FormNode.IN_FORM_CONTEXT_VAR: True, 'form': form})
+
+        node = compile_to_nodelist('{% formconfig field using "field.html" for "Textarea" %}')
+        node.render(context)
+        config = node.get_config(context)
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['firstname']),
+            'floppyforms/input.html')
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['lastname']),
+            'floppyforms/input.html')
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['age']),
+            'floppyforms/input.html')
+        self.assertEqual(
+            config.retrieve('widget_template', bound_field=form['bio']),
             'field.html')
 
 
@@ -310,7 +340,7 @@ class FormTagTests(TestCase):
                     'myform': PersonForm(),
                 }), """
                 Forms: 1
-                1. Form Fields: firstname lastname age
+                1. Form Fields: firstname lastname age bio
                 """)
         with self.assertTemplateUsed('simple_form_tag.html'):
             self.assertHTMLEqual(
@@ -320,7 +350,7 @@ class FormTagTests(TestCase):
                 }), """
                 Forms: 2
                 1. Form Fields: name
-                2. Form Fields: firstname lastname age
+                2. Form Fields: firstname lastname age bio
                 """)
 
     def test_include_content_with_extra_arguments(self):
@@ -330,7 +360,7 @@ class FormTagTests(TestCase):
                     'myform': PersonForm(),
                 }), """
                 Forms: 1
-                1. Form Fields: firstname lastname age
+                1. Form Fields: firstname lastname age bio
                 Extra argument: spam
                 """)
         with self.assertTemplateUsed('simple_form_tag.html'):
@@ -339,7 +369,7 @@ class FormTagTests(TestCase):
                     'myform': PersonForm(),
                 }), """
                 Forms: 1
-                1. Form Fields: firstname lastname age
+                1. Form Fields: firstname lastname age bio
                 """)
         with self.assertTemplateUsed('simple_form_tag.html'):
             self.assertHTMLEqual(
@@ -350,7 +380,7 @@ class FormTagTests(TestCase):
                     """, {'myform': PersonForm()}),
                 """
                 Forms: 1
-                1. Form Fields: firstname lastname age
+                1. Form Fields: firstname lastname age bio
                 Extra argument: ham
                 """)
         with self.assertTemplateUsed('simple_form_tag.html'):
@@ -362,7 +392,7 @@ class FormTagTests(TestCase):
                     """, {'myform': PersonForm()}),
                 """
                 Forms: 1
-                1. Form Fields: firstname lastname age
+                1. Form Fields: firstname lastname age bio
                 """)
         with self.assertTemplateUsed('simple_form_tag.html'):
             self.assertHTMLEqual(
@@ -373,7 +403,7 @@ class FormTagTests(TestCase):
                     """, {'myform': PersonForm()}),
                 """
                 Forms: 1
-                1. Form Fields: firstname lastname age
+                1. Form Fields: firstname lastname age bio
                 """)
 
     def test_default_template(self):
@@ -389,7 +419,7 @@ class FormTagTests(TestCase):
                 'forms': form_list,
             }), """
             Forms: 3
-            1. Form Fields: firstname lastname age
+            1. Form Fields: firstname lastname age bio
             2. Form Fields: name
             3. Form Fields: name
             """)
@@ -402,9 +432,9 @@ class FormTagTests(TestCase):
                 'formset': formset,
             }), """
             Forms: 3
-            1. Form Fields: firstname lastname age
-            2. Form Fields: firstname lastname age
-            3. Form Fields: firstname lastname age
+            1. Form Fields: firstname lastname age bio
+            2. Form Fields: firstname lastname age bio
+            3. Form Fields: firstname lastname age bio
             """)
 
         formset = PersonFormSet(initial=[{}, {}])
@@ -413,11 +443,11 @@ class FormTagTests(TestCase):
                 'formset': formset,
             }), """
             Forms: 5
-            1. Form Fields: firstname lastname age
-            2. Form Fields: firstname lastname age
-            3. Form Fields: firstname lastname age
-            4. Form Fields: firstname lastname age
-            5. Form Fields: firstname lastname age
+            1. Form Fields: firstname lastname age bio
+            2. Form Fields: firstname lastname age bio
+            3. Form Fields: firstname lastname age bio
+            4. Form Fields: firstname lastname age bio
+            5. Form Fields: firstname lastname age bio
             """)
 
 
@@ -559,22 +589,24 @@ class FormRowTagTests(TestCase):
         self.assertHTMLEqual(render("""{% form myform using %}
             {% formrow form using "simple_formrow_tag.html" %}
         {% endform %}""", {'myform': form}), """
-            Fields: 3
+            Fields: 4
             1. Field: firstname
             2. Field: lastname
             3. Field: age
+            4. Field: bio
         """)
 
         form = PersonForm()
         self.assertHTMLEqual(render("""{% form myform using %}
             {% formrow form.lastname form None form.firstname using "simple_formrow_tag.html" %}
         {% endform %}""", {'myform': form}), """
-            Fields: 5
+            Fields: 6
             1. Field: lastname
             2. Field: firstname
             3. Field: lastname
             4. Field: age
-            5. Field: firstname
+            5. Field: bio
+            6. Field: firstname
         """)
 
 
