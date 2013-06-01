@@ -38,10 +38,17 @@ class ConfigFilter(object):
                     return True
         if self.var == bound_field.name:
             return True
+        # ignore 'object' in the mro, because it would be a match-all filter
+        # anyway. And 'object' could clash with a field that is named the
+        # same.
         for class_ in bound_field.field.__class__.__mro__:
+            if class_.__name__ == 'object':
+                continue
             if self.var == class_.__name__:
                 return True
         for class_ in bound_field.field.widget.__class__.__mro__:
+            if class_.__name__ == 'object':
+                continue
             if self.var == class_.__name__:
                 return True
 
