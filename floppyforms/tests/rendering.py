@@ -110,6 +110,58 @@ class FormConfigTests(TestCase):
         widget = config.retrieve('widget', bound_field=form['short_biography'])
         self.assertEqual(widget.__class__, widgets.HiddenInput)
 
+    def test_filter_for_field_class_name(self):
+        form = RegistrationForm()
+
+        config = FormConfig()
+        config.configure('widget', widgets.TextInput(), filter=ConfigFilter('CharField'))
+
+        widget = config.retrieve('widget', bound_field=form['comment'])
+        self.assertEqual(widget.__class__, widgets.TextInput)
+
+        widget = config.retrieve('widget', bound_field=form['name'])
+        self.assertEqual(widget.__class__, widgets.TextInput)
+
+    def test_filter_for_widget_class_name(self):
+        form = RegistrationForm()
+
+        config = FormConfig()
+        config.configure('widget', widgets.TextInput(), filter=ConfigFilter('Textarea'))
+
+        widget = config.retrieve('widget', bound_field=form['comment'])
+        self.assertEqual(widget.__class__, widgets.TextInput)
+
+        widget = config.retrieve('widget', bound_field=form['name'])
+        self.assertEqual(widget.__class__, widgets.TextInput)
+
+        # swap widgets TextInput <> Textarea
+
+        config = FormConfig()
+        config.configure('widget', widgets.Textarea(), filter=ConfigFilter('TextInput'))
+        config.configure('widget', widgets.TextInput(), filter=ConfigFilter('Textarea'))
+
+        widget = config.retrieve('widget', bound_field=form['comment'])
+        self.assertEqual(widget.__class__, widgets.TextInput)
+
+        widget = config.retrieve('widget', bound_field=form['name'])
+        self.assertEqual(widget.__class__, widgets.Textarea)
+
+    def test_filter_for_name_object(self):
+        form = RegistrationForm()
+
+        config = FormConfig()
+        config.configure('widget', widgets.Textarea(), filter=ConfigFilter('object'))
+
+        widget = config.retrieve('widget', bound_field=form['email'])
+        self.assertEqual(widget.__class__, widgets.EmailInput)
+
+        widget = config.retrieve('widget', bound_field=form['name'])
+        self.assertEqual(widget.__class__, widgets.TextInput)
+
+        widget = config.retrieve('widget', bound_field=form['comment'])
+        self.assertEqual(widget.__class__, widgets.Textarea)
+
+
     def test_stacked_config(self):
         form = RegistrationForm()
         config = FormConfig()
