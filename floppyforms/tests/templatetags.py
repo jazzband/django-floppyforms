@@ -450,6 +450,29 @@ class FormTagTests(TestCase):
             5. Form Fields: firstname lastname age bio
             """)
 
+    def test_formconfig_gets_popped_after_form_tag(self):
+        form = PersonForm()
+        rendered = render('''{% form form using %}
+            {% formconfig row with extra_argument="first argument" %}
+            {% formrow form.firstname using "simple_formrow_tag.html" %}
+            {% form form using %}
+                {% formconfig row with extra_argument="pop me" %}
+                {% formrow form.lastname using "simple_formrow_tag.html" %}
+                {% formrow argument|if:forloop.last|else:None %}
+            {% endform %}
+            {% formrow form.lastname using "simple_formrow_tag.html" %}
+        {% endform %}''', {'form': form})
+        self.assertHTMLEqual(rendered, '''
+        Fields: 1
+        1. Field: firstname Extra argument: first argument
+
+        Fields: 1
+        1. Field: lastname Extra argument: pop me
+
+        Fields: 1
+        1. Field: lastname Extra argument: first argument
+        ''')
+
 
 class FormRowTagTests(TestCase):
     def test_valid_syntax(self):
@@ -609,6 +632,27 @@ class FormRowTagTests(TestCase):
             6. Field: firstname
         """)
 
+    def test_formconfig_gets_popped_after_formrow_tag(self):
+        '''
+        Tests that the form config will be reseted after being set in a
+        ``formrow`` tag.
+        '''
+        form = SimpleForm()
+        rendered = render('''{% form form using %}
+            {% formconfig row with extra_argument="first argument" %}
+            {% formrow form.name using "simple_formrow_tag_with_config.html" %}
+            {% formrow form.name using "simple_formrow_tag.html" %}
+        {% endform %}''', {'form': form})
+        self.assertHTMLEqual(rendered, '''
+        Fields: 1
+        1. Field: name argument: defined inline
+        Extra argument: first argument
+
+        Fields: 1
+        1. Field: name
+        Extra argument: first argument
+        ''')
+
 
 class FormFieldTagTests(TestCase):
     def test_valid_syntax(self):
@@ -685,6 +729,22 @@ class FormFieldTagTests(TestCase):
         self.assertHTMLEqual(render("""{% form myform using %}
             {% formfield form.name %}
         {% endform %}""", {'myform': form}), """Hardcoded widget.""")
+
+    def test_formconfig_gets_popped_after_formfield_tag(self):
+        '''
+        Tests that the form config will be reseted after being set in a
+        ``formfield`` tag.
+        '''
+        form = SimpleForm()
+        rendered = render('''{% form form using %}
+            {% formconfig field with extra_argument="first argument" %}
+            {% formfield form.name using "extra_argument_with_config.html" with prefix="1." %}
+            {% formfield form.name using "extra_argument.html" with prefix="2." %}
+        {% endform %}''', {'form': form})
+        self.assertHTMLEqual(rendered, '''
+        1. argument: first argument
+        2. argument: first argument
+        ''')
 
 
 class WidgetTagTest(TestCase):

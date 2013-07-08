@@ -1,14 +1,17 @@
 {% load floppyforms %}{% block formconfig %}{% formconfig row using "floppyforms/rows/li.html" %}{% endblock %}
 
 {% block forms %}{% for form in forms %}
-{% block errors %}{% if form.non_field_errors or form|hidden_field_errors %}<li><ul class="errorlist">
-    {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
-    {% for error in form|hidden_field_errors %}<li>{{ error }}</li>{% endfor %}
-</ul></li>{% endif %}{% endblock %}
-{% block rows %}{% for field in form.visible_fields %}
-{% if forloop.last %}{% formconfig row with hidden_fields=form.hidden_fields %}{% endif %}
-{% block row %}{% formrow field %}{% endblock %}
-{% endfor %}
-{% if not form.visible_fields %}{% for field in form.hidden_fields %}{% formfield field %}{% endfor %}{% endif %}
-{% endblock %}
+    {% block errors %}{% if form.non_field_errors or form|hidden_field_errors %}<li><ul class="errorlist">
+        {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+        {% for error in form|hidden_field_errors %}<li>{{ error }}</li>{% endfor %}
+    </ul></li>{% endif %}{% endblock %}
+    {% block rows %}
+    {% form form using %}{# needed to push the context for the formconfig #}
+            {% for field in form.visible_fields %}
+                {% if forloop.last %}{% formconfig row with hidden_fields=form.hidden_fields %}{% endif %}
+                {% block row %}{% formrow field %}{% endblock %}
+            {% endfor %}
+        {% endform %}
+        {% if not form.visible_fields %}{% for field in form.hidden_fields %}{% formfield field %}{% endfor %}{% endif %}
+    {% endblock %}
 {% endfor %}{% endblock %}

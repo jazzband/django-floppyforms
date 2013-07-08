@@ -107,6 +107,32 @@ already set options. Here is a valid example::
     </form>
     {% endform %}
 
+However a configuration set with ``formconfig`` will only be available inside
+the ``form`` tag that it was specified in. This makes it possible to scope the
+configuration with an extra use of the ``form`` tag. See this example::
+
+    {% form myform using %}
+    <form action="" method="post" id="signup">{% csrf_token %}
+        {# will use default row template #}
+        {% formrow form.username %}
+
+        {% form form using %}
+            <ul>
+                {# this config will not be available outside of the wrapping form tag #}
+                {% formconfig row using "floppyforms/rows/li.html" %}
+
+                {# will use configured li row template #}
+                {% formrow form.password form.password2 %}
+            </ul>
+        {% endform %}
+
+        {# will use default row template #}
+        {% formrow form.firstname form.lastname %}
+
+        <p><input type="submit" value="Signup!" /></p>
+    </form>
+    {% endform %}
+
 ``field``
 ~~~~~~~~~
 

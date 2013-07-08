@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.forms.formsets import formset_factory
 from django.template import Context, Template
 from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
@@ -27,6 +28,12 @@ class OneFieldForm(forms.Form):
     def clean(self):
         if self.errors:
             raise ValidationError(u'Please correct the errors below.')
+
+
+class ShortForm(forms.Form):
+    name = forms.CharField(label=_(u'Your first name?'))
+    age = forms.IntegerField(required=False)
+    metadata = forms.CharField(required=False, widget=forms.HiddenInput)
 
 
 class RegistrationForm(forms.Form):
@@ -159,6 +166,31 @@ class PLayoutTests(TestCase):
         <input type="hidden" name="hide" id="id_hide" required>
         """)
 
+    def test_formsets_with_hidden_fields(self):
+        ShortFormset = formset_factory(form=ShortForm, extra=1)
+        formset = ShortFormset(initial=[{'name': 'Johnson', 'age': 23, 'metadata': 'Hidden details'}])
+        rendered = render("""{% form formset using "floppyforms/layouts/p.html" %}""", {'formset': formset})
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_form-0-name">Your first name?</label>
+            <input type="text" name="form-0-name" value="Johnson" required id="id_form-0-name">
+        </p>
+        <p>
+            <label for="id_form-0-age">Age:</label>
+            <input type="number" name="form-0-age" value="23" id="id_form-0-age">
+            <input type="hidden" name="form-0-metadata" value="Hidden details" id="id_form-0-metadata">
+        </p>
+        <p>
+            <label for="id_form-1-name">Your first name?</label>
+            <input type="text" name="form-1-name" required id="id_form-1-name">
+        </p>
+        <p>
+            <label for="id_form-1-age">Age:</label>
+            <input type="number" name="form-1-age" id="id_form-1-age">
+            <input type="hidden" name="form-1-metadata" id="id_form-1-metadata">
+        </p>
+        """)
+
 
 class TableLayoutTests(TestCase):
     def test_layout(self):
@@ -251,6 +283,39 @@ class TableLayoutTests(TestCase):
         <input type="hidden" name="hide" id="id_hide" required>
         """)
 
+    def test_formsets_with_hidden_fields(self):
+        ShortFormset = formset_factory(form=ShortForm, extra=1)
+        formset = ShortFormset(initial=[{'name': 'Johnson', 'age': 23, 'metadata': 'Hidden details'}])
+        rendered = render("""{% form formset using "floppyforms/layouts/table.html" %}""", {'formset': formset})
+        self.assertHTMLEqual(rendered, """
+        <tr>
+            <th><label for="id_form-0-name">Your first name?</label></th>
+            <td>
+                <input type="text" name="form-0-name" value="Johnson" required id="id_form-0-name">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="id_form-0-age">Age:</label></th>
+            <td>
+                <input type="number" name="form-0-age" value="23" id="id_form-0-age">
+                <input type="hidden" name="form-0-metadata" value="Hidden details" id="id_form-0-metadata">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="id_form-1-name">Your first name?</label></th>
+            <td>
+                <input type="text" name="form-1-name" required id="id_form-1-name">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="id_form-1-age">Age:</label></th>
+            <td>
+                <input type="number" name="form-1-age" id="id_form-1-age">
+                <input type="hidden" name="form-1-metadata" id="id_form-1-metadata">
+            </td>
+        </tr>
+        """)
+
 
 class UlLayoutTests(TestCase):
     def test_layout(self):
@@ -329,6 +394,32 @@ class UlLayoutTests(TestCase):
         rendered = render("""{% form form using "floppyforms/layouts/ul.html" %}""", {'form': form})
         self.assertHTMLEqual(rendered, """
         <input type="hidden" name="hide" id="id_hide" required>
+        """)
+
+    def test_formsets_with_hidden_fields(self):
+        ShortFormset = formset_factory(form=ShortForm, extra=1)
+        formset = ShortFormset(initial=[{'name': 'Johnson', 'age': 23, 'metadata': 'Hidden details'}])
+        rendered = render("""{% form formset using "floppyforms/layouts/ul.html" %}""", {'formset': formset})
+        self.assertHTMLEqual(rendered, """
+        <li>
+            <label for="id_form-0-name">Your first name?</label>
+            <input type="text" name="form-0-name" value="Johnson" required id="id_form-0-name">
+        </li>
+        <li>
+            <label for="id_form-0-age">Age:</label>
+            <input type="number" name="form-0-age" value="23" id="id_form-0-age">
+            <input type="hidden" name="form-0-metadata" value="Hidden details" id="id_form-0-metadata">
+
+        </li>
+        <li>
+            <label for="id_form-1-name">Your first name?</label>
+            <input type="text" name="form-1-name" required id="id_form-1-name">
+        </li>
+        <li>
+            <label for="id_form-1-age">Age:</label>
+            <input type="number" name="form-1-age" id="id_form-1-age">
+            <input type="hidden" name="form-1-metadata" id="id_form-1-metadata">
+        </li>
         """)
 
 

@@ -1,0 +1,8 @@
+{% load floppyforms %}
+{% formconfig row with extra_argument="defined inline" %}
+{% formconfig field with extra_argument="defined inline" %}
+Fields: {{ fields|length }}
+{% for field in fields %}
+{{ forloop.counter }}. Field: {% formfield field using "extra_argument.html" with prefix=field.name %}
+{% endfor %}
+{% if extra_argument %}Extra argument: {{ extra_argument }}{% endif %}

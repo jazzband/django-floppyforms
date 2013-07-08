@@ -1,0 +1,3 @@
+{% load floppyforms %}
+{% formconfig field with extra_argument="defined inline" %}
+{{ prefix }}{% if extra_argument %} argument: {{ extra_argument }}{% endif %}

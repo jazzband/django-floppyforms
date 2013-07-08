@@ -460,6 +460,9 @@ class BaseFormRenderNode(BaseFormNode):
     def render(self, context):
         only = self.options['only']
 
+        config = self.get_config(context)
+        config.push()
+
         extra_context = self.get_extra_context(context)
         nodelist = self.get_nodelist(context, extra_context)
         if nodelist is None:
@@ -467,12 +470,14 @@ class BaseFormRenderNode(BaseFormNode):
 
         if only:
             context = context.new(extra_context)
-            return nodelist.render(context)
+            output = nodelist.render(context)
         else:
             context.update(extra_context)
             output = nodelist.render(context)
             context.pop()
-            return output
+
+        config.pop()
+        return output
 
 
 class FormNode(BaseFormRenderNode):
@@ -622,11 +627,15 @@ class FormFieldNode(BaseFormRenderNode):
             context.update(extra_context)
             context_instance = context
 
+        config.push()
+
         # Using a context manager here until Django's BoundField takes
         # template name and context instance parameters
         with attributes(widget, template_name=template_name,
                         context_instance=context_instance) as widget:
             output = bound_field.as_widget(widget=widget)
+
+        config.pop()
 
         if not self.options['only']:
             context.pop()
