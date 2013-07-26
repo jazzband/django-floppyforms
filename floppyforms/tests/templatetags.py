@@ -473,6 +473,14 @@ class FormTagTests(TestCase):
         1. Field: lastname Extra argument: first argument
         ''')
 
+    def test_formconfig_inside_only(self):
+        form = PersonForm()
+        rendered = render('''{% form form using "formconfig_inside_only.html" with form=form only  %}''', {'form': form})
+        self.assertHTMLEqual(rendered, '''
+        Fields: 1
+        1. Field: firstname Extra argument: first argument
+        ''')
+
 
 class FormRowTagTests(TestCase):
     def test_valid_syntax(self):
