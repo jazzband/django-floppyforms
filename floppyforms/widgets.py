@@ -100,8 +100,13 @@ class Input(Widget):
 class TextInput(Input):
     input_type = 'text'
 
+    def __init__(self, *args, **kwargs):
+        if kwargs.get('attrs', None) is not None:
+            self.input_type = kwargs['attrs'].pop('type', self.input_type)
+        super(TextInput, self).__init__(*args, **kwargs)
 
-class PasswordInput(Input):
+
+class PasswordInput(TextInput):
     input_type = 'password'
 
     def __init__(self, attrs=None, render_value=False):
@@ -109,8 +114,7 @@ class PasswordInput(Input):
         self.render_value = render_value
 
     def render(self, name, value, attrs=None):
-        if not self.render_value:
-            value = None
+        if not self.render_value: value = None
         return super(PasswordInput, self).render(name, value, attrs)
 
 
@@ -327,11 +331,11 @@ class SearchInput(Input):
     input_type = 'search'
 
 
-class EmailInput(Input):
+class EmailInput(TextInput):
     input_type = 'email'
 
 
-class URLInput(Input):
+class URLInput(TextInput):
     input_type = 'url'
 
 
@@ -339,7 +343,7 @@ class ColorInput(Input):
     input_type = 'color'
 
 
-class NumberInput(Input):
+class NumberInput(TextInput):
     input_type = 'number'
     min = None
     max = None

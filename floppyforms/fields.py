@@ -84,16 +84,16 @@ class TimeField(Field, forms.TimeField):
     widget = TimeInput
 
 
-class DecimalField(Field, forms.DecimalField):
-    widget = NumberInput
-
-
 class FloatField(Field, forms.FloatField):
     widget = NumberInput
 
 
 class IntegerField(Field, forms.IntegerField):
     widget = NumberInput
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('widget', NumberInput if not kwargs.get('localize') else self.widget)
+        super(IntegerField, self).__init__(*args, **kwargs)
 
     def widget_attrs(self, widget):
         attrs = super(IntegerField, self).widget_attrs(widget) or {}
@@ -102,6 +102,14 @@ class IntegerField(Field, forms.IntegerField):
         if self.max_value is not None:
             attrs['max'] = self.max_value
         return attrs
+
+
+class DecimalField(Field, forms.DecimalField):
+    widget = NumberInput
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('widget', NumberInput if not kwargs.get('localize') else self.widget)
+        super(DecimalField, self).__init__(*args, **kwargs)
 
 
 class EmailField(Field, forms.EmailField):
