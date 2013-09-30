@@ -1,3 +1,4 @@
+import django
 from django.forms import TextInput
 from django.forms.formsets import formset_factory
 from django.template import Context, Template, TemplateSyntaxError
@@ -9,6 +10,12 @@ from floppyforms.templatetags.floppyforms import (FormConfig, ConfigFilter,
                                                   FieldModifier)
 
 
+_TEMPLATE_PREAMBLE = '{% load floppyforms %}' 
+if django.VERSION >= (1, 6):
+    _TEMPLATE_PREAMBLE += '{% load firstof from future %}'
+    _TEMPLATE_PREAMBLE += '{% load cycle from future %}'
+
+
 def render(template, context=None, config=None):
     if context is None:
         context = {}
@@ -16,7 +23,7 @@ def render(template, context=None, config=None):
         context = Context(context)
     if config is not None:
         setattr(context, FormNode.CONFIG_CONTEXT_ATTR, config)
-    t = Template('{% load floppyforms %}' + template)
+    t = Template(_TEMPLATE_PREAMBLE + template)
     return t.render(context)
 
 

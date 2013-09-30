@@ -33,6 +33,12 @@ class RegistrationForm(forms.Form):
 class RegistrationModelForm(forms.ModelForm):
     class Meta:
         model = Registration
+        fields = (
+            'firstname',
+            'lastname',
+            'username',
+            'age',
+        )
 
 
 class FormRenderAsMethodsTests(TestCase):
