@@ -5,6 +5,9 @@ DATABASES = {
     },
 }
 
+USE_I18N = True
+USE_L10N = True
+
 INSTALLED_APPS = [
     'django.contrib.gis',
     'floppyforms',
