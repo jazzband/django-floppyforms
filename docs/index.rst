@@ -71,7 +71,13 @@ Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
 Changelog
 `````````
 
-* **v1.1**:
+* **1.1.1** (2014-01-21):
+
+  * Fix for Django 1.6
+
+  * Fix for GIS widgets on Django 1.4 and some versions of GEOS.
+
+* **1.1** (2013-02-13):
 
   * Added GenericIPAddressField.
 
