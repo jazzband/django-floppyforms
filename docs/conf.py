@@ -11,7 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import datetime
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -41,7 +41,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'django-floppyforms'
-copyright = u'2010-2013, Bruno Renié'
+copyright = u'2010-{0}, Bruno Renié and contributors'.format(
+    datetime.datetime.today().year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
