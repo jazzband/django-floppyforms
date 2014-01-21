@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter('always')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

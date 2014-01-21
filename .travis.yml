@@ -1,35 +1,29 @@
 language: python
-python:
-  - "2.6"
-  - "2.7"
-  - "3.3"
-#  - "pypy"
+python: 2.7
 env:
-  - DJANGO_VERSION=1.4.5
-  - DJANGO_VERSION=1.5.1
+  - TOXENV=py26-1.4
+  - TOXENV=py26-1.5
+  - TOXENV=py26-1.6
+  - TOXENV=py27-1.4
+  - TOXENV=py27-1.5
+  - TOXENV=py27-1.6
+  - TOXENV=pypy-1.4
+  - TOXENV=pypy-1.5
+  - TOXENV=pypy-1.6
+  - TOXENV=py33-1.5
+  - TOXENV=py33-1.6
+  - TOXENV=docs
 before_install:
-  - export PIP_USE_MIRRORS=true
-  - export PIP_INDEX_URL=https://simple.crate.io/
-  - export DJANGO_SETTINGS_MODULE=floppyforms.test_settings
-  - sudo apt-get update
-  - sudo apt-get install binutils gdal-bin libproj-dev libgeos-c1
+  - sudo apt-get -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
-  - pip install -e .
-  - pip install -r requirements/tests.txt Django==$DJANGO_VERSION
+  - pip install tox flake8
 before_script:
-  - (python --version 2>&1 | grep -q "Python 2" && flake8 floppyforms --ignore=E5,E123,E125,E126) || echo "Skipped flake8 check (python 3)"
+  - flake8 floppyforms
 script:
-  - make test
-branches:
-  only:
-    - master
+  - tox -e $TOXENV
 notifications:
   irc:
     channels:
       - "irc.freenode.org#django-floppyforms"
     on_success: change
     on_failure: always
-matrix:
-  exclude:
-    - python: "3.3"
-      env: DJANGO_VERSION=1.4.5
