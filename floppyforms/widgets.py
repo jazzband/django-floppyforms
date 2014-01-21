@@ -115,7 +115,8 @@ class PasswordInput(TextInput):
         self.render_value = render_value
 
     def render(self, name, value, attrs=None):
-        if not self.render_value: value = None
+        if not self.render_value:
+            value = None
         return super(PasswordInput, self).render(name, value, attrs)
 
 

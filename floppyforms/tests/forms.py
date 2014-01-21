@@ -104,7 +104,7 @@ class FormHasChangedTests(TestCase):
         self.assertTrue(form.has_changed())
 
         form = RegistrationForm({'height': '1.89'},
-            initial={'height': Decimal('1.89')})
+                                initial={'height': Decimal('1.89')})
         self.assertFalse(form.has_changed())
 
     def test_custom_has_changed_logic_for_checkbox_input(self):
@@ -112,11 +112,11 @@ class FormHasChangedTests(TestCase):
         self.assertTrue(form.has_changed())
 
         form = RegistrationForm({'agree_to_terms': False},
-            initial={'agree_to_terms': False})
+                                initial={'agree_to_terms': False})
         self.assertFalse(form.has_changed())
 
         form = RegistrationForm({'agree_to_terms': False},
-            initial={'agree_to_terms': 'False'})
+                                initial={'agree_to_terms': 'False'})
         self.assertFalse(form.has_changed())
 
     @skipIf(django.VERSION < (1, 6), 'Only applies to Django >= 1.6')
@@ -135,7 +135,7 @@ class FormHasChangedTests(TestCase):
         '''
         with translation.override('de-de'):
             form = RegistrationForm({'height': '1,89'},
-                initial={'height': Decimal('1.89')})
+                                    initial={'height': Decimal('1.89')})
             self.assertFalse(form.has_changed())
 
     if django.VERSION < (1, 6):

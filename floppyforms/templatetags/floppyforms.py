@@ -310,12 +310,12 @@ class ModifierBase(BaseFormNode):
         filter = None
         if self.options['for']:
             try:
-                var = self.options['for'].resolve(context)
+                for_ = self.options['for'].resolve(context)
             except VariableDoesNotExist:
                 if settings.TEMPLATE_DEBUG:
                     raise
                 return ''
-            filter = ConfigFilter(var)
+            filter = ConfigFilter(for_)
         if self.options['using']:
             try:
                 template_name = self.options['using'].resolve(context)

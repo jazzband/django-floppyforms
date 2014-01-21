@@ -10,7 +10,7 @@ from floppyforms.templatetags.floppyforms import (FormConfig, ConfigFilter,
                                                   FieldModifier)
 
 
-_TEMPLATE_PREAMBLE = '{% load floppyforms %}' 
+_TEMPLATE_PREAMBLE = '{% load floppyforms %}'
 if django.VERSION >= (1, 6):
     _TEMPLATE_PREAMBLE += '{% load firstof from future %}'
     _TEMPLATE_PREAMBLE += '{% load cycle from future %}'
@@ -336,7 +336,7 @@ class FormTagTests(TestCase):
                 {% endif %}
                 Length: {{ forms|length }}
             {% endform %}""", {
-                'f1': SimpleForm(),
+                'f1': SimpleForm(),  # noqa
                 'f2': SimpleForm()
             }), 'Equals! Length: 2')
 

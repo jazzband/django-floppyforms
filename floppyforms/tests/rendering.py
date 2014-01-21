@@ -161,7 +161,6 @@ class FormConfigTests(TestCase):
         widget = config.retrieve('widget', bound_field=form['comment'])
         self.assertEqual(widget.__class__, widgets.Textarea)
 
-
     def test_stacked_config(self):
         form = RegistrationForm()
         config = FormConfig()
