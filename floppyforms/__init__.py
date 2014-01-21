@@ -7,6 +7,12 @@ from .fields import *
 from .forms import *
 from .models import *
 from .widgets import *
-from . import gis
+
+try:
+    from . import gis
+except Exception:
+    import warnings
+    warnings.warn(
+        "Unable to import floppyforms.gis, geometry widgets not available")
 
 __version__ = '1.1'

@@ -5,7 +5,7 @@ from django.utils.functional import wraps
 
 try:
     from django.contrib.gis.geos import GEOSGeometry
-except ImportError:
+except (ImportError, Exception):
     """GDAL / GEOS not installed. Tests will fail if contrib.gis
     is installed, and will be skipped otherwise"""
     GEOSGeometry = None  # noqa
