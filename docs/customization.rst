@@ -68,6 +68,7 @@ extend ``get_context_data()`` which doesn't take any arguments::
             ctx.update({
                 'placeholder': 'hello@example.com',
             })
+            return ctx
 
 Altering the widget's ``attrs``
 -------------------------------
