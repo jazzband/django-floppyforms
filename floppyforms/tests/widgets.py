@@ -1176,12 +1176,24 @@ class WidgetRenderingTest(TestCase):
         rendered = widget.render('text', 'value')
         self.assertHTMLEqual(rendered, '<input type="custom" name="text" />')
 
+    def test_specify_template_at_init_as_None(self):
+        """Can give an explicit template_name=None without overriding."""
+        widget = forms.TextInput(template_name=None)
+
+        self.assertIsNot(widget.template_name, None)
+
     def test_specify_template_in_render(self):
         """Can customize the template used at render time."""
         widget = forms.TextInput()
 
         rendered = widget.render('text', 'value', template_name='custom.html')
         self.assertHTMLEqual(rendered, '<input type="custom" name="text" />')
+
+        # Can explicitly give None and will not override
+        rendered = widget.render('text', 'value', template_name=None)
+        self.assertHTMLEqual(
+            rendered, '<input type="text" name="text" value="value" />')
+
 
 
 class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
