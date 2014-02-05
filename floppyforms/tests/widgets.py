@@ -1169,6 +1169,20 @@ class WidgetRenderingTest(TestCase):
             </datalist>
         </p>""")
 
+    def test_specify_template_at_init(self):
+        """Can customize the template used when instantiating the widget."""
+        widget = forms.TextInput(template_name='custom.html')
+
+        rendered = widget.render('text', 'value')
+        self.assertHTMLEqual(rendered, '<input type="custom" name="text" />')
+
+    def test_specify_template_in_render(self):
+        """Can customize the template used at render time."""
+        widget = forms.TextInput()
+
+        rendered = widget.render('text', 'value', template_name='custom.html')
+        self.assertHTMLEqual(rendered, '<input type="custom" name="text" />')
+
 
 class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
     pass

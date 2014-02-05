@@ -44,6 +44,7 @@ class Input(Widget):
         datalist = kwargs.pop('datalist', None)
         if datalist is not None:
             self.datalist = datalist
+        self.template_name = kwargs.pop('template_name', self.template_name)
         super(Input, self).__init__(*args, **kwargs)
         self.context_instance = None
 
@@ -91,9 +92,10 @@ class Input(Widget):
         return context
 
     def render(self, name, value, attrs=None, **kwargs):
+        template_name = kwargs.pop('template_name', self.template_name)
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
         return loader.render_to_string(
-            self.template_name,
+            template_name,
             dictionary=context,
             context_instance=self.context_instance)
 
