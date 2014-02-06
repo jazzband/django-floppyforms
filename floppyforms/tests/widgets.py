@@ -1195,7 +1195,6 @@ class WidgetRenderingTest(TestCase):
             rendered, '<input type="text" name="text" value="value" />')
 
 
-
 class WidgetRenderingTestWithTemplateStringIfInvalidSet(WidgetRenderingTest):
     pass
 
