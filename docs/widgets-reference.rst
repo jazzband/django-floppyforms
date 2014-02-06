@@ -15,6 +15,15 @@ For each widgets, the default class attributes.
         ``datalist`` elements are only **suggestions** and are not related to
         form validation.
 
+    .. attribute:: Input.template_name
+
+       A path to a template that should be used to render this widget. You can
+       change the template name per instance by passing in a keyword argument
+       called ``template_name``. This will override the default that is set by
+       the widget class. You can also change the template used for rendering by
+       an argument to the ``Input.render()`` method. See more about exchanging
+       the templates in the :doc:`documentation about customization <customization>`.
+
 .. class:: TextInput
 
     .. attribute:: TextInput.template_name

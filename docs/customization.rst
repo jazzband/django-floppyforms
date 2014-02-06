@@ -39,6 +39,8 @@ with an ``attrs`` dictionary::
     class EmailForm(forms.Form):
         email = forms.EmailField(widget=OtherEmailInput())
 
+.. _template_name_customization:
+
 You can also customize the ``template_name`` without subclassing, by passing it
 as an argument when instantiating the widget::
 
