@@ -39,6 +39,16 @@ with an ``attrs`` dictionary::
     class EmailForm(forms.Form):
         email = forms.EmailField(widget=OtherEmailInput())
 
+You can also customize the ``template_name`` without subclassing, by passing it
+as an argument when instantiating the widget::
+
+    class EmailForm(forms.Form):
+        email = forms.EmailField(
+            widget=forms.EmailInput(template_name='path/to/other_email.html'))
+
+For advanced use, you can even customize the template used per-render, by
+passing a ``template_name`` argument to the widget's ``render()`` method.
+
 Adding more template variables
 ------------------------------
 
