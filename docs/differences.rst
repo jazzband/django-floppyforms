@@ -98,46 +98,6 @@ the Mozilla Developer Network if you want to know more.
 .. _novalidate: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-novalidate
 .. _formnovalidate: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-formnovalidate
 
-ModelForms
-----------
-
-As for ModelForms, all the fields coming from the model still get a widget
-from ``django.forms`` and not from floppyforms, unless the widgets are
-overridden in the form's ``Meta`` inner class. For example, if we have a
-model declared as such:
-
-.. code-block:: python
-
-    from django.db import models
-
-    class Hi(models.Model):
-        name = models.CharField(max_length=255)
-        timestamp = models.DateTimeField()
-        rank = models.PositiveIntegerField()
-
-And a ModelForm written like this:
-
-.. code-block:: python
-
-    import floppyforms as forms
-
-    class HiForm(forms.ModelForm):
-        yesno = forms.BooleanField
-
-        class Meta:
-            model = Hi
-            widgets = {
-                'timestamp': forms.DateTimeInput,
-            }
-
-With such a ModelForm, the ``yesno`` and ``timestamp`` fields will get a
-widget from floppyforms:
-
-* ``yesno`` is an extra field declared using the floppyforms namespace
-* ``timestamp`` has an overridden widget coming from floppyforms as well
-
-However, the ``name`` and ``rank`` field will both get a widget from
-``django.forms``, in this case a ``TextInput``.
 
 ``TEMPLATE_STRING_IF_INVALID`` caveats
 --------------------------------------
