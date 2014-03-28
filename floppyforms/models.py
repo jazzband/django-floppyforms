@@ -1,6 +1,8 @@
+import django
 from django.db import models as db_models
 from django.forms import models
 from django.utils import six
+from django.utils.text import capfirst
 
 from .fields import (Field, CharField, IntegerField, DateField, TimeField,
                      DateTimeField, EmailField, FileField, ImageField,
@@ -45,7 +47,6 @@ FORMFIELD_OVERRIDES = {
     db_models.TextField: {'form_class': CharField, 'widget': Textarea},
     db_models.TimeField: {'form_class': TimeField},
     db_models.URLField: {'form_class': URLField},
-    db_models.BinaryField: {'form_class': CharField},
 
     db_models.FileField: {'form_class': FileField},
     db_models.ImageField: {'form_class': ImageField},
@@ -55,9 +56,58 @@ FORMFIELD_OVERRIDES = {
     db_models.OneToOneField: {'form_class': ModelChoiceField},
 }
 
+# BinaryField added in Django 1.6
+if (hasattr(db_models, 'BinaryField')):
+    FORMFIELD_OVERRIDES[db_models.BinaryField] = {'form_class': CharField}
+
 
 for value in FORMFIELD_OVERRIDES.values():
     value['choices_form_class'] = TypedChoiceField
+
+
+if django.VERSION < (1, 6):
+    # Monkeypatch in support for choices_form_class.
+    # This is the formfield method from Django 1.6.2 with minor
+    # modifications.
+
+    def _formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        """
+        Returns a django.forms.Field instance for this database Field.
+        """
+        defaults = {'required': not self.blank,
+                    'label': capfirst(self.verbose_name),
+                    'help_text': self.help_text}
+        if self.has_default():
+            if callable(self.default):
+                defaults['initial'] = self.default
+                defaults['show_hidden_initial'] = True
+            else:
+                defaults['initial'] = self.get_default()
+        if self.choices:
+            # Fields with choices get special treatment.
+            include_blank = (self.blank or
+                             not (self.has_default() or 'initial' in kwargs))
+            defaults['choices'] = self.get_choices(include_blank=include_blank)
+            defaults['coerce'] = self.to_python
+            if self.null:
+                defaults['empty_value'] = None
+            if choices_form_class is not None:
+                form_class = choices_form_class
+            else:
+                form_class = TypedChoiceField
+            # Many of the subclass-specific formfield arguments (min_value,
+            # max_value) don't apply for choice fields, so be sure to only pass
+            # the values that TypedChoiceField will understand.
+            for k in list(kwargs):
+                if k not in ('coerce', 'empty_value', 'choices', 'required',
+                             'widget', 'label', 'initial', 'help_text',
+                             'error_messages', 'show_hidden_initial'):
+                    del kwargs[k]
+        defaults.update(kwargs)
+        if form_class is None:
+            form_class = CharField
+        return form_class(**defaults)
+    db_models.Field.formfield = _formfield
 
 
 def formfield_callback(db_field, **kwargs):
@@ -73,7 +123,13 @@ class ModelFormMetaclass(models.ModelFormMetaclass):
         return super(ModelFormMetaclass, mcs).__new__(mcs, name, bases, attrs)
 
 
-class ModelForm(six.with_metaclass(ModelFormMetaclass, LayoutRenderer, models.ModelForm)):
+# Necessary because we use django.utils.six (v 1.5.2), which only
+# allows a single parent class for with_metaclass.
+class _ModelForm(LayoutRenderer, models.ModelForm):
+    pass
+
+
+class ModelForm(six.with_metaclass(ModelFormMetaclass, _ModelForm)):
     pass
 
 
