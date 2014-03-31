@@ -266,7 +266,7 @@ Alternatively it is of course possible to write your own form layout from
 scratch. Have a look at the `existing ones`_ to get an idea what is possible,
 what cases to take into account and how the template code could look like.
 
-.. _`existing ones`: https://github.com/brutasse/django-floppyforms/tree/master/floppyforms/templates/floppyforms/layouts/
+.. _`existing ones`: https://github.com/gregmuellegger/django-floppyforms/tree/master/floppyforms/templates/floppyforms/layouts/
 
 Creating reusable layouts
 ~~~~~~~~~~~~~~~~~~~~~~~~~

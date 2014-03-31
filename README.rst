@@ -1,9 +1,9 @@
 Django-floppyforms
 ==================
 
-.. image:: https://api.travis-ci.org/brutasse/django-floppyforms.png
+.. image:: https://api.travis-ci.org/gregmuellegger/django-floppyforms.png
    :alt: Build Status
-   :target: https://travis-ci.org/brutasse/django-floppyforms
+   :target: https://travis-ci.org/gregmuellegger/django-floppyforms
 
 Full control of form rendering in the templates.
 
@@ -11,7 +11,7 @@ Full control of form rendering in the templates.
 * Licence: BSD
 * Requirements: homework -- read `this`_.
 
-.. _contributors: https://github.com/brutasse/django-floppyforms/contributors
+.. _contributors: https://github.com/gregmuellegger/django-floppyforms/contributors
 .. _this: http://diveintohtml5.info/forms.html
 
 Installation
@@ -28,7 +28,7 @@ readthedocs`_
 To install the `in-development version`_ of django-floppyforms, run ``pip
 install django-floppyforms==dev``.
 
-.. _in-development version: https://github.com/brutasse/django-floppyforms/tarball/master#egg=django-floppyforms-dev
+.. _in-development version: https://github.com/gregmuellegger/django-floppyforms/tarball/master#egg=django-floppyforms-dev
 
 Help
 ----
@@ -47,7 +47,7 @@ Thanks for asking!
 
 Get the code::
 
-    git clone git@github.com:brutasse/django-floppyforms.git
+    git clone git@github.com:gregmuellegger/django-floppyforms.git
     cd django-floppyforms
     virtualenv -p python2 env
     source env/bin/activate
