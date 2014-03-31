@@ -7,11 +7,11 @@ env:
   - TOXENV=py27-1.4
   - TOXENV=py27-1.5
   - TOXENV=py27-1.6
+  - TOXENV=py33-1.5
+  - TOXENV=py33-1.6
   - TOXENV=pypy-1.4
   - TOXENV=pypy-1.5
   - TOXENV=pypy-1.6
-  - TOXENV=py33-1.5
-  - TOXENV=py33-1.6
   - TOXENV=docs
 before_install:
   - sudo apt-get -y install binutils gdal-bin libproj-dev libgeos-c1
