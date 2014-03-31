@@ -3,7 +3,7 @@ import os, sys
 from coverage import coverage
 
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'floppyforms.test_settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 
 
 # Adding current directory to ``sys.path``.
@@ -14,6 +14,7 @@ sys.path.insert(0, parent)
 def runtests(*args):
     args = list(args) or [
         'floppyforms',
+        'tests',
     ]
 
     test_coverage = coverage(
@@ -28,9 +29,7 @@ def runtests(*args):
     test_coverage.stop()
 
     # Report coverage to commandline.
-    test_coverage.report(
-        omit='floppyforms/test*',
-        file=sys.stdout)
+    test_coverage.report(file=sys.stdout)
 
 
 if __name__ == '__main__':
