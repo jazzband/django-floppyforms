@@ -4,7 +4,11 @@ import datetime
 
 import django
 from django import forms
-from django.forms.util import to_current_timezone
+try:
+    from django.forms.utils import to_current_timezone
+except ImportError:
+    # Fall back to old module name for Django <= 1.5
+    from django.forms.util import to_current_timezone
 from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.conf import settings
 from django.template import loader
