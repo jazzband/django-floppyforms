@@ -1,7 +1,7 @@
-Django-floppyforms
+django-floppyforms
 ==================
 
-Django-floppyforms is an application that gives you full control of the
+**django-floppyforms** is an application that gives you full control of the
 output of forms rendering. The forms API and features are exactly the same
 as Django's, the key difference is that fields and widgets are rendered in
 templates instead of using string interpolation, giving you full control of
@@ -178,7 +178,7 @@ does it affect performance? You can try with this little script:
         return t.timeit(number=1000)
 
     print "Plain django:", time(django)
-    print "Django-floppyforms:", time(flop)
+    print "django-floppyforms:", time(flop)
 
 The result varies if you're doing template caching or not. To put it simply,
 here is the average time for a single iteration on a MacBookPro @ 2.53GHz.
@@ -187,7 +187,7 @@ here is the average time for a single iteration on a MacBookPro @ 2.53GHz.
 Method             Time without template caching Time with template caching
 ================== ============================= ===========================
 Plain Django       1.63973999023 msec            1.6320669651 msec
-Django-floppyforms 9.05481505394 msec            3.0161819458 msec
+django-floppyforms 9.05481505394 msec            3.0161819458 msec
 ================== ============================= ===========================
 
 Even with template caching, the rendering time is doubled. However the impact

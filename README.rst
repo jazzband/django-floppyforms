@@ -1,4 +1,4 @@
-Django-floppyforms
+django-floppyforms
 ==================
 
 .. image:: https://api.travis-ci.org/gregmuellegger/django-floppyforms.png

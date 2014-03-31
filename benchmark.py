@@ -36,7 +36,7 @@ def time(stmt):
 
 if __name__ == '__main__':
     print "Plain Django:", time(django)
-    print "Django-floppyforms:", time(flop)
+    print "django-floppyforms:", time(flop)
 
 INSTALLED_APPS = (
     'floppyforms'

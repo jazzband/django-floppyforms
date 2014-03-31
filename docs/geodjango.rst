@@ -3,7 +3,7 @@ GeoDjango widgets
 
 .. image:: images/geomcollection.png
 
-Django-floppyforms provides fields and rich widgets for easy manipulation of
+django-floppyforms provides fields and rich widgets for easy manipulation of
 GEOS geometry fields. All geometry types are supported thanks to OpenLayers
 and a custom WKT parser/serializer implementing some Django-specific tweaks.
 
@@ -39,7 +39,7 @@ your project.
 Widget types
 ------------
 
-Django-floppyforms provides **base widgets** and **geometry-specific
+django-floppyforms provides **base widgets** and **geometry-specific
 widgets**:
 
 * **base widgets** are in charge of rendering a map from a specific map

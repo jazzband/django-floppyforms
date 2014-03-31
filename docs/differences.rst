@@ -122,7 +122,7 @@ handled`__ for more details).
 
 __ https://docs.djangoproject.com/en/dev/ref/templates/api/#invalid-template-variables
 
-Django-floppyforms assumes in its predefined form layouts that
+django-floppyforms assumes in its predefined form layouts that
 all filters are applied. You can work around this by making your
 ``TEMPLATE_STRING_IF_INVALID`` evaluate to ``False`` but still keep its
 string representation. Here is an example how you could achieve this in your
