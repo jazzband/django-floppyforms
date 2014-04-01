@@ -825,7 +825,7 @@ class WidgetRenderingTest(TestCase):
 
     def test_file_path_field(self):
         """foo = forms.FilePathField()"""
-        parent = os.path.join(os.path.dirname(__file__), '..')
+        parent = os.path.dirname(os.path.abspath(__file__))
 
         class PathForm(forms.Form):
             path = forms.FilePathField(path=parent, recursive=True)
