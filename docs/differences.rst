@@ -21,15 +21,15 @@ to:
     Other modules contained by ``django.forms``, such as ``forms``, ``utils``
     and ``formsets`` have not been aliased.
 
-Standard forms
---------------
+HTML 5 forms!
+-------------
 
-Floppyforms adds a couple of things on top of the standard Django widgets:
-HTML syntax, more native widget types, the ``required`` attribute and
+Floppyforms adds a couple of HTML 5 features on top of the standard Django
+widgets: HTML syntax, more native widget types, the ``required`` attribute and
 client-side validation.
 
-HTML syntax
-```````````
+HTML syntax instead of XHTML
+````````````````````````````
 
 Floppyforms uses an HTML syntax instead of Django's XHTML syntax. You will see
 ``<input type="text" ... >`` and not ``<input type="text" />``.
@@ -69,8 +69,34 @@ Client-side validation
 ``````````````````````
 
 Like with the ``required`` attribute, the ``pattern`` attribute is especially
-interesting for slightly more complex client-side validation. The SlugField
-and the IPAddressField both have a pattern attached to the ``<input>``.
+interesting for slightly more complex client-side validation. The ``SlugField``
+and the ``IPAddressField`` both have a pattern attached to the ``<input>``.
+
+However having these validations backed directly into the HTML and therefore
+allowing the browser to validate the user input might not always what you want
+to have. Sometimes you just want to have a form where it should be allowed to
+submit invalid data. In that case you can use the ``novalidate`` attribute on
+the ``<form>`` HTML tag or the ``formnovalidate`` attribute on the submit
+button:
+
+.. code-block:: html
+
+    <form action="" novalidate>
+        This input will not be validated:
+        <input type="text" required />
+    </form>
+
+    <form action="">
+        Another way to not validate the form in the browser is using the
+        formnovalidate attribute on the submit button:
+        <input type="submit" value="cancel" formnovalidate>
+    </form>
+
+Read the corresponding documentation for `novalidate`_ and `formnovalidate`_ on
+the Mozilla Developer Network if you want to know more.
+
+.. _novalidate: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-novalidate
+.. _formnovalidate: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-formnovalidate
 
 ModelForms
 ----------
