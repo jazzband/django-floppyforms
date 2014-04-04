@@ -1,1 +1,21 @@
-{% for name, value in attrs.items %} {{ name }}{% if value != True %}="{{ value }}"{% endif %}{% endfor %}
+{% comment %}
+
+    
+
+    The if case inside the loop basically checks whether "value is not True". But
+    django does not support the "is" comparison. Therefore we check something
+    like this:
+    
+        not (str(value) == "True" and value == 1)
+
+    Which can be transformed into:
+
+        not (str(value) == "True") or not (value == 1)
+
+    Then into:
+
+        str(value) != "True" or value != 1
+
+    Anyone an idea how this can be accomplished any easier?
+
+{% endcomment %}{% for name, value in attrs.items %} {{ name }}{% if value|stringformat:"s" != "True" or value != 1 %}="{{ value }}"{% endif %}{% endfor %}
