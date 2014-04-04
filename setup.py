@@ -30,7 +30,7 @@ setup(
     url='https://github.com/gregmuellegger/django-floppyforms',
     license='BSD licence, see LICENSE file',
     description='Full control of form rendering in the templates',
-    long_description=read('README.rst'),
+    long_description=read('README.rst', 'CHANGES.rst'),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
