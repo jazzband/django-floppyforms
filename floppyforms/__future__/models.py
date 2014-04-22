@@ -44,7 +44,7 @@ FORMFIELD_OVERRIDES = {
     db_models.TextField: {'form_class': fields.CharField, 'widget': Textarea},
     db_models.TimeField: {'form_class': fields.TimeField},
     db_models.URLField: {'form_class': fields.URLField},
-    db_models.BinaryField: {'form_class': fields.CharField},
+    # Binary field is never editable, so we don't need to convert it.
 
     db_models.FileField: {'form_class': fields.FileField},
     db_models.ImageField: {'form_class': fields.ImageField},
@@ -75,15 +75,26 @@ class ModelForm(six.with_metaclass(ModelFormMetaclass, _ModelForm)):
     pass
 
 
-def modelform_factory(model, form=ModelForm, *args, **kwargs):
-    return _modelform_factory(model, form, *args, **kwargs)
+def modelform_factory(model, form=ModelForm, fields=None, exclude=None,
+                      formfield_callback=formfield_callback, *args, **kwargs):
+    return _modelform_factory(model, form, fields, exclude, formfield_callback,
+                              *args, **kwargs)
 
 
-def modelformset_factory(model, form=ModelForm, *args, **kwargs):
-    return _modelformset_factory(model, form, *args, **kwargs)
+def modelformset_factory(model, form=ModelForm,
+                         formfield_callback=formfield_callback,
+                         *args, **kwargs):
+    return _modelformset_factory(model, form, formfield_callback,
+                                 *args, **kwargs)
 
 
 def inlineformset_factory(parent_model, model, form=ModelForm,
+                          formset=BaseInlineFormSet, fk_name=None,
+                          fields=None, exclude=None, extra=3, can_order=False,
+                          can_delete=True, max_num=None,
+                          formfield_callback=formfield_callback,
                           *args, **kwargs):
-    return _inlineformset_factory(parent_model, model, form,
+    return _inlineformset_factory(parent_model, model, form, formset, fk_name,
+                                  fields, exclude, extra, can_order,
+                                  can_delete, max_num, formfield_callback,
                                   *args, **kwargs)
