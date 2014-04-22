@@ -1,3 +1,4 @@
+# flake8: noqa
 import django
 from django.db import models as db_models
 from django.forms.models import (ModelForm as _ModelForm,
