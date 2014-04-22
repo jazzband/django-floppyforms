@@ -1,5 +1,6 @@
 from django.db import models as db_models
-from django.forms.models import (ModelFormMetaclass as _ModelFormMetaclass,
+from django.forms.models import (ModelForm as _ModelForm,
+                                 ModelFormMetaclass as _ModelFormMetaclass,
                                  modelform_factory as _modelform_factory,
                                  modelformset_factory as _modelformset_factory,
                                  inlineformset_factory as _inlineformset_factory,
@@ -9,8 +10,8 @@ from django.forms.models import (ModelFormMetaclass as _ModelFormMetaclass,
 from django.utils import six
 
 from floppyforms import fields
-from floppyforms.models import (ModelForm as _ModelForm,
-                                ModelChoiceField, ModelMultipleChoiceField)
+from floppyforms.forms import LayoutRenderer
+from floppyforms.models import (ModelChoiceField, ModelMultipleChoiceField)
 from floppyforms.widgets import Textarea
 
 
@@ -71,7 +72,7 @@ class ModelFormMetaclass(_ModelFormMetaclass):
         return super(ModelFormMetaclass, mcs).__new__(mcs, name, bases, attrs)
 
 
-class ModelForm(six.with_metaclass(ModelFormMetaclass, _ModelForm)):
+class ModelForm(six.with_metaclass(ModelFormMetaclass, LayoutRenderer, _ModelForm)):
     pass
 
 

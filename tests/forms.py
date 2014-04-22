@@ -7,7 +7,7 @@ from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.utils.unittest import expectedFailure, skipIf
 
-import floppyforms as forms
+import floppyforms.__future__ as forms
 
 from .models import Registration
 
