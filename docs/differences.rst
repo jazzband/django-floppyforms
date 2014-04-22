@@ -122,7 +122,7 @@ And a ModelForm written like this:
     import floppyforms as forms
 
     class HiForm(forms.ModelForm):
-        yesno = forms.BooleanField
+        yesno = forms.BooleanField()
 
         class Meta:
             model = Hi
@@ -138,6 +138,23 @@ widget from floppyforms:
 
 However, the ``name`` and ``rank`` field will both get a widget from
 ``django.forms``, in this case a ``TextInput``.
+
+.. note:: Automatic floppy ModelForms
+
+    You can automatically floppify ModelForms by using the following import instead::
+
+        import floppyforms.__future__ as forms
+
+        class HiForm(forms.ModelForm):
+            yesno = forms.BooleanField()
+
+            class Meta:
+              model = Hi
+
+    You can also create floppy ModelForms and ModelFormSets by importing
+    ``modelform_factory``, ``modelformset_factory``, and ``inlineformset_factory``
+    from ``floppyforms.__future__.models``.
+
 
 ``TEMPLATE_STRING_IF_INVALID`` caveats
 --------------------------------------
