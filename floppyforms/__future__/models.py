@@ -1,3 +1,4 @@
+import django
 from django.db import models as db_models
 from django.forms.models import (ModelForm as _ModelForm,
                                  ModelFormMetaclass as _ModelFormMetaclass,
@@ -5,7 +6,7 @@ from django.forms.models import (ModelForm as _ModelForm,
                                  modelformset_factory as _modelformset_factory,
                                  inlineformset_factory as _inlineformset_factory,
                                  model_to_dict, fields_for_model, BaseModelForm,
-                                 save_instance, ALL_FIELDS, BaseModelFormSet,
+                                 save_instance, BaseModelFormSet,
                                  BaseInlineFormSet)
 from django.utils import six
 
@@ -18,9 +19,15 @@ from floppyforms.widgets import Textarea
 __all__ = (
     'ModelForm', 'BaseModelForm', 'model_to_dict', 'fields_for_model',
     'save_instance', 'ModelChoiceField', 'ModelMultipleChoiceField',
-    'ALL_FIELDS', 'BaseModelFormSet', 'modelformset_factory',
-    'BaseInlineFormSet', 'inlineformset_factory',
+    'BaseModelFormSet', 'modelformset_factory', 'BaseInlineFormSet',
+    'inlineformset_factory',
 )
+
+
+if django.VERSION > (1, 7):
+    from django.forms.models import ALL_FIELDS
+
+    __all__ = __all__ + ('ALL_FIELDS',)
 
 
 FORMFIELD_OVERRIDES = {
