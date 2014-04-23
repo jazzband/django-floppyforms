@@ -4,3 +4,5 @@ build
 docs/_build
 .coverage
 .tox/
+*.pyc
+__pycache__
