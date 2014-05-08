@@ -1,3 +1,4 @@
+{% load l10n %}
 <style type="text/css">
 	#{{ attrs.id }}_map { width: {{ map_width }}px; height: {{ map_height }}px; }
 	#{{ attrs.id }}_map .aligned label { float: inherit; }
@@ -29,7 +30,7 @@
 			is_polygon: {{ is_polygon|yesno:"true,false" }},
 			map_id: '{{ attrs.id }}_map',
 			map_options: map_options,
-			map_srid: {{ map_srid }},
+			map_srid: {{ map_srid|unlocalize }},
 			name: '{{ name }}'
 		};{% endblock %}
 		var {{ module }} = new MapWidget(options);
