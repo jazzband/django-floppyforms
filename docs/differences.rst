@@ -203,11 +203,3 @@ If you need to get the same output as standard Django forms:
 
       class Foo(forms.Form):
           url = forms.URLField(widget=forms.TextInput)
-
-
-.. note:: On overriding the default templates
-
-    If you override floppyforms' templates in your project-level template
-    directory, the floppyforms tests will start failing. You might want to
-    define new widgets that extends floppyforms widgets using their own
-    templates to avoid this issue.
