@@ -33,7 +33,7 @@ Changelog
             model = Profile
 
   This feature will become the default behaviour in floppyforms 1.3.
-  
+
   See the documentation for more information:
   http://django-floppyforms.readthedocs.org/en/latest/usage.html#modelforms
 
