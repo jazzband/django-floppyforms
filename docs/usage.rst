@@ -85,24 +85,62 @@ instance, with a field created this way::
 Then the ``placeholder`` variable is available in the ``attrs`` template
 variable.
 
+.. _usage-modelforms:
+
 ModelForms
 ``````````
 
-With ``ModelForms``, you need to override the widgets to pick floppyforms'
-widgets. Say we have a ``Profile`` model::
+You can use ``ModelForms`` with floppyforms as you would use a ordinary django
+``ModelForm``.  Here is an example showing it for a basic ``Profile`` model::
 
     class Profile(models.Model):
         name = models.CharField(max_length=255)
         url = models.URLField()
 
-Creating a ``ModelForm`` with widgets from floppyforms is easy::
+Now create a ``ModelForm`` using floppyforms::
 
-    import floppyforms as forms
+    import floppyforms.__future__ as forms
 
     class ProfileForm(forms.ModelForm):
         class Meta:
             model = Profile
-            widgets = {
-                'name': forms.TextInput,
-                'url': forms.URLInput,
-            }
+            fields = ('name', 'url')
+
+The ``ProfileForm`` will now have form fields for all the model fields. So
+there will be a ``floppyforms.CharField`` used for the ``Profile.name`` model
+field and a ``floppyforms.URLField`` for ``Profile.url``.
+
+.. note::
+
+    Please note that you have to import from ``floppyforms.__future__`` to use
+    this feature. Here is why:
+
+    This behaviour changed in version 1.2 of **django-floppyforms**. Before,
+    no alterations were made to the widgets of a ``ModelForm``. So you had to
+    take care of assigning the floppyforms widgets to the django form fields
+    yourself to use the template based rendering provided by floppyforms. Here
+    is an example of how you would have done it with django-floppyforms 1.1
+    and earlier::
+
+        import floppyforms as forms
+
+        class ProfileForm(forms.ModelForm):
+            class Meta:
+                model = Profile
+                fields = ('name', 'url')
+                widgets = {
+                    'name': forms.TextInput,
+                    'url': forms.URLInput,
+                }
+
+    Since the change is backwards incompatible, we decided to provide a
+    deprecation path. If you create a ``ModelForm`` with django-floppyforms
+    1.2 and use ``import floppyforms as forms`` as the import you will get the
+    old behaviour and you will see a ``DeprecationWarning``.
+
+    To use the new behaviour, you can use ``import floppyforms.__future__ as
+    forms`` as the import.
+
+    Please make sure to test your code if your modelforms work still as
+    expected with the new behaviour. The old version's behaviour will be
+    removed completely with django-floppyforms 1.3.

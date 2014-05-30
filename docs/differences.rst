@@ -101,60 +101,17 @@ the Mozilla Developer Network if you want to know more.
 ModelForms
 ----------
 
-As for ModelForms, all the fields coming from the model still get a widget
-from ``django.forms`` and not from floppyforms, unless the widgets are
-overridden in the form's ``Meta`` inner class. For example, if we have a
-model declared as such:
+Prior to version 1.2 of django-floppyforms, you had to take some manual
+efforts to make your modelforms work with floppyforms. This is now done
+seemlesly, but since this was introduced a backwards incompatible change, it
+was necessary to provde a deprecation path.
 
-.. code-block:: python
+So if you start out new with django-floppyforms just use ``import
+floppyforms.__future__ as forms`` as your import instead of ``import
+floppyforms as forms`` when you want to define modelforms.
 
-    from django.db import models
-
-    class Hi(models.Model):
-        name = models.CharField(max_length=255)
-        timestamp = models.DateTimeField()
-        rank = models.PositiveIntegerField()
-
-And a ModelForm written like this:
-
-.. code-block:: python
-
-    import floppyforms as forms
-
-    class HiForm(forms.ModelForm):
-        yesno = forms.BooleanField()
-
-        class Meta:
-            model = Hi
-            widgets = {
-                'timestamp': forms.DateTimeInput,
-            }
-
-With such a ModelForm, the ``yesno`` and ``timestamp`` fields will get a
-widget from floppyforms:
-
-* ``yesno`` is an extra field declared using the floppyforms namespace
-* ``timestamp`` has an overridden widget coming from floppyforms as well
-
-However, the ``name`` and ``rank`` field will both get a widget from
-``django.forms``, in this case a ``TextInput``.
-
-.. note:: Automatic floppy ModelForms
-
-    You can automatically floppify ModelForms by using the following import instead::
-
-        import floppyforms.__future__ as forms
-
-        class HiForm(forms.ModelForm):
-            yesno = forms.BooleanField()
-
-            class Meta:
-              model = Hi
-
-    You can also create floppy ModelForms and ModelFormSets by importing
-    ``modelform_factory``, ``modelformset_factory``, and ``inlineformset_factory``
-    from ``floppyforms.__future__.models``.
-
+For more information see the :ref:`section about modelforms in the usage
+documentation <usage-modelforms>`.
 
 ``TEMPLATE_STRING_IF_INVALID`` caveats
 --------------------------------------
