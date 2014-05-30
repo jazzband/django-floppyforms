@@ -41,3 +41,6 @@ Changelog
   1}``, you would get no attribute value in the rendered html (e.g. ``value``
   instead of ``value="1"``). That's fixed now, thanks to Viktor Ershov for the
   report.
+
+* All floppyform widget classes now take a ``template_name`` argument in the
+  ``__init__`` and ``render`` method. Thanks to Carl Meyer for the patch.
