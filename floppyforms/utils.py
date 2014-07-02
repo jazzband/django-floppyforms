@@ -10,7 +10,7 @@ def get_template_by_class(widget_or_class):
     if isinstance(widget_or_class, Widget):
         widget_or_class = widget_or_class.__class__
     key = "%s.%s" % (widget_or_class.__module__, widget_or_class.__name__, )
-    print widget_or_class, key, local_settings.DEFAULT_WIDGET_TEMPLATES.has_key(key), '++++++++++++++++'
+    
     template_name = local_settings.DEFAULT_WIDGET_TEMPLATES.get(key, None)
     if template_name is None:
         for base_class in widget_or_class.__bases__:
