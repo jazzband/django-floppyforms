@@ -4,6 +4,7 @@ import datetime
 
 import django
 from django import forms
+from django.utils.safestring import mark_safe
 try:
     from django.forms.utils import to_current_timezone
 except ImportError:
@@ -19,6 +20,7 @@ from django.utils import datetime_safe, formats, six
 from django.utils.dates import MONTHS
 from django.utils.encoding import force_text
 
+from . import utils
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
@@ -40,9 +42,9 @@ class Widget(forms.Widget):
 
 
 class Input(Widget):
-    template_name = 'floppyforms/input.html'
     input_type = None
     datalist = None
+    _template_name = None
 
     def __init__(self, *args, **kwargs):
         datalist = kwargs.pop('datalist', None)
@@ -50,9 +52,23 @@ class Input(Widget):
             self.datalist = datalist
         template_name = kwargs.pop('template_name', None)
         if template_name is not None:
-            self.template_name = template_name
+            self._template_name = template_name
         super(Input, self).__init__(*args, **kwargs)
         self.context_instance = None
+
+    def get_template_name(self):
+        template_name = self._template_name
+        if template_name is None:
+            template_name = utils.get_template_by_class(self.__class__)
+        if callable(template_name):
+            return template_name(self)
+        else:
+            return template_name
+
+    def set_template_name(self, template_name):
+        self._template_name = template_name
+    
+    template_name = property(get_template_name, set_template_name, )
 
     def get_context_data(self):
         return {}
@@ -204,7 +220,6 @@ class FileInput(Input):
 
 
 class ClearableFileInput(FileInput):
-    template_name = 'floppyforms/clearable_input.html'
     omit_value = False
 
     def clear_checkbox_name(self, name):
@@ -240,7 +255,6 @@ class ClearableFileInput(FileInput):
 
 
 class Textarea(Input):
-    template_name = 'floppyforms/textarea.html'
     rows = 10
     cols = 40
 
@@ -428,7 +442,6 @@ class CheckboxInput(Input, forms.CheckboxInput):
 
 class Select(Input):
     allow_multiple_selected = False
-    template_name = 'floppyforms/select.html'
 
     def __init__(self, attrs=None, choices=()):
         super(Select, self).__init__(attrs)
@@ -536,15 +549,37 @@ class SelectMultiple(Select):
 
 
 class RadioSelect(Select):
-    template_name = 'floppyforms/radio.html'
+    pass
 
 
 class CheckboxSelectMultiple(SelectMultiple):
-    template_name = 'floppyforms/checkbox_select.html'
+    pass
 
 
 class MultiWidget(forms.MultiWidget):
-    pass
+    def render(self, name, value, attrs=None, **kwargs):
+        if self.is_localized:
+            for widget in self.widgets:
+                widget.is_localized = self.is_localized
+        # value is a list of values, each corresponding to a widget
+        # in self.widgets.
+        if not isinstance(value, list):
+            value = self.decompress(value)
+        output = []
+        final_attrs = self.build_attrs(attrs)
+        id_ = final_attrs.get('id', None)
+        for i, widget in enumerate(self.widgets):
+            try:
+                widget_value = value[i]
+            except IndexError:
+                widget_value = None
+            if id_:
+                final_attrs = dict(final_attrs, id='%s_%s' % (id_, i))
+        if isinstance( widget, (Widget, SelectDateWidget,)  ):
+            output.append(widget.render(name + '_%s' % i, widget_value, final_attrs, **kwargs))
+        else:
+            output.append(widget.render(name + '_%s' % i, widget_value, final_attrs))
+        return mark_safe(self.format_output(output))
 
 
 class SplitDateTimeWidget(MultiWidget):
@@ -582,7 +617,7 @@ class SelectDateWidget(forms.Widget):
     month_field = '%s_month'
     day_field = '%s_day'
     year_field = '%s_year'
-    template_name = 'floppyforms/select_date.html'
+    _template_name = None
 
     def __init__(self, attrs=None, years=None, required=True):
         # years is an optional list/tuple of years to use in the
@@ -594,6 +629,20 @@ class SelectDateWidget(forms.Widget):
         else:
             this_year = datetime.date.today().year
             self.years = range(this_year, this_year + 10)
+
+    def get_template_name(self):
+        template_name = self._template_name
+        if template_name is None:
+            template_name = utils.get_template_by_class(self.__class__)
+        if callable(template_name):
+            return template_name(self)
+        else:
+            return template_name
+
+    def set_template_name(self, template_name):
+        self._template_name = template_name
+    
+    template_name = property(get_template_name, set_template_name, )
 
     def get_context_data(self):
         return {}
@@ -625,7 +674,7 @@ class SelectDateWidget(forms.Widget):
         context['attrs'] = attrs
         return context
 
-    def render(self, name, value, attrs=None, extra_context={}):
+    def render(self, name, value, attrs=None, **kwargs):
         try:
             year_val, month_val, day_val = value.year, value.month, value.day
         except AttributeError:
@@ -646,7 +695,7 @@ class SelectDateWidget(forms.Widget):
                         year_val, month_val, day_val = map(int, match.groups())
 
         context = self.get_context(name, value, attrs=attrs,
-                                   extra_context=extra_context)
+                                   extra_context=kwargs)
 
         context['year_choices'] = [(i, i) for i in self.years]
         context['year_val'] = year_val
