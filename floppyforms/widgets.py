@@ -19,6 +19,7 @@ from django.utils import datetime_safe, formats, six
 from django.utils.dates import MONTHS
 from django.utils.encoding import force_text
 
+from . import utils
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
@@ -40,7 +41,7 @@ class Widget(forms.Widget):
 
 
 class Input(Widget):
-    template_name = 'floppyforms/input.html'
+    _template_name = None
     input_type = None
     datalist = None
 
@@ -50,9 +51,20 @@ class Input(Widget):
             self.datalist = datalist
         template_name = kwargs.pop('template_name', None)
         if template_name is not None:
-            self.template_name = template_name
+            self._template_name = template_name
         super(Input, self).__init__(*args, **kwargs)
         self.context_instance = None
+
+    def get_template_name(self):
+        template_name = self._template_name
+        if template_name is None:
+            template_name = utils.get_template_by_class(self.__class__)
+        return template_name
+
+    def set_template_name(self, template_name):
+        self._template_name = template_name
+    
+    template_name = property(get_template_name, set_template_name, )
 
     def get_context_data(self):
         return {}
@@ -102,6 +114,8 @@ class Input(Widget):
         if template_name is None:
             template_name = self.template_name
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
+        if callable(template_name):
+            template_name = template_name(context, self)
         return loader.render_to_string(
             template_name,
             dictionary=context,
@@ -204,7 +218,6 @@ class FileInput(Input):
 
 
 class ClearableFileInput(FileInput):
-    template_name = 'floppyforms/clearable_input.html'
     omit_value = False
 
     def clear_checkbox_name(self, name):
@@ -240,7 +253,6 @@ class ClearableFileInput(FileInput):
 
 
 class Textarea(Input):
-    template_name = 'floppyforms/textarea.html'
     rows = 10
     cols = 40
 
@@ -428,7 +440,6 @@ class CheckboxInput(Input, forms.CheckboxInput):
 
 class Select(Input):
     allow_multiple_selected = False
-    template_name = 'floppyforms/select.html'
 
     def __init__(self, attrs=None, choices=()):
         super(Select, self).__init__(attrs)
@@ -536,11 +547,11 @@ class SelectMultiple(Select):
 
 
 class RadioSelect(Select):
-    template_name = 'floppyforms/radio.html'
+    pass
 
 
 class CheckboxSelectMultiple(SelectMultiple):
-    template_name = 'floppyforms/checkbox_select.html'
+    pass
 
 
 class MultiWidget(forms.MultiWidget):
@@ -582,7 +593,6 @@ class SelectDateWidget(forms.Widget):
     month_field = '%s_month'
     day_field = '%s_day'
     year_field = '%s_year'
-    template_name = 'floppyforms/select_date.html'
 
     def __init__(self, attrs=None, years=None, required=True):
         # years is an optional list/tuple of years to use in the
@@ -594,6 +604,17 @@ class SelectDateWidget(forms.Widget):
         else:
             this_year = datetime.date.today().year
             self.years = range(this_year, this_year + 10)
+
+    def get_template_name(self):
+        template_name = self._template_name
+        if template_name is None:
+            template_name = utils.get_template_by_class(self.__class__)
+        return template_name
+
+    def set_template_name(self, template_name):
+        self._template_name = template_name
+    
+    template_name = property(get_template_name, set_template_name, )
 
     def get_context_data(self):
         return {}
@@ -670,7 +691,11 @@ class SelectDateWidget(forms.Widget):
             context['month_choices'].insert(0, self.none_value)
             context['day_choices'].insert(0, self.none_value)
 
-        return loader.render_to_string(self.template_name, context)
+        if callable(self.template_name):
+            template_name = self.template_name(context, self)
+        else:
+            template_name = self.template_name
+        return loader.render_to_string(template_name, context)
 
     def value_from_datadict(self, data, files, name):
         y = data.get(self.year_field % name)
