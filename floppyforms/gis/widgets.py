@@ -25,7 +25,6 @@ class BaseGeometryWidget(forms.Textarea):
     map_width = 600
     map_height = 400
     map_srid = 4326
-    template_name = 'floppyforms/gis/openlayers.html'
 
     # Internal API #
     is_point = False
@@ -148,7 +147,6 @@ class BaseMetacartaWidget(BaseGeometryWidget):
 class BaseOsmWidget(BaseGeometryWidget):
     """An OpenStreetMap base widget"""
     map_srid = 900913
-    template_name = 'floppyforms/gis/osm.html'
 
     class Media:
         js = (
@@ -161,7 +159,6 @@ class BaseOsmWidget(BaseGeometryWidget):
 class BaseGMapWidget(BaseGeometryWidget):
     """A Google Maps base widget"""
     map_srid = 900913
-    template_name = 'floppyforms/gis/google.html'
 
     class Media:
         js = (
