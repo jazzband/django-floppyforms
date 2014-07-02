@@ -59,10 +59,7 @@ class Input(Widget):
         template_name = self._template_name
         if template_name is None:
             template_name = utils.get_template_by_class(self.__class__)
-        if callable(template_name):
-            return template_name(self)
-        else:
-            return template_name
+        return template_name
 
     def set_template_name(self, template_name):
         self._template_name = template_name
@@ -117,6 +114,8 @@ class Input(Widget):
         if template_name is None:
             template_name = self.template_name
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
+        if callable(template_name):
+            template_name = template_name(context, self)
         return loader.render_to_string(
             template_name,
             dictionary=context,
@@ -610,10 +609,7 @@ class SelectDateWidget(forms.Widget):
         template_name = self._template_name
         if template_name is None:
             template_name = utils.get_template_by_class(self.__class__)
-        if callable(template_name):
-            return template_name(self)
-        else:
-            return template_name
+        return template_name
 
     def set_template_name(self, template_name):
         self._template_name = template_name
@@ -695,7 +691,11 @@ class SelectDateWidget(forms.Widget):
             context['month_choices'].insert(0, self.none_value)
             context['day_choices'].insert(0, self.none_value)
 
-        return loader.render_to_string(self.template_name, context)
+        if callable(self.template_name):
+            template_name = self.template_name(context, self)
+        else:
+            template_name = self.template_name
+        return loader.render_to_string(template_name, context)
 
     def value_from_datadict(self, data, files, name):
         y = data.get(self.year_field % name)
