@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+1.3.0 (not released)
+~~~~~~~~~~~~~~~~~~~~
+
+* Adding ``supports_microseconds`` attribute to all relevant widget classes.
+  Thanks to Stephen Burrows for the patch.
+
 1.2.0
 ~~~~~
 
