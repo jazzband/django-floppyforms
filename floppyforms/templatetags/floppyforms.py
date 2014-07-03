@@ -2,7 +2,6 @@ from collections import defaultdict
 from contextlib import contextmanager
 
 from django.conf import settings
-from django.forms.forms import BoundField
 from django.forms.util import ErrorList
 from django.template import (Library, Node, Variable,
                              TemplateSyntaxError, VariableDoesNotExist)
