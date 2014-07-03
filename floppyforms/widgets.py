@@ -256,6 +256,7 @@ class Textarea(Input):
 
 class DateInput(Input):
     input_type = 'date'
+    supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):
         super(DateInput, self).__init__(attrs)
@@ -286,6 +287,7 @@ class DateInput(Input):
 
 class DateTimeInput(Input):
     input_type = 'datetime'
+    supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):
         super(DateTimeInput, self).__init__(attrs)
@@ -316,6 +318,7 @@ class DateTimeInput(Input):
 
 class TimeInput(Input):
     input_type = 'time'
+    supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):
         super(TimeInput, self).__init__(attrs)
@@ -548,6 +551,8 @@ class MultiWidget(forms.MultiWidget):
 
 
 class SplitDateTimeWidget(MultiWidget):
+    supports_microseconds = False
+
     def __init__(self, attrs=None, date_format=None, time_format=None):
         widgets = (DateInput(attrs=attrs, format=date_format),
                    TimeInput(attrs=attrs, format=time_format))
