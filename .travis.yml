@@ -13,13 +13,12 @@ env:
   - TOXENV=pypy-1.5
   - TOXENV=pypy-1.6
   - TOXENV=docs
+  - TOXENV=flake8
 before_install:
   - sudo apt-get -q -y update
   - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
-  - pip install tox flake8
-before_script:
-  - flake8 floppyforms
+  - pip install tox
 script:
   - tox -e $TOXENV
 notifications:
