@@ -7,6 +7,9 @@ Changelog
 * Adding ``supports_microseconds`` attribute to all relevant widget classes.
   Thanks to Stephen Burrows for the patch.
 
+* Using a property for ``Widget.is_hidden`` attribute on widgets to be in
+  conformance with Django 1.7 default widget implementation.
+
 1.2.0
 ~~~~~
 

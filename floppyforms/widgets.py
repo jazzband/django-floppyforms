@@ -38,6 +38,11 @@ __all__ = (
 class Widget(forms.Widget):
     is_required = False
 
+    # Backported from Django 1.7
+    @property
+    def is_hidden(self):
+        return self.input_type == 'hidden' if hasattr(self, 'input_type') else False
+
 
 class Input(Widget):
     template_name = 'floppyforms/input.html'
@@ -132,7 +137,6 @@ class PasswordInput(TextInput):
 
 class HiddenInput(Input):
     input_type = 'hidden'
-    is_hidden = True
 
 
 class MultipleHiddenInput(HiddenInput):
@@ -547,7 +551,10 @@ class CheckboxSelectMultiple(SelectMultiple):
 
 
 class MultiWidget(forms.MultiWidget):
-    pass
+    # Backported from Django 1.7
+    @property
+    def is_hidden(self):
+        return all(w.is_hidden for w in self.widgets)
 
 
 class SplitDateTimeWidget(MultiWidget):
@@ -566,14 +573,11 @@ class SplitDateTimeWidget(MultiWidget):
 
 
 class SplitHiddenDateTimeWidget(SplitDateTimeWidget):
-    is_hidden = True
-
     def __init__(self, attrs=None, date_format=None, time_format=None):
         super(SplitHiddenDateTimeWidget, self).__init__(attrs, date_format,
                                                         time_format)
         for widget in self.widgets:
             widget.input_type = 'hidden'
-            widget.is_hidden = True
 
 
 class SelectDateWidget(forms.Widget):
