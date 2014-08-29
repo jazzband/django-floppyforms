@@ -5,4 +5,5 @@ recursive-include floppyforms/static *.js
 recursive-include floppyforms/tests/templates *.html
 recursive-include requirements *.txt
 recursive-include docs *.rst *.png
+recursive-include tests *.py *.html
 include docs/Makefile docs/conf.py
