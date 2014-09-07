@@ -260,12 +260,7 @@ class DateInput(Input):
 
     def __init__(self, attrs=None, format=None):
         super(DateInput, self).__init__(attrs)
-        if format:
-            self.format = format
-            self.manual_format = True
-        else:
-            self.format = formats.get_format('DATE_INPUT_FORMATS')[0]
-            self.manual_format = False
+        self.format = '%Y-%m-%d'
 
     def _format_value(self, value):
         if hasattr(value, 'strftime'):
