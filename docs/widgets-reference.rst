@@ -176,6 +176,10 @@ For each widgets, the default class attributes.
 
         ``date``
 
+    A widget that renders as ``<input type="date" value="...">``. Value
+    is rendered in ISO-8601 format regardless of localization settings.
+
+
 .. class:: DateTimeInput
 
     .. attribute:: DateTimeInput.template_name

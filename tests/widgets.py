@@ -245,6 +245,20 @@ class WidgetRenderingTest(TestCase):
         </p>
         """)
 
+    @override_settings(LANGUAGE_CODE='sl', USE_I18n=True)
+    def test_date_with_locale(self):
+        """<input type="date">"""
+        class DateForm(forms.Form):
+            date = forms.DateField(initial=datetime.date(2014, 1, 31))
+
+        rendered = DateForm().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_date">Date:</label>
+            <input type="date" value="2014-01-31" name="date" id="id_date" required>
+        </p>
+        """)
+
     def test_search(self):
         """<input type="search">"""
         class SearchForm(forms.Form):
