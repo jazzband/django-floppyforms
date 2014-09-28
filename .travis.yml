@@ -1,20 +1,20 @@
 language: python
 python: 2.7
 env:
-  - TOXENV=py26-1.4
-  - TOXENV=py26-1.5
-  - TOXENV=py26-1.6
-  - TOXENV=py27-1.4
-  - TOXENV=py27-1.5
-  - TOXENV=py27-1.6
-  - TOXENV=py27-1.7
-  - TOXENV=py33-1.5
-  - TOXENV=py33-1.6
-  - TOXENV=py33-1.7
-  - TOXENV=pypy-1.4
-  - TOXENV=pypy-1.5
-  - TOXENV=pypy-1.6
-  - TOXENV=pypy-1.7
+  - TOXENV=py26-14
+  - TOXENV=py26-15
+  - TOXENV=py26-16
+  - TOXENV=py27-14
+  - TOXENV=py27-15
+  - TOXENV=py27-16
+  - TOXENV=py27-17
+  - TOXENV=py33-15
+  - TOXENV=py33-16
+  - TOXENV=py33-17
+  - TOXENV=pypy-14
+  - TOXENV=pypy-15
+  - TOXENV=pypy-16
+  - TOXENV=pypy-17
   - TOXENV=docs
   - TOXENV=flake8
 before_install:
@@ -23,7 +23,7 @@ before_install:
 install:
   - pip install tox
 script:
-  - tox -e $TOXENV
+  - tox
 notifications:
   irc:
     channels:
