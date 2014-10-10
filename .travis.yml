@@ -26,6 +26,9 @@ before_install:
   - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
 
   - sudo apt-get -q -y update
+  # Required to install Pillow
+  - sudo apt-get -q -y install build-essential
+  # GIS requirements.
   - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
   - pip install tox
