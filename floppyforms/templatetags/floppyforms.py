@@ -610,6 +610,7 @@ class FormFieldNode(BaseFormRenderNode):
         extra_context = self.get_extra_context(context)
         template_name = config.retrieve('widget_template',
                                         bound_field=bound_field)
+        attrs = extra_context.pop('attrs') if 'attrs' in extra_context else {}
         if 'using' in self.options:
             try:
                 template_name = self.options['using'].resolve(context)
@@ -630,7 +631,7 @@ class FormFieldNode(BaseFormRenderNode):
         # template name and context instance parameters
         with attributes(widget, template_name=template_name,
                         context_instance=context_instance) as widget:
-            output = bound_field.as_widget(widget=widget)
+            output = bound_field.as_widget(widget=widget, attrs=attrs)
 
         config.pop()
 
