@@ -17,12 +17,16 @@ __all__ = (
 )
 
 
-class Field(forms.Field):
+class FieldMixin(object):
     widget = TextInput
     hidden_widget = HiddenInput
 
 
-class CharField(Field, forms.CharField):
+class Field(FieldMixin, forms.Field):
+    pass
+
+
+class CharField(FieldMixin, forms.CharField):
     widget = TextInput
 
     def widget_attrs(self, widget):
@@ -35,36 +39,44 @@ class CharField(Field, forms.CharField):
         return attrs
 
 
-class BooleanField(Field, forms.BooleanField):
+class BooleanField(FieldMixin, forms.BooleanField):
     widget = CheckboxInput
 
 
-class NullBooleanField(Field, forms.NullBooleanField):
+class NullBooleanField(FieldMixin, forms.NullBooleanField):
     widget = NullBooleanSelect
 
 
-class ChoiceField(Field, forms.ChoiceField):
+class ChoiceFieldMixin(FieldMixin):
     widget = Select
 
 
-class TypedChoiceField(ChoiceField, forms.TypedChoiceField):
+class ChoiceField(ChoiceFieldMixin, forms.ChoiceField):
+    pass
+
+
+class TypedChoiceField(ChoiceFieldMixin, forms.TypedChoiceField):
     widget = Select
 
 
-class FilePathField(ChoiceField, forms.FilePathField):
+class FilePathField(ChoiceFieldMixin, forms.FilePathField):
     widget = Select
 
 
-class FileField(Field, forms.FileField):
+class FileField(FieldMixin, forms.FileField):
     widget = ClearableFileInput
 
 
-class ImageField(Field, forms.ImageField):
+class ImageField(FieldMixin, forms.ImageField):
     widget = ClearableFileInput
 
 
-class MultipleChoiceField(Field, forms.MultipleChoiceField):
+class MultipleChoiceFieldMixin(FieldMixin):
     widget = SelectMultiple
+
+
+class MultipleChoiceField(MultipleChoiceFieldMixin, forms.MultipleChoiceField):
+    pass
 
 
 class TypedMultipleChoiceField(MultipleChoiceField,
@@ -72,23 +84,23 @@ class TypedMultipleChoiceField(MultipleChoiceField,
     pass
 
 
-class DateField(Field, forms.DateField):
+class DateField(FieldMixin, forms.DateField):
     widget = DateInput
 
 
-class DateTimeField(Field, forms.DateTimeField):
+class DateTimeField(FieldMixin, forms.DateTimeField):
     widget = DateTimeInput
 
 
-class TimeField(Field, forms.TimeField):
+class TimeField(FieldMixin, forms.TimeField):
     widget = TimeInput
 
 
-class FloatField(Field, forms.FloatField):
+class FloatField(FieldMixin, forms.FloatField):
     widget = NumberInput
 
 
-class IntegerField(Field, forms.IntegerField):
+class IntegerField(FieldMixin, forms.IntegerField):
     widget = NumberInput
 
     def __init__(self, *args, **kwargs):
@@ -104,7 +116,7 @@ class IntegerField(Field, forms.IntegerField):
         return attrs
 
 
-class DecimalField(Field, forms.DecimalField):
+class DecimalField(FieldMixin, forms.DecimalField):
     widget = NumberInput
 
     def __init__(self, *args, **kwargs):
@@ -112,19 +124,19 @@ class DecimalField(Field, forms.DecimalField):
         super(DecimalField, self).__init__(*args, **kwargs)
 
 
-class EmailField(Field, forms.EmailField):
+class EmailField(FieldMixin, forms.EmailField):
     widget = EmailInput
 
 
-class URLField(Field, forms.URLField):
+class URLField(FieldMixin, forms.URLField):
     widget = URLInput
 
 
-class SlugField(Field, forms.SlugField):
+class SlugField(FieldMixin, forms.SlugField):
     widget = SlugInput
 
 
-class RegexField(Field, forms.RegexField):
+class RegexField(FieldMixin, forms.RegexField):
     widget = TextInput
 
     def __init__(self, regex, js_regex=None, max_length=None, min_length=None,
@@ -140,19 +152,19 @@ class RegexField(Field, forms.RegexField):
         return attrs
 
 
-class IPAddressField(Field, forms.IPAddressField):
+class IPAddressField(FieldMixin, forms.IPAddressField):
     widget = IPAddressInput
 
 
-class GenericIPAddressField(Field, forms.GenericIPAddressField):
+class GenericIPAddressField(FieldMixin, forms.GenericIPAddressField):
     pass
 
 
-class ComboField(Field, forms.ComboField):
+class ComboField(FieldMixin, forms.ComboField):
     pass
 
 
-class MultiValueField(Field, forms.MultiValueField):
+class MultiValueField(FieldMixin, forms.MultiValueField):
     pass
 
 
