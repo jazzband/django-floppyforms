@@ -1,10 +1,12 @@
 Changelog
 ---------
 
-1.3.0 (not released)
-~~~~~~~~~~~~~~~~~~~~
+1.3.0
+~~~~~
 
-* DateInput widget renders hardcoded "%Y-%m-%d" format
+* DateInput widget renders hardcoded "%Y-%m-%d" format. We don't allow custom
+  formats there since the "%Y-%m-%d" format is what browsers are submitting
+  with HTML5 date input fields. Thanks to Bojan Mihelac for the patch.
 
 * Adding ``supports_microseconds`` attribute to all relevant widget classes.
   Thanks to Stephen Burrows for the patch.
