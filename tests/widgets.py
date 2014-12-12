@@ -1116,6 +1116,17 @@ class WidgetRenderingTest(TestCase):
         # file_ has been cleared
         self.assertFalse(form.cleaned_data['file_'])
 
+    def test_clearable_file_input_with_none_value(self):
+        class Form(forms.Form):
+            file_ = forms.FileField(required=False)
+
+        rendered = Form(initial={'file_': None}).as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            <input type="file" name="file_" id="id_file_">
+        </p>""")
+
     def test_rendered_file_input(self):
         class Form(forms.Form):
             file_ = forms.FileField()

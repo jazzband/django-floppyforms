@@ -240,6 +240,13 @@ class ClearableFileInput(FileInput):
         return upload
 
     def _format_value(self, value):
+        # If the value is falsy, then it might be a file instance with no file
+        # associated with. That can happen if you get the value from a
+        # models.ImageField that is set to None. In that case we just return
+        # None. Otherwise calls in the template like {{ value.url }} will raise
+        # a ValueError.
+        if not value:
+            return None
         return value
 
 

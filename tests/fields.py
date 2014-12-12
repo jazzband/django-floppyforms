@@ -1,7 +1,14 @@
 from datetime import datetime
 from django.test import TestCase
 
-import floppyforms as forms
+import floppyforms.__future__ as forms
+from .models import ImageFieldModel
+
+
+class ImageFieldModelForm(forms.ModelForm):
+    class Meta:
+        model = ImageFieldModel
+        fields = ('image_field',)
 
 
 class DateTimeFieldTests(TestCase):
@@ -49,3 +56,19 @@ class IntegerFieldTests(TestCase):
             <label for="id_third">Third:</label>
             <input type="number" name="third" id="id_third" min="10" max="150" required>
         </p>""")
+
+
+class ImageFieldTests(TestCase):
+    def test_model_field_set_to_none(self):
+        # ``models.ImageField``s return a file object with no associated file.
+        # These objects raise errors if you try to access the url etc. So we
+        # test here that this does not raise any errors.
+        # See: https://github.com/gregmuellegger/django-floppyforms/issues/128
+        instance = ImageFieldModel.objects.create(image_field=None)
+        form = ImageFieldModelForm(instance=instance)
+        rendered = form.as_p()
+        self.assertHTMLEqual(rendered, """
+            <p>
+            <label for="id_image_field">Image field:</label>
+            <input id="id_image_field" name="image_field" type="file" />
+            </p>""")
