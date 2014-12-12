@@ -1,5 +1,7 @@
+import django
 from datetime import datetime
 from django.test import TestCase
+from django.utils.unittest import skipIf
 
 import floppyforms.__future__ as forms
 from .models import ImageFieldModel
@@ -59,6 +61,7 @@ class IntegerFieldTests(TestCase):
 
 
 class ImageFieldTests(TestCase):
+    @skipIf(django.VERSION < (1, 6), 'Only applies to Django >= 1.6')
     def test_model_field_set_to_none(self):
         # ``models.ImageField``s return a file object with no associated file.
         # These objects raise errors if you try to access the url etc. So we
@@ -72,3 +75,9 @@ class ImageFieldTests(TestCase):
             <label for="id_image_field">Image field:</label>
             <input id="id_image_field" name="image_field" type="file" />
             </p>""")
+
+        context = form.fields['image_field'].widget.get_context(
+            name='image_field',
+            value=instance.image_field,
+            attrs={})
+        self.assertEqual(context['value'], None)
