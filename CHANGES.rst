@@ -14,6 +14,10 @@ Changelog
 * Using a property for ``Widget.is_hidden`` attribute on widgets to be in
   conformance with Django 1.7 default widget implementation.
 
+* The docs mentioned that the current ``ModelForm`` behaviour in
+  ``floppyforms.__future__`` will become the default in 1.3. This is postpone
+  for one release and will be part of 1.4.
+
 1.2.0
 ~~~~~
 
@@ -45,7 +49,7 @@ Changelog
         class Meta:
             model = Profile
 
-  This feature will become the default behaviour in floppyforms 1.3.
+  This feature will become the default behaviour in floppyforms 1.4.
 
   See the documentation for more information:
   http://django-floppyforms.readthedocs.org/en/latest/usage.html#modelforms
