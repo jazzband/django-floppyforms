@@ -147,7 +147,7 @@ class BaseMetacartaWidget(BaseGeometryWidget):
 
 class BaseOsmWidget(BaseGeometryWidget):
     """An OpenStreetMap base widget"""
-    map_srid = 900913
+    map_srid = 3857
     template_name = 'floppyforms/gis/osm.html'
 
     class Media:
@@ -160,7 +160,7 @@ class BaseOsmWidget(BaseGeometryWidget):
 
 class BaseGMapWidget(BaseGeometryWidget):
     """A Google Maps base widget"""
-    map_srid = 900913
+    map_srid = 3857
     template_name = 'floppyforms/gis/google.html'
 
     class Media:
