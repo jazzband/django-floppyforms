@@ -1,26 +1,39 @@
 language: python
 python: 2.7
 env:
-  - TOXENV=py26-1.4
-  - TOXENV=py26-1.5
-  - TOXENV=py26-1.6
-  - TOXENV=py27-1.4
-  - TOXENV=py27-1.5
-  - TOXENV=py27-1.6
-  - TOXENV=py33-1.5
-  - TOXENV=py33-1.6
-  - TOXENV=pypy-1.4
-  - TOXENV=pypy-1.5
-  - TOXENV=pypy-1.6
+  - TOXENV=py26-14
+  - TOXENV=py26-15
+  - TOXENV=py26-16
+  - TOXENV=py27-14
+  - TOXENV=py27-15
+  - TOXENV=py27-16
+  - TOXENV=py27-17
+  - TOXENV=py33-15
+  - TOXENV=py33-16
+  - TOXENV=py33-17
+  - TOXENV=pypy-14
+  - TOXENV=pypy-15
+  - TOXENV=pypy-16
+  - TOXENV=pypy-17
   - TOXENV=docs
+  - TOXENV=flake8
 before_install:
-  - sudo apt-get -y install binutils gdal-bin libproj-dev libgeos-c1
+  # The following three lines is a fix for travis CI, since it wouldn't be
+  # able to install the dependencies correctly.
+  # See: https://github.com/travis-ci/travis-ci/issues/2683
+  - sudo mv /etc/apt/sources.list.d/pgdg-source.list* /tmp
+  - sudo apt-get remove -q -y binutils gdal-bin libproj-dev libgeos-c1
+  - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+
+  - sudo apt-get -q -y update
+  # Required to install Pillow
+  - sudo apt-get -q -y install build-essential
+  # GIS requirements.
+  - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
-  - pip install tox flake8
-before_script:
-  - flake8 floppyforms
+  - pip install tox
 script:
-  - tox -e $TOXENV
+  - tox
 notifications:
   irc:
     channels:

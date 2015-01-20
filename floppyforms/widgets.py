@@ -38,6 +38,11 @@ __all__ = (
 class Widget(forms.Widget):
     is_required = False
 
+    # Backported from Django 1.7
+    @property
+    def is_hidden(self):
+        return self.input_type == 'hidden' if hasattr(self, 'input_type') else False
+
 
 class Input(Widget):
     template_name = 'floppyforms/input.html'
@@ -132,7 +137,6 @@ class PasswordInput(TextInput):
 
 class HiddenInput(Input):
     input_type = 'hidden'
-    is_hidden = True
 
 
 class MultipleHiddenInput(HiddenInput):
@@ -236,6 +240,13 @@ class ClearableFileInput(FileInput):
         return upload
 
     def _format_value(self, value):
+        # If the value is falsy, then it might be a file instance with no file
+        # associated with. That can happen if you get the value from a
+        # models.ImageField that is set to None. In that case we just return
+        # None. Otherwise calls in the template like {{ value.url }} will raise
+        # a ValueError.
+        if not value:
+            return None
         return value
 
 
@@ -256,15 +267,11 @@ class Textarea(Input):
 
 class DateInput(Input):
     input_type = 'date'
+    supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):
         super(DateInput, self).__init__(attrs)
-        if format:
-            self.format = format
-            self.manual_format = True
-        else:
-            self.format = formats.get_format('DATE_INPUT_FORMATS')[0]
-            self.manual_format = False
+        self.format = '%Y-%m-%d'
 
     def _format_value(self, value):
         if hasattr(value, 'strftime'):
@@ -286,6 +293,7 @@ class DateInput(Input):
 
 class DateTimeInput(Input):
     input_type = 'datetime'
+    supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):
         super(DateTimeInput, self).__init__(attrs)
@@ -316,6 +324,7 @@ class DateTimeInput(Input):
 
 class TimeInput(Input):
     input_type = 'time'
+    supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):
         super(TimeInput, self).__init__(attrs)
@@ -544,10 +553,15 @@ class CheckboxSelectMultiple(SelectMultiple):
 
 
 class MultiWidget(forms.MultiWidget):
-    pass
+    # Backported from Django 1.7
+    @property
+    def is_hidden(self):
+        return all(w.is_hidden for w in self.widgets)
 
 
 class SplitDateTimeWidget(MultiWidget):
+    supports_microseconds = False
+
     def __init__(self, attrs=None, date_format=None, time_format=None):
         widgets = (DateInput(attrs=attrs, format=date_format),
                    TimeInput(attrs=attrs, format=time_format))
@@ -561,14 +575,11 @@ class SplitDateTimeWidget(MultiWidget):
 
 
 class SplitHiddenDateTimeWidget(SplitDateTimeWidget):
-    is_hidden = True
-
     def __init__(self, attrs=None, date_format=None, time_format=None):
         super(SplitHiddenDateTimeWidget, self).__init__(attrs, date_format,
                                                         time_format)
         for widget in self.widgets:
             widget.input_type = 'hidden'
-            widget.is_hidden = True
 
 
 class SelectDateWidget(forms.Widget):

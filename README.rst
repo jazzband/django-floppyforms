@@ -55,10 +55,10 @@ Get the code::
 
 Install the development requirements::
 
-    pip install tox
+    pip install "tox>=1.8"
 
 Run the tests::
 
-    tox -e py27-1.6
+    tox -e py27-16
 
 You can see all the supported test configurations with ``tox -l``.

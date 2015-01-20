@@ -25,7 +25,7 @@ setup(
     version=find_version('floppyforms', '__init__.py'),
     author=u'Bruno Renié',
     author_email='bruno@renie.fr',
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests.*", "tests"]),
     include_package_data=True,
     url='https://github.com/gregmuellegger/django-floppyforms',
     license='BSD licence, see LICENSE file',

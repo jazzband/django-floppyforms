@@ -14,7 +14,7 @@ class ModelForm(LayoutRenderer, models.ModelForm):
         url = 'https://github.com/gregmuellegger/django-floppyforms/tree/1.2.0/CHANGES.rst'
         warnings.warn(
             'The behaviour of subclasses of floppyforms.models.ModelForm will '
-            'change with django-floppyforms 1.3. '
+            'change with django-floppyforms 1.4. '
             'Use `import floppyforms.__future__ as forms` instead of '
             '`import floppyforms as forms` to use the new behaviour now. '
             'See announcement here: %s' % url,

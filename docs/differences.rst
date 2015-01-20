@@ -148,7 +148,7 @@ Getting back Django's behaviour
 If you need to get the same output as standard Django forms:
 
 * Override ``floppyforms/input.html``, ``floppyforms/radio.html``,
-  ``floppyforms/clearable_input.html`` and
+  ``floppyforms/clearable_input.html``,  ``floppyforms/textarea.html`` and
   ``floppyforms/checkbox_select.html`` to use an XHTML syntax
 
 * Remove the ``required`` attribute from the templates as well

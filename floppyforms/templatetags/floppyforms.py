@@ -2,7 +2,6 @@ from collections import defaultdict
 from contextlib import contextmanager
 
 from django.conf import settings
-from django.forms.forms import BoundField
 from django.forms.util import ErrorList
 from django.template import (Library, Node, Variable,
                              TemplateSyntaxError, VariableDoesNotExist)
@@ -11,6 +10,24 @@ from django.template.loader import get_template
 from django.utils.functional import empty
 
 register = Library()
+
+
+def is_formset(var):
+    # We assume it is a formset if the var has these fields.
+    significant_attributes = ('forms', 'management_form')
+    return all(hasattr(var, attr) for attr in significant_attributes)
+
+
+def is_form(var):
+    # We assume it is a form if the var has these fields.
+    significant_attributes = ('is_bound', 'data', 'fields')
+    return all(hasattr(var, attr) for attr in significant_attributes)
+
+
+def is_bound_field(var):
+    # We assume it is a BoundField if the var has these fields.
+    significant_attributes = ('as_widget', 'as_hidden', 'is_hidden')
+    return all(hasattr(var, attr) for attr in significant_attributes)
 
 
 class ConfigFilter(object):
@@ -490,13 +507,9 @@ class FormNode(BaseFormRenderNode):
     def is_list_variable(self, var):
         if not hasattr(var, '__iter__'):
             return False
-        # we assume it is a formset if the var has these fields
-        significant_attributes = ('forms', 'management_form')
-        if all(hasattr(var, attr) for attr in significant_attributes):
-            return True
-        # we assume it is a form if the var has these fields
-        significant_attributes = ('is_bound', 'data', 'fields')
-        if any(hasattr(var, attr) for attr in significant_attributes):
+        if is_formset(var):
+                return True
+        if is_form(var):
             return False
         # form duck-typing was not successful so it must be a list
         return True
@@ -544,7 +557,7 @@ class FormRowNode(BaseFormRenderNode):
     optional_using_parameter = True
 
     def is_list_variable(self, var):
-        if hasattr(var, '__iter__') and not isinstance(var, BoundField):
+        if hasattr(var, '__iter__') and not is_bound_field(var):
             return True
         return False
 

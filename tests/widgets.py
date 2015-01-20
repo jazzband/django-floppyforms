@@ -245,6 +245,20 @@ class WidgetRenderingTest(TestCase):
         </p>
         """)
 
+    @override_settings(LANGUAGE_CODE='sl', USE_I18n=True)
+    def test_date_with_locale(self):
+        """<input type="date">"""
+        class DateForm(forms.Form):
+            date = forms.DateField(initial=datetime.date(2014, 1, 31))
+
+        rendered = DateForm().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_date">Date:</label>
+            <input type="date" value="2014-01-31" name="date" id="id_date" required>
+        </p>
+        """)
+
     def test_search(self):
         """<input type="search">"""
         class SearchForm(forms.Form):
@@ -1101,6 +1115,17 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(form.is_valid())
         # file_ has been cleared
         self.assertFalse(form.cleaned_data['file_'])
+
+    def test_clearable_file_input_with_none_value(self):
+        class Form(forms.Form):
+            file_ = forms.FileField(required=False)
+
+        rendered = Form(initial={'file_': None}).as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            <input type="file" name="file_" id="id_file_">
+        </p>""")
 
     def test_rendered_file_input(self):
         class Form(forms.Form):
