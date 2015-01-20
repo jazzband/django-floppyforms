@@ -108,3 +108,24 @@ If you want only the attribute's key to be rendered, set it to ``True``:
         return ctx
 
 This will simply add ``awesome`` as a key-only attribute.
+
+You can also pass an ``attrs`` dictionary to the ``{% formrow %}`` template tag,
+which will then subsequently be passed to the rendered widget.
+
+Pass this to your context
+
+.. code-block:: python
+
+    myfield_attrs = dict(placeholder="Some text")
+
+And use like this in your HTML
+
+.. code-block:: jinja
+
+    {% formrow form.myfield with attrs=myfield_attrs %}
+
+Which will output something like
+
+.. code-block:: jinja
+
+    <input type="text" name="myfield" placeholder="Some text">
