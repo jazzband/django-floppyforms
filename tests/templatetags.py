@@ -668,6 +668,22 @@ class FormRowTagTests(TestCase):
         Extra argument: first argument
         ''')
 
+    def test_attrs_are_passed_to_widget(self):
+
+        form = SimpleForm()
+        name_attrs = {'placeholder': 'My Name'}
+        rendered = render('''{% form form using %}
+            {% formrow form.name with attrs=name_attrs %}
+            {% endform %}''', {'form': form, 'name_attrs': name_attrs})
+
+        self.assertHTMLEqual(rendered, '''
+        <p>
+            <label for="id_name">Name:</label>
+            <input type="text" name="name" required placeholder="My Name" id="id_name">
+        </p>
+        ''')
+
+
 
 class FormFieldTagTests(TestCase):
     def test_valid_syntax(self):
