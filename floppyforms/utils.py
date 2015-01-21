@@ -11,8 +11,10 @@ import warnings
 
 __all__ = ('make_floppy',)
 
+
 class TestForm(FloppyForm):
     pass
+
 
 def make_floppy(form_class):
 
@@ -36,8 +38,9 @@ def make_floppy(form_class):
                 form_class, OldFloppyModelForm), {})
         else:
             new_form_class = type(form_class.__name__, (
-                six.with_metaclass(ModelFormMetaclass,
-                form_class, FloppyModelForm),), {})
+                six.with_metaclass(
+                    ModelFormMetaclass,
+                    form_class, FloppyModelForm),), {})
 
     new_form_class.__module__ = form_class.__module__
 
