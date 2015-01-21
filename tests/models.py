@@ -36,3 +36,8 @@ class AllFields(models.Model):
     m2m = models.ManyToManyField(Registration, related_name='all_m2m')
     one = models.OneToOneField(Registration, related_name='all_one')
     choices = models.CharField(max_length=50, choices=(('a', 'a'),))
+
+
+class ImageFieldModel(models.Model):
+    image_field = models.ImageField(upload_to='_test_uploads', null=True,
+                                    blank=True)

@@ -143,7 +143,7 @@ field and a ``floppyforms.URLField`` for ``Profile.url``.
 
     Please make sure to test your code if your modelforms work still as
     expected with the new behaviour. The old version's behaviour will be
-    removed completely with django-floppyforms 1.3.
+    removed completely with django-floppyforms 1.4.
 
 
 Dynamic Creation
