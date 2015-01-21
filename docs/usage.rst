@@ -144,3 +144,18 @@ field and a ``floppyforms.URLField`` for ``Profile.url``.
     Please make sure to test your code if your modelforms work still as
     expected with the new behaviour. The old version's behaviour will be
     removed completely with django-floppyforms 1.3.
+
+
+Dynamic Creation
+````````````````
+
+Sometimes making a new form class isn't practical, and instead you want to modify
+an existing form from another module. For this, a utility method, ``make_floppy``
+is provided
+
+.. code-block:: python
+
+    from my_module.forms import MyForm
+    from floppyforms.utils import make_floppy
+
+    MyFloppyForm = make_floppy(MyForm)
