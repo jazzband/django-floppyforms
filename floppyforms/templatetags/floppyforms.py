@@ -139,7 +139,8 @@ class FormConfig(object):
 
         """
         if filter is None:
-            filter = lambda **kwargs: True
+            def filter(**kwargs):
+                return True
         self.dicts[-1][key].append((value, filter))
 
     def retrieve(self, key, **kwargs):
