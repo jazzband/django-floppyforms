@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+1.3.1 (in development)
+~~~~~~~~~~~~~~~~~~~~~~
+
+* Fix: ``python setup.py bdist_rpm`` failed because of wrong string encodings
+  in setup.py. Thanks to Yuki Izumi for the fix.
+
 1.3.0
 ~~~~~
 
