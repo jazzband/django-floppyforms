@@ -4,6 +4,9 @@ Changelog
 1.3.1 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~
 
+* Adjusting the SRIDs used in the GeoDjango widgets to conform with
+  Django 1.7. Thanks to Tyler Tipton for the patch.
+
 * Fix: ``python setup.py bdist_rpm`` failed because of wrong string encodings
   in setup.py. Thanks to Yuki Izumi for the fix.
 
