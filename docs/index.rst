@@ -28,23 +28,20 @@ The source code is hosted on `github`_.
 Installation
 ------------
 
-Depending on your Django and python versions, you might want to install a
-specific version of django-floppyforms instead of the latest and greatest.
-
-=================== ====================== ===============
-Floppyforms version Minimal Django version Python versions
-=================== ====================== ===============
-1.0                 1.3                    2.5 - 2.7
-1.1                 1.4.2                  2.6, 2.7, 3.3
-=================== ====================== ===============
+As a requirement of django-floppyforms, you will need to have Django in
+version 1.4 or higher installed and use Python 2.6 or newer.  Python 3 and
+PyPy are supported!
 
 Two-step process to install django-floppyforms:
 
-* ``pip install django-floppyforms==<version_number>``
+* ``pip install django-floppyforms``
 * Add ``'floppyforms'`` to your ``INSTALLED_APPS``
 
 When you're done you can jump to the :doc:`usage <usage>` section. For the
 impatient reader, there's also an :doc:`examples <examples>` section.
+
+Using ``django-floppyforms``
+----------------------------
 
 .. toctree::
    :maxdepth: 2
@@ -60,79 +57,18 @@ impatient reader, there's also an :doc:`examples <examples>` section.
    examples
    bootstrap
 
-Additional notes
-----------------
+.. toctree::
+   :maxdepth: 2
 
-Help
-````
+   changelog
+
+Getting help
+------------
 
 Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
 
-Changelog
-`````````
-
-* **1.1.1** (2014-01-21):
-
-  * Fix for Django 1.6
-
-  * Fix for GIS widgets on Django 1.4 and some versions of GEOS.
-
-* **1.1** (2013-02-13):
-
-  * Added GenericIPAddressField.
-
-  * Django 1.5 and Python 3.3 support added.
-
-  * Django 1.3 support dropped.
-
-  * GIS widgets switched to stable OpenLayers release instead of a dev build.
-
-  * Fixed ``Textarea`` widget template to work with a non-empty
-    ``TEMPLATE_STRING_IF_INVALID`` setting. Thanks to Leon Matthews for the
-    report.
-
-  * Fixed context handling in widget rendering. It didn't take care of popping
-    the context as often as it was pushed onto. This could cause strange
-    behaviour in the template by leaking variables into outer scopes. Thanks to
-    David Danier for the report.
-
-  * Added missing empty choice for selectboxes in ``SelectDateWidget``. Thanks
-    fsx999 for the report.
-
-  * ``IntegerField`` now automatically passes its ``min_value`` and
-    ``max_value`` (if provided) to the ``NumberInput`` widget.
-
-  * Added basic support for ``<datalist>`` elements for suggestions in
-    ``Input`` widgets.
-
-  * ``date``, ``datetime`` and ``time`` inputs are not localized anymore. The
-    HTML5 spec requires the rendered values to be RFC3339-compliant and the
-    browsers are in charge of localization. If you still want localized
-    date/time inputs, use those provided by Django or override the
-    ``_format_value()`` method of the relevant widgets.
-
-* **v1.0**:
-
-  * cleaned up the behaviour of ``attrs``
-  * compatible with Django 1.3 and 1.4
-  * ``<optgroup>`` support in select widgets
-  * ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``.
-    This is **backwards-incompatible**: if you have custom templates for
-    ``Select`` widgets, they need to be updated.
-  * ``get_context()`` is more reliable
-  * Added ``form``, ``formrow``, ``formfield``, ``formconfig`` and ``widget``
-    template tags.
-  * Added template-based form layout system.
-  * Added ability to render widgets with the broader page context, for
-    instance for django-sekizai compatibility.
-
-* **v0.4**:
-
-  * All widgets from Django have their floppyforms equivalent
-  * Added widgets for GeoDjango
-
 Why the name?
-`````````````
+-------------
 
 * There aren't enough packages with silly names in the Django community. So,
   here's one more.
@@ -140,7 +76,7 @@ Why the name?
   makes any sense.
 
 Performance
-```````````
+-----------
 
 Each time a widget is rendered, there is a template inclusion. To what extent
 does it affect performance? You can try with this little script:
@@ -194,11 +130,3 @@ Even with template caching, the rendering time is doubled. However the impact
 is probably not noticeable since rendering the form above takes 3
 milliseconds instead of 1.6: **it still takes no time :)**. The use of
 template caching in production is, of course, encouraged.
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

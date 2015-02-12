@@ -67,3 +67,67 @@ Changelog
 
 * All floppyform widget classes now take a ``template_name`` argument in the
   ``__init__`` and ``render`` method. Thanks to Carl Meyer for the patch.
+
+1.1.1
+~~~~~
+
+* Fix for Django 1.6
+
+* Fix for GIS widgets on Django 1.4 and some versions of GEOS.
+
+1.1
+~~~
+
+* Added GenericIPAddressField.
+
+* Django 1.5 and Python 3.3 support added.
+
+* Django 1.3 support dropped.
+
+* GIS widgets switched to stable OpenLayers release instead of a dev build.
+
+* Fixed ``Textarea`` widget template to work with a non-empty
+  ``TEMPLATE_STRING_IF_INVALID`` setting. Thanks to Leon Matthews for the
+  report.
+
+* Fixed context handling in widget rendering. It didn't take care of popping
+  the context as often as it was pushed onto. This could cause strange
+  behaviour in the template by leaking variables into outer scopes. Thanks to
+  David Danier for the report.
+
+* Added missing empty choice for selectboxes in ``SelectDateWidget``. Thanks
+  fsx999 for the report.
+
+* ``IntegerField`` now automatically passes its ``min_value`` and
+  ``max_value`` (if provided) to the ``NumberInput`` widget.
+
+* Added basic support for ``<datalist>`` elements for suggestions in
+  ``Input`` widgets.
+
+* ``date``, ``datetime`` and ``time`` inputs are not localized anymore. The
+  HTML5 spec requires the rendered values to be RFC3339-compliant and the
+  browsers are in charge of localization. If you still want localized
+  date/time inputs, use those provided by Django or override the
+  ``_format_value()`` method of the relevant widgets.
+
+1.0
+~~~
+
+* cleaned up the behaviour of ``attrs``
+* compatible with Django 1.3 and 1.4
+* ``<optgroup>`` support in select widgets
+* ``Select`` widgets: renamed ``choices`` context variable to ``optgroups``.
+  This is **backwards-incompatible**: if you have custom templates for
+  ``Select`` widgets, they need to be updated.
+* ``get_context()`` is more reliable
+* Added ``form``, ``formrow``, ``formfield``, ``formconfig`` and ``widget``
+  template tags.
+* Added template-based form layout system.
+* Added ability to render widgets with the broader page context, for
+  instance for django-sekizai compatibility.
+
+0.4
+~~~
+
+* All widgets from Django have their floppyforms equivalent
+* Added widgets for GeoDjango
