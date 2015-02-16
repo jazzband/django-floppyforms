@@ -1,0 +1,16 @@
+{% load floppyforms %}<!DOCTYPE html>
+<html>
+<head>
+    {{ form.media }}
+</head>
+<body>
+    <form action="" method="post">{% csrf_token %}
+        <table>
+            {% form form %}
+        </table>
+        <p>
+            <button type="submit">Submit</button>
+        </p>
+    </form>
+</body>
+</html>
