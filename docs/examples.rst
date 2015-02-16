@@ -39,8 +39,9 @@ picker.
 
     <script type="text/javascript">
       $(document).ready(function() {
-        var type = $('<input type="date" />').attr('type');
-        if (type == 'text') { // No HTML5 support
+        // Checking support for <input type="date"> using Modernizr:
+        // http://modernizr.com/
+        if (!Modernizr.inputtypes.date) {
           var options = {
             dateFormat: 'yy-mm-dd'
           };
