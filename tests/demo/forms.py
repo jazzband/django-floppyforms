@@ -1,4 +1,11 @@
 import floppyforms as forms
+from floppyforms import gis
+
+
+try:
+    import django.contrib.gis.forms as gis_forms
+except ImportError:
+    gis_forms = None
 
 
 ALPHA_CHOICES = [
@@ -10,6 +17,13 @@ NUMERIC_CHOICES = [
     (c, str(c))
     for c in range(10)
 ]
+
+
+def mixin(*classes):
+    return type(
+        ''.join(cls.__name__ for cls in classes),
+        tuple(classes),
+        {})
 
 
 class AllFieldsForm(forms.Form):
@@ -36,3 +50,19 @@ class AllFieldsForm(forms.Form):
     typed_choices = forms.TypedChoiceField(choices=NUMERIC_CHOICES, coerce=int)
     typed_multiple_choices = forms.TypedMultipleChoiceField(choices=NUMERIC_CHOICES, coerce=int)
     url = forms.URLField()
+
+    # GIS fields.
+    if gis_forms:
+        osm_point = gis.PointField(widget=mixin(gis.PointWidget, gis.BaseOsmWidget))
+        osm_multipoint = gis.MultiPointField(widget=mixin(gis.MultiPointWidget, gis.BaseOsmWidget))
+        osm_linestring = gis.LineStringField(widget=mixin(gis.LineStringWidget, gis.BaseOsmWidget))
+        osm_multilinestring = gis.MultiLineStringField(widget=mixin(gis.MultiLineStringWidget, gis.BaseOsmWidget))
+        osm_polygon = gis.PolygonField(widget=mixin(gis.PolygonWidget, gis.BaseOsmWidget))
+        osm_multipolygon = gis.MultiPolygonField(widget=mixin(gis.MultiPolygonWidget, gis.BaseOsmWidget))
+
+        gmap_point = gis.PointField(widget=mixin(gis.PointWidget, gis.BaseGMapWidget))
+        gmap_multipoint = gis.MultiPointField(widget=mixin(gis.MultiPointWidget, gis.BaseGMapWidget))
+        gmap_linestring = gis.LineStringField(widget=mixin(gis.LineStringWidget, gis.BaseGMapWidget))
+        gmap_multilinestring = gis.MultiLineStringField(widget=mixin(gis.MultiLineStringWidget, gis.BaseGMapWidget))
+        gmap_polygon = gis.PolygonField(widget=mixin(gis.PolygonWidget, gis.BaseGMapWidget))
+        gmap_multipolygon = gis.MultiPolygonField(widget=mixin(gis.MultiPolygonWidget, gis.BaseGMapWidget))
