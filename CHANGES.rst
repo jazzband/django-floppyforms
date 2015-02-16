@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-1.3.1 (in development)
+1.4.0 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~
 
 * Adjusting the SRIDs used in the GeoDjango widgets to conform with
@@ -9,8 +9,14 @@ Changelog
 
 * Python 3.2 is now officially supported.
 
+* Adding `OpenLayers`_ distribution to django-floppyforms static files in order
+  to better support HTTPS setups when GIS widgets are used (See #15 for more
+  details).
+
 * Fix: ``python setup.py bdist_rpm`` failed because of wrong string encodings
   in setup.py. Thanks to Yuki Izumi for the fix.
+
+.. _OpenLayers: http://openlayers.org/
 
 1.3.0
 ~~~~~
