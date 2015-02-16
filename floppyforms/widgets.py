@@ -487,25 +487,25 @@ class Select(Input):
 
 class NullBooleanSelect(Select):
     def __init__(self, attrs=None):
-        choices = ((u'1', _('Unknown')),
-                   (u'2', _('Yes')),
-                   (u'3', _('No')))
+        choices = (('1', _('Unknown')),
+                   ('2', _('Yes')),
+                   ('3', _('No')))
         super(NullBooleanSelect, self).__init__(attrs, choices)
 
     def _format_value(self, value):
         value = value[0]
         try:
-            value = {True: u'2', False: u'3', u'2': u'2', u'3': u'3'}[value]
+            value = {True: '2', False: '3', '2': '2', '3': '3'}[value]
         except KeyError:
-            value = u'1'
+            value = '1'
         return value
 
     def value_from_datadict(self, data, files, name):
         value = data.get(name, None)
-        return {u'2': True,
+        return {'2': True,
                 True: True,
                 'True': True,
-                u'3': False,
+                '3': False,
                 'False': False,
                 False: False}.get(value, None)
 

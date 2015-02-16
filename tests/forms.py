@@ -14,26 +14,26 @@ from .models import Registration
 
 class RegistrationForm(forms.Form):
     honeypot = forms.CharField(required=False, widget=forms.HiddenInput)
-    firstname = forms.CharField(label=_(u'Your first name?'))
-    lastname = forms.CharField(label=_(u'Your last name:'))
+    firstname = forms.CharField(label=_('Your first name?'))
+    lastname = forms.CharField(label=_('Your last name:'))
     username = forms.CharField(max_length=30)
     password = forms.CharField(
         widget=forms.PasswordInput,
-        help_text=_(u'Make sure to use a secure password.'),
+        help_text=_('Make sure to use a secure password.'),
     )
-    password2 = forms.CharField(label=_(u'Retype password'), widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_('Retype password'), widget=forms.PasswordInput)
     age = forms.IntegerField(required=False)
     height = forms.DecimalField(localize=True, required=False)
     agree_to_terms = forms.BooleanField()
 
     def clean_honeypot(self):
         if self.cleaned_data.get('honeypot'):
-            raise ValidationError(u'Haha, you trapped into the honeypot.')
+            raise ValidationError('Haha, you trapped into the honeypot.')
         return self.cleaned_data['honeypot']
 
     def clean(self):
         if self.errors:
-            raise ValidationError(u'Please correct the errors below.')
+            raise ValidationError('Please correct the errors below.')
 
 
 class RegistrationModelForm(forms.ModelForm):

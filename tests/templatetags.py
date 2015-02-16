@@ -52,7 +52,7 @@ class PersonForm(forms.Form):
 
 class HardcodedWidget(forms.Widget):
     def render(self, *args, **kwargs):
-        return u'Hardcoded widget.'
+        return 'Hardcoded widget.'
 
 
 class HardcodedForm(forms.Form):

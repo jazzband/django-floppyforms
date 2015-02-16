@@ -23,14 +23,14 @@ def find_version(*file_paths):
 setup(
     name='django-floppyforms',
     version=find_version('floppyforms', '__init__.py'),
-    author=u'Bruno Renié',
+    author='Bruno Renié',
     author_email='bruno@renie.fr',
     packages=find_packages(exclude=["tests.*", "tests"]),
     include_package_data=True,
     url='https://github.com/gregmuellegger/django-floppyforms',
     license='BSD licence, see LICENSE file',
     description='Full control of form rendering in the templates',
-    long_description=u'\n\n'.join((
+    long_description='\n\n'.join((
         read('README.rst'),
         read('CHANGES.rst'))),
     classifiers=[
