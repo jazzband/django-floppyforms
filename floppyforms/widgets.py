@@ -109,7 +109,7 @@ class Input(Widget):
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
         return loader.render_to_string(
             template_name,
-            dictionary=context,
+            context,
             context_instance=self.context_instance)
 
 
