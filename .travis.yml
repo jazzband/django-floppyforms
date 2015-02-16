@@ -14,6 +14,9 @@ env:
   - TOXENV=py33-15
   - TOXENV=py33-16
   - TOXENV=py33-17
+  - TOXENV=py34-15
+  - TOXENV=py34-16
+  - TOXENV=py34-17
   - TOXENV=pypy-14
   - TOXENV=pypy-15
   - TOXENV=pypy-16
