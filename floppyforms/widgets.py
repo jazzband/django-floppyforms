@@ -423,7 +423,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
             return False
         value = data.get(name)
         values = {'true': True, 'false': False}
-        if isinstance(value, six.text_type):
+        if isinstance(value, six.string_types):
             value = values.get(value.lower(), value)
         return value
 
@@ -641,7 +641,7 @@ class SelectDateWidget(forms.Widget):
             year_val, month_val, day_val = value.year, value.month, value.day
         except AttributeError:
             year_val = month_val = day_val = None
-            if isinstance(value, six.text_type):
+            if isinstance(value, six.string_types):
                 if settings.USE_L10N:
                     try:
                         input_format = formats.get_format(
