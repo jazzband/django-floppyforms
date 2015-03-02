@@ -16,6 +16,10 @@ Changelog
 * Fix: ``python setup.py bdist_rpm`` failed because of wrong string encodings
   in setup.py. Thanks to Yuki Izumi for the fix.
 
+* Fix: The ``CheckboxInput`` widget did detect different values in Python 2
+  when given ``'False'`` and ``u'False'`` as data. Thanks to @artscoop for the
+  patch.
+
 .. _OpenLayers: http://openlayers.org/
 
 1.3.0
