@@ -113,6 +113,40 @@ floppyforms as forms`` when you want to define modelforms.
 For more information see the :ref:`section about modelforms in the usage
 documentation <usage-modelforms>`.
 
+``help_text`` values are autoescaped by default
+-----------------------------------------------
+
+If you use HTML in the ``help_text`` value for a Django form field and are not
+using django-floppyforms, then you will get the correct HTML rendered in the
+template. For example you have this form::
+
+    from django import forms
+
+    class DjangoForm(forms.Form):
+        myfield = forms.CharField(help_text='A <strong>help</strong> text.')
+
+When you now use this form with ``{{ form.as_p }}`` in the template, you will
+get the help text put in the template as it is, with no HTML escaping. That
+might imply a security risk if your help text contains content from untrusted
+sources. django-floppyforms applies autoescaping by default to the help text.
+So if you define::
+
+    import floppyforms as forms
+
+    class FloppyForm(forms.Form):
+        myfield = forms.CharField(help_text='A <strong>help</strong> text.')
+
+And then use ``{{ form.as_p }}``, you will get an output that contains ``A
+&lt;strong&;gt;help&lt;/strong&gt; text.``. You can disable the autoescaping
+of the help text by using Django's ``mark_safe`` helper::
+
+    from django.utils.html import mark_safe
+    import floppyforms as forms
+
+    class FloppyForm(forms.Form):
+        myfield = forms.CharField(help_text=mark_safe('A <strong>help</strong> text.'))
+
+
 ``TEMPLATE_STRING_IF_INVALID`` caveats
 --------------------------------------
 
