@@ -1,5 +1,6 @@
 import datetime
 import os
+import sys
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
@@ -10,6 +11,7 @@ from django.test.utils import override_settings
 from django.utils.dates import MONTHS
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
+from django.utils.unittest import skipUnless
 
 import floppyforms as forms
 
@@ -431,32 +433,6 @@ class WidgetRenderingTest(TestCase):
         </p>
         """)
 
-        form = CBForm(data={'cb': u'False'})
-        self.assertFalse(form.is_valid())
-        rendered = form.as_p()
-        self.assertHTMLEqual(rendered, """
-        <ul class="errorlist">
-            <li>This field is required.</li>
-        </ul>
-        <p>
-            <label for="id_cb">Cb:</label>
-            <input type="checkbox" name="cb" id="id_cb" required>
-        </p>
-        """)
-
-        form = CBForm(data={'cb': 'False'})
-        self.assertFalse(form.is_valid())
-        rendered = form.as_p()
-        self.assertHTMLEqual(rendered, """
-        <ul class="errorlist">
-            <li>This field is required.</li>
-        </ul>
-        <p>
-            <label for="id_cb">Cb:</label>
-            <input type="checkbox" name="cb" id="id_cb" required>
-        </p>
-        """)
-
         form = CBForm(data={'cb': 1})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
@@ -484,6 +460,37 @@ class WidgetRenderingTest(TestCase):
         <p>
             <label for="id_cb">Cb:</label>
             <input type="checkbox" name="cb" id="id_cb" required checked value="foo">
+        </p>
+        """)
+
+    @skipUnless(sys.version_info.major < 3, 'Only applies to Python 2')
+    def test_checkbox_string_values(self):
+        class CBForm(forms.Form):
+            cb = forms.BooleanField()
+
+        form = CBForm(data={'cb': unicode('False')})
+        self.assertFalse(form.is_valid())
+        rendered = form.as_p()
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required>
+        </p>
+        """)
+
+        form = CBForm(data={'cb': 'False'})
+        self.assertFalse(form.is_valid())
+        rendered = form.as_p()
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required>
         </p>
         """)
 
