@@ -431,6 +431,32 @@ class WidgetRenderingTest(TestCase):
         </p>
         """)
 
+        form = CBForm(data={'cb': u'False'})
+        self.assertFalse(form.is_valid())
+        rendered = form.as_p()
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required>
+        </p>
+        """)
+
+        form = CBForm(data={'cb': 'False'})
+        self.assertFalse(form.is_valid())
+        rendered = form.as_p()
+        self.assertHTMLEqual(rendered, """
+        <ul class="errorlist">
+            <li>This field is required.</li>
+        </ul>
+        <p>
+            <label for="id_cb">Cb:</label>
+            <input type="checkbox" name="cb" id="id_cb" required>
+        </p>
+        """)
+
         form = CBForm(data={'cb': 1})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
