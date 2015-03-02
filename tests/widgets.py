@@ -463,7 +463,7 @@ class WidgetRenderingTest(TestCase):
         </p>
         """)
 
-    @skipUnless(sys.version_info.major < 3, 'Only applies to Python 2')
+    @skipUnless(sys.version_info[0] < 3, 'Only applies to Python 2')
     def test_checkbox_string_values(self):
         class CBForm(forms.Form):
             cb = forms.BooleanField()
