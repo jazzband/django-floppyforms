@@ -292,7 +292,10 @@ class DateInput(Input):
 
 
 class DateTimeInput(Input):
-    input_type = 'datetime'
+    # This intentionally 'text' since support for 'datetime' has been removed
+    # from the all major browsers. See #125 for more information:
+    # https://github.com/gregmuellegger/django-floppyforms/issues/125
+    input_type = 'text'
     supports_microseconds = False
 
     def __init__(self, attrs=None, format=None):

@@ -223,7 +223,7 @@ class WidgetRenderingTest(TestCase):
         """)
 
     def test_datetime(self):
-        """<input type="datetime">"""
+        """<input type="text">"""
         class DateTimeForm(forms.Form):
             date = forms.DateTimeField()
 
@@ -231,7 +231,7 @@ class WidgetRenderingTest(TestCase):
         self.assertHTMLEqual(rendered, """
         <p>
             <label for="id_date">Date:</label>
-            <input type="datetime" name="date" id="id_date" required>
+            <input type="text" name="date" id="id_date" required>
         </p>
         """)
 
