@@ -19,14 +19,9 @@ and a custom WKT parser/serializer implementing some Django-specific tweaks.
 Setting up
 ----------
 
-To make sure you're ready to use the geographic widgets, add
-``'django.contrib.gis'`` to your ``INSTALLED_APPS`` and run the floppyforms
-tests (the tests for geographic widgets are skipped if you don't have
-``django.contrib.gis`` in ``INSTALLED_APPS``)::
-
-    python manage.py test floppyforms
-
-If the tests don't pass, check your GEOS/GDAL installation.
+To make sure you're ready to use the geographic widgets, follow the
+`installation instructions for GeoDjango`_ closely. You need to have
+``'django.contrib.gis'`` in your ``INSTALLED_APPS`` setting.
 
 Next, you need to serve the javascript library provided by django-floppyforms
 (located in ``floppyforms/static/floppyforms/js/MapWidget.js``).
@@ -35,6 +30,8 @@ You might want to use ``django.contrib.staticfiles``, so that the javascript
 library will be picked up automatically and gets served by the development
 server. Just make sure you run ``manage.py collectstatic`` once you deploy
 your project.
+
+.. _installation instructions for GeoDjango: https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
 
 Widget types
 ------------
