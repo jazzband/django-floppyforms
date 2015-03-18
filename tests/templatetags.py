@@ -170,7 +170,7 @@ class FormConfigNodeTests(TestCase):
         config = node.get_config(context)
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['name']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
 
     def test_field_config_with(self):
         context = Context({FormNode.IN_FORM_CONTEXT_VAR: True})
@@ -190,13 +190,13 @@ class FormConfigNodeTests(TestCase):
         config = node.get_config(context)
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['firstname']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['lastname']),
             'field.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
-            'floppyforms/input.html')
+            'floppyforms/number.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['bio']),
             'floppyforms/textarea.html')
@@ -213,10 +213,10 @@ class FormConfigNodeTests(TestCase):
             'field.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['lastname']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
-            'floppyforms/input.html')
+            'floppyforms/number.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['bio']),
             'floppyforms/textarea.html')
@@ -230,10 +230,10 @@ class FormConfigNodeTests(TestCase):
         config = node.get_config(context)
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['firstname']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['lastname']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
             'field.html')
@@ -250,13 +250,13 @@ class FormConfigNodeTests(TestCase):
         config = node.get_config(context)
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['firstname']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['lastname']),
-            'floppyforms/input.html')
+            'floppyforms/text.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['age']),
-            'floppyforms/input.html')
+            'floppyforms/number.html')
         self.assertEqual(
             config.retrieve('widget_template', bound_field=form['bio']),
             'field.html')

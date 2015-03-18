@@ -114,6 +114,7 @@ class Input(Widget):
 
 
 class TextInput(Input):
+    template_name = 'floppyforms/text.html'
     input_type = 'text'
 
     def __init__(self, *args, **kwargs):
@@ -123,6 +124,7 @@ class TextInput(Input):
 
 
 class PasswordInput(TextInput):
+    template_name = 'floppyforms/password.html'
     input_type = 'password'
 
     def __init__(self, attrs=None, render_value=False):
@@ -136,6 +138,7 @@ class PasswordInput(TextInput):
 
 
 class HiddenInput(Input):
+    template_name = 'floppyforms/hidden.html'
     input_type = 'hidden'
 
 
@@ -168,6 +171,8 @@ class MultipleHiddenInput(HiddenInput):
 
 
 class SlugInput(TextInput):
+    template_name = 'floppyforms/slug.html'
+
     """<input type="text"> validating slugs with a pattern"""
     def get_context(self, name, value, attrs):
         context = super(SlugInput, self).get_context(name, value, attrs)
@@ -176,6 +181,8 @@ class SlugInput(TextInput):
 
 
 class IPAddressInput(TextInput):
+    template_name = 'floppyforms/ipaddress.html'
+
     """<input type="text"> validating IP addresses with a pattern"""
     ip_pattern = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25"
                   "[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}")
@@ -187,6 +194,7 @@ class IPAddressInput(TextInput):
 
 
 class FileInput(Input):
+    template_name = 'floppyforms/file.html'
     input_type = 'file'
     needs_multipart_form = True
     omit_value = True
@@ -266,6 +274,7 @@ class Textarea(Input):
 
 
 class DateInput(Input):
+    template_name = 'floppyforms/date.html'
     input_type = 'date'
     supports_microseconds = False
 
@@ -292,6 +301,7 @@ class DateInput(Input):
 
 
 class DateTimeInput(Input):
+    template_name = 'floppyforms/datetime.html'
     input_type = 'datetime'
     supports_microseconds = False
 
@@ -323,6 +333,7 @@ class DateTimeInput(Input):
 
 
 class TimeInput(Input):
+    template_name = 'floppyforms/time.html'
     input_type = 'time'
     supports_microseconds = False
 
@@ -353,22 +364,27 @@ class TimeInput(Input):
 
 
 class SearchInput(Input):
+    template_name = 'floppyforms/search.html'
     input_type = 'search'
 
 
 class EmailInput(TextInput):
+    template_name = 'floppyforms/email.html'
     input_type = 'email'
 
 
 class URLInput(TextInput):
+    template_name = 'floppyforms/url.html'
     input_type = 'url'
 
 
 class ColorInput(Input):
+    template_name = 'floppyforms/color.html'
     input_type = 'color'
 
 
 class NumberInput(TextInput):
+    template_name = 'floppyforms/number.html'
     input_type = 'number'
     min = None
     max = None
@@ -386,10 +402,12 @@ class NumberInput(TextInput):
 
 
 class RangeInput(NumberInput):
+    template_name = 'floppyforms/range.html'
     input_type = 'range'
 
 
 class PhoneNumberInput(Input):
+    template_name = 'floppyforms/phonenumber.html'
     input_type = 'tel'
 
 
@@ -398,6 +416,7 @@ def boolean_check(v):
 
 
 class CheckboxInput(Input, forms.CheckboxInput):
+    template_name = 'floppyforms/checkbox.html'
     input_type = 'checkbox'
 
     def __init__(self, attrs=None, check_test=None):
