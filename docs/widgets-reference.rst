@@ -28,7 +28,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: TextInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/text.html'``
 
     .. attribute:: TextInput.input_type
 
@@ -38,7 +38,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: PasswordInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/password.html'``
 
     .. attribute:: PasswordInput.input_type
 
@@ -48,7 +48,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: HiddenInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/hidden.html'``
 
     .. attribute:: HiddenInput.input_type
 
@@ -58,7 +58,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: SlugInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/slug.html'``
 
     .. attribute:: SlugInput.input_type
 
@@ -71,7 +71,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: IPAddressInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/ipaddress.html'``
 
     .. attribute:: IPAddressInput.input_type
 
@@ -85,7 +85,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: FileInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/file.html'``
 
     .. attribute:: FileInput.input_type
 
@@ -95,7 +95,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: ClearableFileInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/clearable_input.html'``
 
     .. attribute:: ClearableFileInput.input_type
 
@@ -120,7 +120,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: EmailInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/email.html'``
 
     .. attribute:: EmailInput.input_type
 
@@ -130,7 +130,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: URLInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/url.html'``
 
     .. attribute:: URLInput.input_type
 
@@ -140,7 +140,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: SearchInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/search.html'``
 
     .. attribute:: SearchInput.input_type
 
@@ -150,7 +150,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: ColorInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/color.html'``
 
     .. attribute:: ColorInput.input_type
 
@@ -160,7 +160,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: PhoneNumberInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/phonenumber.html'``
 
     .. attribute:: PhoneNumberInput.input_type
 
@@ -170,7 +170,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: DateInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/date.html'``
 
     .. attribute:: DateInput.input_type
 
@@ -185,7 +185,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: DateTimeInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/datetime.html'``
 
     .. attribute:: DateTimeInput.input_type
 
@@ -195,7 +195,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: TimeInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/time.html'``
 
     .. attribute:: TimeInput.input_type
 
@@ -205,7 +205,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: NumberInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/number.html'``
 
     .. attribute:: NumberInput.input_type
 
@@ -230,7 +230,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: NumberInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/range.html'``
 
     .. attribute:: RangeInput.input_type
 
@@ -271,7 +271,7 @@ For each widgets, the default class attributes.
 
     .. attribute:: CheckboxInput.template_name
 
-        ``'floppyforms/input.html'``
+        ``'floppyforms/checkbox.html'``
 
     .. attribute:: CheckboxInput.input_type
 
