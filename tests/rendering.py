@@ -41,7 +41,7 @@ class FormConfigTests(TestCase):
         # retrieve widget template
 
         template_name = config.retrieve('widget_template', bound_field=form['name'])
-        self.assertEqual(template_name, 'floppyforms/input.html')
+        self.assertEqual(template_name, 'floppyforms/text.html')
 
         template_name = config.retrieve('widget_template', bound_field=form['comment'])
         self.assertEqual(template_name, 'floppyforms/textarea.html')
