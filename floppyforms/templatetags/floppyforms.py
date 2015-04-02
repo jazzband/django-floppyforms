@@ -2,7 +2,11 @@ from collections import defaultdict
 from contextlib import contextmanager
 
 from django.conf import settings
-from django.forms.util import ErrorList
+try:
+    from django.forms.utils import ErrorList
+except ImportError:
+    # Fall back to old module name for Django <= 1.5
+    from django.forms.util import ErrorList
 from django.template import (Library, Node, Variable,
                              TemplateSyntaxError, VariableDoesNotExist)
 from django.template.base import token_kwargs
