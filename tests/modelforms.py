@@ -1,11 +1,21 @@
 import django
+from django.db import models
 from django.test import TestCase
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.unittest import skipIf
 
 import floppyforms.__future__ as forms
 from floppyforms.__future__.models import modelform_factory, modelformset_factory, inlineformset_factory
 
 from .models import Registration, AllFields
+
+
+@python_2_unicode_compatible
+class SomeModel2(models.Model):
+    some_field = models.CharField(max_length=255)
+
+    def __str__(self):
+        return '%s' % self.some_field
 
 
 class BaseModelFormFieldRewritingTests(object):
@@ -185,3 +195,19 @@ class InlineFormSetFactoryTests(BaseModelFormFieldRewritingTests, TestCase):
 
     def check_widget(self, Formset, field_name, widget_class):
         self.assertIsInstance(Formset.form.base_fields[field_name].widget, widget_class)
+
+
+class ModelMultipleChoiceFieldTests(TestCase):
+    def test_model_choice_field(self):
+        """ModelChoiceField and ModelMultipleChoiceField"""
+        SomeModel2.objects.create(some_field='Meh')
+        SomeModel2.objects.create(some_field='Bah')
+
+        class MultiModelForm(forms.Form):
+            mods = forms.ModelMultipleChoiceField(queryset=SomeModel2.objects.all())
+
+        rendered = MultiModelForm(data={'mods': [1, 2]})['mods'].as_hidden()
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="mods" value="1" id="id_mods_0">
+        <input type="hidden" name="mods" value="2" id="id_mods_1">
+        """)

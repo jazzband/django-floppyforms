@@ -81,3 +81,21 @@ class ImageFieldTests(TestCase):
             value=instance.image_field,
             attrs={})
         self.assertEqual(context['value'], None)
+
+
+class MultipleChoiceFieldTests(TestCase):
+    def test_as_hidden(self):
+        some_choices = (
+            ('foo', 'bar'),
+            ('baz', 'meh'),
+            ('heh', 'what?!'),
+        )
+
+        class MultiForm(forms.Form):
+            multi = forms.MultipleChoiceField(choices=some_choices)
+
+        rendered = MultiForm(data={'multi': ['heh', 'foo']})['multi'].as_hidden()
+        self.assertHTMLEqual(rendered, """
+        <input type="hidden" name="multi" value="heh" id="id_multi_0">
+        <input type="hidden" name="multi" value="foo" id="id_multi_1">
+        """)
