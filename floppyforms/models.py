@@ -4,7 +4,7 @@ from django.forms import models
 
 from .fields import Field
 from .forms import LayoutRenderer
-from .widgets import Select, SelectMultiple
+from .widgets import Select, SelectMultiple, MultipleHiddenInput
 
 __all__ = ('ModelForm', 'ModelChoiceField', 'ModelMultipleChoiceField')
 
@@ -28,3 +28,4 @@ class ModelChoiceField(Field, models.ModelChoiceField):
 
 class ModelMultipleChoiceField(Field, models.ModelMultipleChoiceField):
     widget = SelectMultiple
+    hidden_widget = MultipleHiddenInput

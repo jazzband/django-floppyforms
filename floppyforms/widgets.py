@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import datetime_safe, formats, six
 from django.utils.dates import MONTHS
 from django.utils.encoding import force_text
+from django.utils.safestring import mark_safe
 
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
@@ -162,7 +163,7 @@ class MultipleHiddenInput(HiddenInput):
             input_ = HiddenInput()
             input_.is_required = self.is_required
             inputs.append(input_.render(name, force_text(v), input_attrs))
-        return "\n".join(inputs)
+        return mark_safe("\n".join(inputs))
 
     def value_from_datadict(self, data, files, name):
         if isinstance(data, (MultiValueDict, MergeDict)):

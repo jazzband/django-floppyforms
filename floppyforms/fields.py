@@ -4,7 +4,8 @@ from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                       ClearableFileInput, SelectMultiple, DateInput,
                       DateTimeInput, TimeInput, URLInput, NumberInput,
                       EmailInput, NullBooleanSelect, SlugInput, IPAddressInput,
-                      SplitDateTimeWidget, SplitHiddenDateTimeWidget)
+                      SplitDateTimeWidget, SplitHiddenDateTimeWidget,
+                      MultipleHiddenInput)
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
@@ -65,6 +66,7 @@ class ImageField(Field, forms.ImageField):
 
 class MultipleChoiceField(Field, forms.MultipleChoiceField):
     widget = SelectMultiple
+    hidden_widget = MultipleHiddenInput
 
 
 class TypedMultipleChoiceField(MultipleChoiceField,
