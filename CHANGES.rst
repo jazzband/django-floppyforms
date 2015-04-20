@@ -4,6 +4,15 @@ Changelog
 1.4.0 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~
 
+* Every widget is now using its own template. Previously all widgets that are
+  based on the HTML ``<input>`` tag used the generic ``floppyforms/input.html``
+  template. Now the widgets each have a custom element for easier
+  customisation. For example ``CheckboxInput`` now uses
+  ``floppyforms/checkbox.html`` instead of ``floppyforms/input.html``. See
+  `Widgets reference
+  <http://django-floppyforms.readthedocs.org/en/latest/widgets-reference.html>`_
+  for a complete list of available widgets and which templates they use.
+
 * Adjusting the SRIDs used in the GeoDjango widgets to conform with
   Django 1.7. Thanks to Tyler Tipton for the patch.
 
