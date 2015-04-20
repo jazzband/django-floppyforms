@@ -20,6 +20,8 @@ from django.utils.dates import MONTHS
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 
+from .compat import flatten_contexts
+
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 
@@ -58,6 +60,8 @@ class Input(Widget):
         if template_name is not None:
             self.template_name = template_name
         super(Input, self).__init__(*args, **kwargs)
+        # This attribute is used to inject a surrounding context in the
+        # floppyforms templatetags, when rendered inside a complete form.
         self.context_instance = None
 
     def get_context_data(self):
@@ -108,10 +112,8 @@ class Input(Widget):
         if template_name is None:
             template_name = self.template_name
         context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
-        return loader.render_to_string(
-            template_name,
-            context,
-            context_instance=self.context_instance)
+        context = flatten_contexts(self.context_instance, context)
+        return loader.render_to_string(template_name, context)
 
 
 class TextInput(Input):
