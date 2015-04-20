@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.test import TestCase
-from django.utils import unittest
 from django.utils.functional import wraps
 
 try:
@@ -11,6 +10,8 @@ except (ImportError, Exception):
     GEOSGeometry = None  # noqa
 
 import floppyforms as forms
+
+from .compat import unittest
 
 
 # Some test data, geometries as OpenLayers serializes them.

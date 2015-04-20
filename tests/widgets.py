@@ -11,12 +11,15 @@ from django.test.utils import override_settings
 from django.utils.dates import MONTHS
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
-from django.utils.unittest import skipUnless
 
 import floppyforms as forms
 
 from .base import InvalidVariable
 from .compat import force_str
+from .compat import unittest
+
+
+skipUnless = unittest.skipUnless
 
 
 @python_2_unicode_compatible

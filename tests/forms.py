@@ -5,11 +5,15 @@ from django.test import TestCase
 from django.utils import six
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
-from django.utils.unittest import expectedFailure, skipIf
 
 import floppyforms.__future__ as forms
 
+from .compat import unittest
 from .models import Registration
+
+
+expectedFailure = unittest.expectedFailure
+skipIf = unittest.skipIf
 
 
 class RegistrationForm(forms.Form):

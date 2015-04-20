@@ -1,10 +1,14 @@
 import django
 from datetime import datetime
 from django.test import TestCase
-from django.utils.unittest import skipIf
 
 import floppyforms.__future__ as forms
+
+from .compat import unittest
 from .models import ImageFieldModel
+
+
+skipIf = unittest.skipIf
 
 
 class ImageFieldModelForm(forms.ModelForm):

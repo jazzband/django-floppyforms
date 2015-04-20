@@ -2,12 +2,15 @@ import django
 from django.db import models
 from django.test import TestCase
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils.unittest import skipIf
 
 import floppyforms.__future__ as forms
 from floppyforms.__future__.models import modelform_factory, modelformset_factory, inlineformset_factory
 
+from .compat import unittest
 from .models import Registration, AllFields
+
+
+skipIf = unittest.skipIf
 
 
 @python_2_unicode_compatible
