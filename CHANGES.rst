@@ -32,6 +32,10 @@ Changelog
   when given ``'False'`` and ``u'False'`` as data. Thanks to @artscoop for the
   patch.
 
+* Fix: ``MultipleChoiceField`` can now correctly be rendered as hidden field by
+  using the ``as_hidden`` helper in the template. That was not working
+  previously as there was no value set for ``MultipleChoiceField.hidden_widget``.
+
 .. _OpenLayers: http://openlayers.org/
 
 1.3.0
