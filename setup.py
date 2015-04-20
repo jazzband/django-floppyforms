@@ -23,8 +23,8 @@ def find_version(*file_paths):
 setup(
     name='django-floppyforms',
     version=find_version('floppyforms', '__init__.py'),
-    author='Bruno Renié',
-    author_email='bruno@renie.fr',
+    author='Gregor Müllegger',
+    author_email='gregor@muellegger.de',
     packages=find_packages(exclude=["tests.*", "tests"]),
     include_package_data=True,
     url='https://github.com/gregmuellegger/django-floppyforms',

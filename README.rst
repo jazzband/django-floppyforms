@@ -7,7 +7,8 @@ django-floppyforms
 
 Full control of form rendering in the templates.
 
-* Author: Bruno Renié and `contributors`_
+* Authors: Gregor Müllegger and many many `contributors`_
+* Original creator: Bruno Renié started this project and kept it going for many years.
 * Licence: BSD
 * Requirements: homework -- read `this`_.
 
@@ -33,12 +34,20 @@ install django-floppyforms==dev``.
 Help
 ----
 
-Ask your questions on the #django-floppyforms IRC channel on freenode.
+Create a ticket in the `issues section on github <>`_ or ask your questions on the
+#django-floppyforms IRC channel on freenode.
+
+You can get professional consulting regarding django-floppyforms or any other
+Django related work from django-floppyforms' maintainer `Gregor Müllegger`_.
+
+.. _issues section on github: https://github.com/gregmuellegger/django-floppyforms/issues
+.. _Gregor Müllegger: http://gremu.net/
 
 Bugs
 ----
 
-Really? Oh well... Please Report. Or better, fix :)
+Really? Oh well... Please Report. Or better, fix :) We are happy to help you
+through the process of fixing and testing a bug. Just get in touch.
 
 Development
 -----------
