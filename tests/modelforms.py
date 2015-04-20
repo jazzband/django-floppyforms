@@ -73,6 +73,7 @@ class BaseModelFormFieldRewritingTests(object):
         form_obj = self.get_test_object('big_integer')
         self.check_field(form_obj, 'big_integer', forms.IntegerField)
 
+    @skipIf(django.VERSION >= (1, 8), 'IPAddressField is deprecated with Django >= 1.8')
     def test_auto_ip_address(self):
         form_obj = self.get_test_object('ip_address')
         self.check_field(form_obj, 'ip_address', forms.IPAddressField)

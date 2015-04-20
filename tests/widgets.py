@@ -2,6 +2,7 @@ import datetime
 import os
 import sys
 
+import django
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import models
 from django.template import Context, Template
@@ -19,6 +20,7 @@ from .compat import force_str
 from .compat import unittest
 
 
+skipIf = unittest.skipIf
 skipUnless = unittest.skipUnless
 
 
@@ -819,6 +821,7 @@ class WidgetRenderingTest(TestCase):
         self.assertTrue(RegexForm(data={'re_field': '123-python',
                                         're_field_': 'fr'}).is_valid())
 
+    @skipIf(django.VERSION >= (1, 8), 'IPAddressField is deprecated with Django >= 1.8')
     def test_ip_address(self):
         """<input pattern="<IPv4 re>">"""
         class IPv4Form(forms.Form):
