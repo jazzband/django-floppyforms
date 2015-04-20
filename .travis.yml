@@ -29,6 +29,8 @@ env:
   - TOXENV=docs
   - TOXENV=flake8
 before_install:
+  - sudo apt-get -q -y update
+
   # The following three lines is a fix for travis CI, since it wouldn't be
   # able to install the dependencies correctly.
   # See: https://github.com/travis-ci/travis-ci/issues/2683
@@ -36,7 +38,6 @@ before_install:
   - sudo apt-get remove -q -y binutils gdal-bin libproj-dev libgeos-c1
   - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
 
-  - sudo apt-get -q -y update
   # Required to install Pillow
   - sudo apt-get -q -y install build-essential
   # GIS requirements.
