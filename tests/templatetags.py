@@ -11,7 +11,7 @@ from floppyforms.templatetags.floppyforms import (FormConfig, ConfigFilter,
 
 
 _TEMPLATE_PREAMBLE = '{% load floppyforms %}'
-if django.VERSION >= (1, 6):
+if (1, 6) <= django.VERSION <= (1, 7):
     _TEMPLATE_PREAMBLE += '{% load firstof from future %}'
     _TEMPLATE_PREAMBLE += '{% load cycle from future %}'
 
