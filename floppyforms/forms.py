@@ -1,7 +1,8 @@
-from django import forms, template
+from django import forms
+from django.template.loader import get_template
 from django.utils.encoding import python_2_unicode_compatible
 
-from .templatetags.floppyforms import FormNode
+from .compat import get_context
 
 
 __all__ = ('BaseForm', 'Form',)
@@ -9,21 +10,15 @@ __all__ = ('BaseForm', 'Form',)
 
 @python_2_unicode_compatible
 class LayoutRenderer(object):
-    _template_node = FormNode(
-        'form',
-        [template.Variable('form')],
-        {
-            'using': template.Variable('layout'),
-            'only': False,
-            'with': None,
-        })
+    _render_as_template_name = 'floppyforms/_render_as.html'
 
     def _render_as(self, layout):
-        context = template.Context({
+        template_node = get_template(self._render_as_template_name)
+        context = get_context({
             'form': self,
             'layout': layout,
         })
-        return self._template_node.render(context)
+        return template_node.render(context)
 
     def __str__(self):
         return self._render_as('floppyforms/layouts/default.html')

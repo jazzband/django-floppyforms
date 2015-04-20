@@ -10,8 +10,10 @@ except ImportError:
 from django.template import (Library, Node, Variable,
                              TemplateSyntaxError, VariableDoesNotExist)
 from django.template.base import token_kwargs
-from django.template.loader import get_template
 from django.utils.functional import empty
+
+from ..compat import get_template
+
 
 register = Library()
 
@@ -448,7 +450,7 @@ class BaseFormRenderNode(BaseFormNode):
                 template_name = self.options['using'].resolve(context)
             else:
                 template_name = self.get_template_name(context)
-            return get_template(template_name)
+            return get_template(context, template_name)
         except:
             if settings.TEMPLATE_DEBUG:
                 raise
@@ -693,7 +695,7 @@ class WidgetNode(Node):
             widget_ctx = {'field': field}
             template = 'floppyforms/dummy.html'
 
-        template = get_template(template)
+        template = get_template(context, template)
         context.update(widget_ctx)
         rendered = template.render(context)
         context.pop()
