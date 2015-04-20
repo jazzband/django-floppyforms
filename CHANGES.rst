@@ -9,6 +9,9 @@ Changelog
 
 * Python 3.2 is now officially supported.
 
+* Django 1.8 is now officially supported. django-floppyforms no longers
+  triggers Django deprecation warnings.
+
 * Adding `OpenLayers`_ distribution to django-floppyforms static files in order
   to better support HTTPS setups when GIS widgets are used (See #15 for more
   details).
