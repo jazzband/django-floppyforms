@@ -1,8 +1,8 @@
 Changelog
 ---------
 
-1.4.0 (in development)
-~~~~~~~~~~~~~~~~~~~~~~
+1.4.0
+~~~~~
 
 * Every widget is now using its own template. Previously all widgets that are
   based on the HTML ``<input>`` tag used the generic ``floppyforms/input.html``
