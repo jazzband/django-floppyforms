@@ -34,7 +34,7 @@ install django-floppyforms==dev``.
 Help
 ----
 
-Create a ticket in the `issues section on github <>`_ or ask your questions on the
+Create a ticket in the `issues section on github`_ or ask your questions on the
 #django-floppyforms IRC channel on freenode.
 
 You can get professional consulting regarding django-floppyforms or any other
