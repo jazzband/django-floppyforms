@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+1.4.1
+~~~~~
+
+* Fixed source distribution to include all files in
+  ``floppyforms/static/floppyforms/openlayers``.
+
 1.4.0
 ~~~~~
 
