@@ -3,7 +3,7 @@
 {% block field %}<li{% if classes %} class="{{ classes }}"{% endif %}>
     {% block errors %}{% include "floppyforms/errors.html" with errors=field.errors %}{% endblock %}
     {% block label %}{% if field|id %}<label for="{{ field|id }}">{% endif %}{{ label }}{% if label|last not in ".:!?" %}:{% endif %}{% if field|id %}</label>{% endif %}{% endblock %}
-    {% block widget %}{% formfield field %}{% endblock %}
+    {% block widget %}{% formfield field with attrs=attrs %}{% endblock %}
     {% block help_text %}{% if help_text %}<span class="helptext">{{ help_text }}</span>{% endif %}{% endblock %}
     {% block hidden_fields %}{% for field in hidden_fields %}{{ field.as_hidden }}{% endfor %}{% endblock %}
 </li>{% endblock %}
