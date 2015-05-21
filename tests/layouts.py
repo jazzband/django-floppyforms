@@ -59,12 +59,6 @@ class RegistrationForm(forms.Form):
 
 
 class PLayoutTests(TestCase):
-    def test_default_layout_is_same_as_p_layout(self):
-        form = RegistrationForm()
-        default = render('{% form form %}', {'form': form})
-        layout = render('{% form form using "floppyforms/layouts/table.html" %}', {'form': form})
-        self.assertEqual(default, layout)
-
     def test_layout(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/p.html'):
@@ -193,6 +187,12 @@ class PLayoutTests(TestCase):
 
 
 class TableLayoutTests(TestCase):
+    def test_default_layout_is_same_as_table_layout(self):
+        form = RegistrationForm()
+        default = render('{% form form %}', {'form': form})
+        layout = render('{% form form using "floppyforms/layouts/table.html" %}', {'form': form})
+        self.assertEqual(default, layout)
+
     def test_layout(self):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/table.html'):
