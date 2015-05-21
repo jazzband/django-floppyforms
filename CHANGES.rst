@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+1.5.0 (in development)
+~~~~~~~~~~~~~~~~~~~~~~
+
+* Added support for custom ``label_suffix`` arguments in forms and fields.
+
 1.4.1
 ~~~~~
 

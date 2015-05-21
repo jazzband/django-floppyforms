@@ -423,6 +423,57 @@ class UlLayoutTests(TestCase):
         """)
 
 
+class LabelSuffixTests(TestCase):
+    def layout_test_form_label_suffix(self, layout):
+        form = RegistrationForm()
+        rendered = render('{% form form using "floppyforms/layouts/' + layout + '.html" %}', {'form': form})
+        self.assertInHTML('<label for="id_username">Username:</label>', rendered)
+
+        form = RegistrationForm(label_suffix=' = ')
+        rendered = render('{% form form using "floppyforms/layouts/' + layout + '.html" %}', {'form': form})
+        self.assertInHTML('<label for="id_username">Username = </label>', rendered)
+
+        form = RegistrationForm(label_suffix='')
+        rendered = render('{% form form using "floppyforms/layouts/' + layout + '.html" %}', {'form': form})
+        self.assertInHTML('<label for="id_username">Username</label>', rendered)
+
+    def layout_test_field_label_suffix(self, layout):
+        class UserForm(forms.Form):
+            username = forms.CharField(label_suffix='!')
+            no_suffix = forms.CharField(label_suffix='')
+            password = forms.CharField()
+
+        form = UserForm()
+        rendered = render('{% form form using "floppyforms/layouts/' + layout + '.html" %}', {'form': form})
+        self.assertInHTML('<label for="id_username">Username!</label>', rendered)
+        self.assertInHTML('<label for="id_no_suffix">No suffix</label>', rendered)
+        self.assertInHTML('<label for="id_password">Password:</label>', rendered)
+
+        form = UserForm(label_suffix='#')
+        rendered = render('{% form form using "floppyforms/layouts/' + layout + '.html" %}', {'form': form})
+        self.assertInHTML('<label for="id_username">Username!</label>', rendered)
+        self.assertInHTML('<label for="id_no_suffix">No suffix</label>', rendered)
+        self.assertInHTML('<label for="id_password">Password#</label>', rendered)
+
+    def test_form_label_suffix_with_p_layout(self):
+        self.layout_test_form_label_suffix('p')
+
+    def test_form_label_suffix_with_ul_layout(self):
+        self.layout_test_form_label_suffix('ul')
+
+    def test_form_label_suffix_with_table_layout(self):
+        self.layout_test_form_label_suffix('table')
+
+    def test_field_label_suffix_with_p_layout(self):
+        self.layout_test_field_label_suffix('p')
+
+    def test_field_label_suffix_with_ul_layout(self):
+        self.layout_test_field_label_suffix('ul')
+
+    def test_field_label_suffix_with_table_layout(self):
+        self.layout_test_field_label_suffix('table')
+
+
 class TemplateStringIfInvalidTests(TestCase):
     '''
     Regression tests for issue #37.
