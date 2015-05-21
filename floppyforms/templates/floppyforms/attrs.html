@@ -1,11 +1,18 @@
 {% comment %}
 
-    
+    When editing this file, please make sure that this file does NOT have a
+    trailing newline. That would result in line breaks inside a <input> tag
+    which is just ugly in the resulting HTML. The tests will fail if you do so
+    by accident :)
+
+    vim: binary noendofline
+
+    -----
 
     The if case inside the loop basically checks whether "value is not True". But
     django does not support the "is" comparison. Therefore we check something
     like this:
-    
+
         not (str(value) == "True" and value == 1)
 
     Which can be transformed into:
