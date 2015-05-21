@@ -1,3 +1,4 @@
+import django
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.forms.formsets import formset_factory
@@ -8,6 +9,10 @@ from django.utils.translation import ugettext_lazy as _
 import floppyforms as forms
 
 from .base import InvalidVariable
+from .compat import unittest
+
+
+skipIf = unittest.skipIf
 
 
 def render(template, context=None):
@@ -424,6 +429,13 @@ class UlLayoutTests(TestCase):
 
 
 class LabelSuffixTests(TestCase):
+    def assertInHTML(self, *args, **kwargs):
+        if not hasattr(super(LabelSuffixTests, self), 'assertInHTML'):
+            # Fallback to simple contains check. That is enough in our case.
+            needle, haystack = args[:2]
+            return needle in haystack
+        return super(LabelSuffixTests, self).assertInHTML(*args, **kwargs)
+
     def layout_test_form_label_suffix(self, layout):
         form = RegistrationForm()
         rendered = render('{% form form using "floppyforms/layouts/' + layout + '.html" %}', {'form': form})
@@ -464,12 +476,15 @@ class LabelSuffixTests(TestCase):
     def test_form_label_suffix_with_table_layout(self):
         self.layout_test_form_label_suffix('table')
 
+    @skipIf(django.VERSION < (1, 8), 'Only applies to Django >= 1.8')
     def test_field_label_suffix_with_p_layout(self):
         self.layout_test_field_label_suffix('p')
 
+    @skipIf(django.VERSION < (1, 8), 'Only applies to Django >= 1.8')
     def test_field_label_suffix_with_ul_layout(self):
         self.layout_test_field_label_suffix('ul')
 
+    @skipIf(django.VERSION < (1, 8), 'Only applies to Django >= 1.8')
     def test_field_label_suffix_with_table_layout(self):
         self.layout_test_field_label_suffix('table')
 
