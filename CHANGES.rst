@@ -5,6 +5,8 @@ Changelog
 ~~~~~~~~~~~~~~~~~~~~~~
 
 * Added support for custom ``label_suffix`` arguments in forms and fields.
+* The contents in ``floppyforms/input.html`` is now wrapped in a ``{% block
+  content %}`` for easier extending.
 
 1.4.1
 ~~~~~
