@@ -68,7 +68,7 @@ class DecimalFieldTests(TestCase):
     def test_parse_decimal(self):
         decimal_field = forms.DecimalField(decimal_places=2)
         result = decimal_field.clean('1.5')
-        self.assertEqual(decimal.Decimal(1.5), result)
+        self.assertEqual(decimal.Decimal('1.5'), result)
         self.assertIsInstance(result, decimal.Decimal)
 
     def test_pass_values(self):
