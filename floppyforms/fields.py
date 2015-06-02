@@ -120,7 +120,7 @@ class DecimalField(Field, forms.DecimalField):
         if self.max_value is not None:
             attrs['max'] = self.max_value
         if self.decimal_places is not None:
-            attrs['step'] = 1/(10^self.decimal_places)
+            attrs['step'] = Decimal('0.1') ** self.decimal_places
         return attrs
 
 
