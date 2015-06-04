@@ -113,7 +113,7 @@ class DecimalField(Field, forms.DecimalField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('widget', NumberInput if not kwargs.get('localize') else self.widget)
         super(DecimalField, self).__init__(*args, **kwargs)
-  
+
     def widget_attrs(self, widget):
         attrs = super(DecimalField, self).widget_attrs(widget) or {}
         if self.min_value is not None:
