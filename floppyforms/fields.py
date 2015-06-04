@@ -1,4 +1,5 @@
 from django import forms
+import decimal
 
 from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                       ClearableFileInput, SelectMultiple, DateInput,
@@ -120,7 +121,7 @@ class DecimalField(Field, forms.DecimalField):
         if self.max_value is not None:
             attrs['max'] = self.max_value
         if self.decimal_places is not None:
-            attrs['step'] = Decimal('0.1') ** self.decimal_places
+            attrs['step'] = decimal.Decimal('0.1') ** self.decimal_places
         return attrs
 
 
