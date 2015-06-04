@@ -81,15 +81,15 @@ class DecimalFieldTests(TestCase):
         self.assertHTMLEqual(rendered, """
         <p>
             <label for="id_num">Num:</label>
-            <input type="number" name="num" id="id_num" max="10.5" step=".01" required>
+            <input type="number" name="num" id="id_num" max="10.5" step="0.01" required>
         </p>
         <p>
             <label for="id_other">Other:</label>
-            <input type="number" name="other" id="id_other" step=".1" required>
+            <input type="number" name="other" id="id_other" step="0.1" required>
         </p>
         <p>
             <label for="id_third">Third:</label>
-            <input type="number" name="third" id="id_third" min="-10" max="15" step=".001" required>
+            <input type="number" name="third" id="id_third" min="-10" max="15" step="0.001" required>
         </p>""")
 
 
