@@ -7,6 +7,10 @@ Changelog
 * Added support for custom ``label_suffix`` arguments in forms and fields.
 * The contents in ``floppyforms/input.html`` is now wrapped in a ``{% block
   content %}`` for easier extending.
+* ``DecimalField`` now fills in ``min``, ``max``, and ``step`` attributes for
+  better client side validation. Use the ``novalidate`` attribute on your
+  ``<form>`` tag to disable HTML5 input validation in the browser. Thanks to
+  caacree for the patch.
 
 1.4.1
 ~~~~~
