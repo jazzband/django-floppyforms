@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'floppyforms',
     'tests',
+    'tests.test_templatetags',
 ]
 
 MIDDLEWARE_CLASSES = ()
