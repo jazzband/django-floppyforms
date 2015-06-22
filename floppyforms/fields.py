@@ -1,4 +1,5 @@
 from django import forms
+import decimal
 
 from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                       ClearableFileInput, SelectMultiple, DateInput,
@@ -112,6 +113,16 @@ class DecimalField(Field, forms.DecimalField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('widget', NumberInput if not kwargs.get('localize') else self.widget)
         super(DecimalField, self).__init__(*args, **kwargs)
+
+    def widget_attrs(self, widget):
+        attrs = super(DecimalField, self).widget_attrs(widget) or {}
+        if self.min_value is not None:
+            attrs['min'] = self.min_value
+        if self.max_value is not None:
+            attrs['max'] = self.max_value
+        if self.decimal_places is not None:
+            attrs['step'] = decimal.Decimal('0.1') ** self.decimal_places
+        return attrs
 
 
 class EmailField(Field, forms.EmailField):

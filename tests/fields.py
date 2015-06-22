@@ -1,4 +1,5 @@
 import django
+import decimal
 from datetime import datetime
 from django.test import TestCase
 
@@ -61,6 +62,34 @@ class IntegerFieldTests(TestCase):
         <p>
             <label for="id_third">Third:</label>
             <input type="number" name="third" id="id_third" min="10" max="150" required>
+        </p>""")
+        
+class DecimalFieldTests(TestCase):
+    def test_parse_decimal(self):
+        decimal_field = forms.DecimalField(decimal_places=2)
+        result = decimal_field.clean('1.5')
+        self.assertEqual(decimal.Decimal('1.5'), result)
+        self.assertIsInstance(result, decimal.Decimal)
+
+    def test_pass_values(self):
+        class DecimalForm(forms.Form):
+            num = forms.DecimalField(decimal_places=2, max_value=10.5)
+            other = forms.DecimalField(decimal_places=1)
+            third = forms.DecimalField(decimal_places=3, min_value=-10, max_value=15)
+
+        rendered = DecimalForm().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_num">Num:</label>
+            <input type="number" name="num" id="id_num" max="10.5" step="0.01" required>
+        </p>
+        <p>
+            <label for="id_other">Other:</label>
+            <input type="number" name="other" id="id_other" step="0.1" required>
+        </p>
+        <p>
+            <label for="id_third">Third:</label>
+            <input type="number" name="third" id="id_third" min="-10" max="15" step="0.001" required>
         </p>""")
 
 
