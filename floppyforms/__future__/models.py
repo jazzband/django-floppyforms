@@ -21,7 +21,7 @@ __all__ = (
     'ModelForm', 'BaseModelForm', 'model_to_dict', 'fields_for_model',
     'save_instance', 'ModelChoiceField', 'ModelMultipleChoiceField',
     'BaseModelFormSet', 'modelformset_factory', 'BaseInlineFormSet',
-    'inlineformset_factory',
+    'inlineformset_factory', 'ModelFormMetaclass'
 )
 
 
