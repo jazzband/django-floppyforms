@@ -4,13 +4,16 @@ Changelog
 1.5.0 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-* Added support for custom ``label_suffix`` arguments in forms and fields.
+* `#148`_: Added support for custom ``label_suffix`` arguments in forms and fields.
 * The contents in ``floppyforms/input.html`` is now wrapped in a ``{% block
   content %}`` for easier extending.
-* ``DecimalField`` now fills in ``min``, ``max``, and ``step`` attributes for
+* `#70`_: `DecimalField`` now fills in ``min``, ``max``, and ``step`` attributes for
   better client side validation. Use the ``novalidate`` attribute on your
   ``<form>`` tag to disable HTML5 input validation in the browser. Thanks to
   caacree for the patch.
+
+.. _#148: https://github.com/gregmuellegger/django-floppyforms/issues/148
+.. _#70: https://github.com/gregmuellegger/django-floppyforms/issues/70
 
 1.4.1
 ~~~~~
