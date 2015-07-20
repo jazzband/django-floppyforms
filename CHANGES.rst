@@ -1,6 +1,14 @@
 Changelog
 ---------
 
+1.5.1
+~~~~~
+
+* `FloatField`` now fills in ``min``, ``max``, and ``step`` attributes to match
+  the behaviour of `DecimalField`. Leaving out the ``step`` attribute would
+  result in widgets that only allow integers to be filled in (HTML 5 default
+  for ``step`` is ``1``).
+
 1.5.0
 ~~~~~
 
