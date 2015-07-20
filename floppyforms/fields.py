@@ -90,6 +90,16 @@ class TimeField(Field, forms.TimeField):
 class FloatField(Field, forms.FloatField):
     widget = NumberInput
 
+    def widget_attrs(self, widget):
+        attrs = super(FloatField, self).widget_attrs(widget) or {}
+        if self.min_value is not None:
+            attrs['min'] = self.min_value
+        if self.max_value is not None:
+            attrs['max'] = self.max_value
+        if 'step' not in widget.attrs:
+            attrs.setdefault('step', 'any')
+        return attrs
+
 
 class IntegerField(Field, forms.IntegerField):
     widget = NumberInput

@@ -36,6 +36,38 @@ class DateTimeFieldTests(TestCase):
             datetime(2099, 12, 31))
 
 
+class FloatFieldTests(TestCase):
+    def test_parse(self):
+        float_field = forms.FloatField()
+        result = float_field.clean('1.5')
+        self.assertIsInstance(result, float)
+        self.assertEqual(result, 1.5)
+
+    def test_pass_values(self):
+        class FloatForm(forms.Form):
+            no_options = forms.FloatField()
+            min_value = forms.FloatField(min_value=1.234)
+            step_attr = forms.FloatField(widget=forms.NumberInput(attrs={
+                'step': '0.01'
+            }))
+
+        rendered = unicode(FloatForm()['no_options'])
+        self.assertHTMLEqual(rendered, """
+            <input type="number" name="no_options" id="id_no_options"
+                step="any" required>
+        """)
+        rendered = unicode(FloatForm()['min_value'])
+        self.assertHTMLEqual(rendered, """
+            <input type="number" name="min_value" id="id_min_value"
+                min="1.234" step="any" required>
+        """)
+        rendered = unicode(FloatForm()['step_attr'])
+        self.assertHTMLEqual(rendered, """
+            <input type="number" name="step_attr" id="id_step_attr"
+                step="0.01" required>
+        """)
+
+
 class IntegerFieldTests(TestCase):
     def test_parse_int(self):
         int_field = forms.IntegerField()
@@ -63,7 +95,8 @@ class IntegerFieldTests(TestCase):
             <label for="id_third">Third:</label>
             <input type="number" name="third" id="id_third" min="10" max="150" required>
         </p>""")
-        
+
+
 class DecimalFieldTests(TestCase):
     def test_parse_decimal(self):
         decimal_field = forms.DecimalField(decimal_places=2)
