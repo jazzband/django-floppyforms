@@ -51,17 +51,17 @@ class FloatFieldTests(TestCase):
                 'step': '0.01'
             }))
 
-        rendered = unicode(FloatForm()['no_options'])
+        rendered = str(FloatForm()['no_options'])
         self.assertHTMLEqual(rendered, """
             <input type="number" name="no_options" id="id_no_options"
                 step="any" required>
         """)
-        rendered = unicode(FloatForm()['min_value'])
+        rendered = str(FloatForm()['min_value'])
         self.assertHTMLEqual(rendered, """
             <input type="number" name="min_value" id="id_min_value"
                 min="1.234" step="any" required>
         """)
-        rendered = unicode(FloatForm()['step_attr'])
+        rendered = str(FloatForm()['step_attr'])
         self.assertHTMLEqual(rendered, """
             <input type="number" name="step_attr" id="id_step_attr"
                 step="0.01" required>
