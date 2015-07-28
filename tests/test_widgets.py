@@ -1,4 +1,5 @@
 import datetime
+import decimal
 import os
 import sys
 
@@ -1373,3 +1374,12 @@ class AttrsTemplateTests(TestCase):
         # disabled shouldn't have a value
         self.assertTrue(' disabled' in rendered)
         self.assertTrue(' disabled=' not in rendered)
+
+    def test_attrs_not_localized(self):
+
+        # We should got 0.01, not 0,01.
+        with override_settings(USE_L10N=True, LANGUAGE_CODE='fr-fr'):
+            rendered = self.render_attrs({'step': decimal.Decimal('0.01')})
+            self.assertTrue(rendered in [
+                ' step="0.01"',
+            ])
