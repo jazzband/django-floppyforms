@@ -7,4 +7,4 @@
     which is just ugly in the resulting HTML. The tests will fail if you do so
     by accident :)
 
-{% endcomment %}{% load floppyforms_internals %}{% for name, value in attrs.items %} {{ name }}{% if not value|istrue %}="{{ value }}"{% endif %}{% endfor %}
+{% endcomment %}{% load floppyforms_internals l10n %}{% for name, value in attrs.items %} {{ name }}{% if not value|istrue %}="{% localize off %}{{ value }}{% endlocalize %}"{% endif %}{% endfor %}
