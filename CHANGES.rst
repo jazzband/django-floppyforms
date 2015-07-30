@@ -1,6 +1,16 @@
 Changelog
 ---------
 
+1.5.2
+~~~~~
+
+* `#156`_: The ``min``, ``max``, ``step`` attributes for ``DecimalField`` and
+  ``FloatField`` were localized which can result in invalid values (rendering
+  ``0.01`` as ``0,01`` in respective locales). Those attributes won't get
+  localized anymore. Thanks to Yannick Chabbert for the fix.
+
+.. _#156: https://github.com/gregmuellegger/django-floppyforms/pull/156
+
 1.5.1
 ~~~~~
 
