@@ -167,5 +167,5 @@ class BaseGMapWidget(BaseGeometryWidget):
         js = (
             'floppyforms/openlayers/OpenLayers.js',
             'floppyforms/js/MapWidget.js',
-            'https://maps.google.com/maps/api/js?sensor=false',
+            'https://maps.google.com/maps/api/js?v=3&sensor=false',
         )
