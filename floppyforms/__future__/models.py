@@ -7,8 +7,10 @@ from django.forms.models import (ModelForm as _ModelForm,
                                  modelformset_factory as _modelformset_factory,
                                  inlineformset_factory as _inlineformset_factory,
                                  model_to_dict, fields_for_model, BaseModelForm,
-                                 save_instance, BaseModelFormSet,
+                                 BaseModelFormSet,
                                  BaseInlineFormSet)
+if django.VERSION < (1, 9):
+    from django.forms.models import save_instance
 from django.utils import six
 
 from floppyforms import fields
@@ -19,10 +21,12 @@ from floppyforms.widgets import Textarea
 
 __all__ = (
     'ModelForm', 'BaseModelForm', 'model_to_dict', 'fields_for_model',
-    'save_instance', 'ModelChoiceField', 'ModelMultipleChoiceField',
+    'ModelChoiceField', 'ModelMultipleChoiceField',
     'BaseModelFormSet', 'modelformset_factory', 'BaseInlineFormSet',
     'inlineformset_factory',
 )
+if django.VERSION < (1, 9):
+    __all__ += ('save_instance',)
 
 
 if django.VERSION > (1, 7):
@@ -43,7 +47,6 @@ FORMFIELD_OVERRIDES = {
     db_models.FloatField: {'form_class': fields.FloatField},
     db_models.IntegerField: {'form_class': fields.IntegerField},
     db_models.BigIntegerField: {'form_class': fields.IntegerField},
-    db_models.IPAddressField: {'form_class': fields.IPAddressField},
     db_models.GenericIPAddressField: {'form_class': fields.GenericIPAddressField},
     db_models.NullBooleanField: {'form_class': fields.NullBooleanField},
     db_models.PositiveIntegerField: {'form_class': fields.IntegerField},
@@ -62,6 +65,8 @@ FORMFIELD_OVERRIDES = {
     db_models.ManyToManyField: {'form_class': ModelMultipleChoiceField},
     db_models.OneToOneField: {'form_class': ModelChoiceField},
 }
+if django.VERSION < (1, 9):
+    FORMFIELD_OVERRIDES[db_models.IPAddressField] = {'form_class': fields.IPAddressField}
 
 for value in FORMFIELD_OVERRIDES.values():
     value['choices_form_class'] = fields.TypedChoiceField
