@@ -12,13 +12,6 @@ except ImportError:
 from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.conf import settings
 from django.template import loader
-try:
-    from django.utils.datastructures import MultiValueDict, MergeDict
-    MULTIVALUE_DICT_TYPES = (MultiValueDict, MergeDict)
-except ImportError:
-    # Django >= 1.9
-    from django.utils.datastructures import MultiValueDict
-    MULTIVALUE_DICT_TYPES = (MultiValueDict,)
 from django.utils.html import conditional_escape
 from django.utils.translation import ugettext_lazy as _
 from django.utils import datetime_safe, formats, six
@@ -26,7 +19,7 @@ from django.utils.dates import MONTHS
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 
-from .compat import flatten_contexts
+from .compat import MULTIVALUE_DICT_TYPES, flatten_contexts
 
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
