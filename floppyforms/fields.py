@@ -8,8 +8,6 @@ from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
                       EmailInput, NullBooleanSelect, SlugInput, IPAddressInput,
                       SplitDateTimeWidget, SplitHiddenDateTimeWidget,
                       MultipleHiddenInput)
-if django.VERSION < (1, 9):
-    from .widgets import IPAddressInput
 
 __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
