@@ -27,9 +27,9 @@ readthedocs`_
 .. _read it on readthedocs: http://django-floppyforms.readthedocs.org/
 
 To install the `in-development version`_ of django-floppyforms, run ``pip
-install django-floppyforms==dev``.
+install "https://github.com/gregmuellegger/django-floppyforms/tarball/master#egg=django-floppyforms"``.
 
-.. _in-development version: https://github.com/gregmuellegger/django-floppyforms/tarball/master#egg=django-floppyforms-dev
+.. _in-development version: https://github.com/gregmuellegger/django-floppyforms
 
 Help
 ----
