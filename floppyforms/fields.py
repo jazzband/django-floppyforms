@@ -1,3 +1,4 @@
+import django
 from django import forms
 import decimal
 
@@ -12,11 +13,13 @@ __all__ = (
     'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
     'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
     'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
-    'FloatField', 'DecimalField', 'SlugField', 'RegexField', 'IPAddressField',
+    'FloatField', 'DecimalField', 'SlugField', 'RegexField',
     'GenericIPAddressField', 'TypedChoiceField', 'FilePathField',
     'TypedMultipleChoiceField', 'ComboField', 'MultiValueField',
     'SplitDateTimeField',
 )
+if django.VERSION < (1, 9):
+    __all__ += ('IPAddressField',)
 
 
 class Field(forms.Field):
@@ -163,8 +166,9 @@ class RegexField(Field, forms.RegexField):
         return attrs
 
 
-class IPAddressField(Field, forms.IPAddressField):
-    widget = IPAddressInput
+if django.VERSION < (1, 9):
+    class IPAddressField(Field, forms.IPAddressField):
+        widget = IPAddressInput
 
 
 class GenericIPAddressField(Field, forms.GenericIPAddressField):
