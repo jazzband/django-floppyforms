@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+1.6.0 (not released yet)
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+* `#160`_: Django 1.9 support! Thanks to Jonas Haag for the patch.
+
+.. _#160: https://github.com/gregmuellegger/django-floppyforms/pull/160
+
 1.5.2
 ~~~~~
 
