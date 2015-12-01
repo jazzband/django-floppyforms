@@ -282,6 +282,9 @@ class DateInput(Input):
 
     def __init__(self, attrs=None, format=None):
         super(DateInput, self).__init__(attrs)
+        # We hardcode the format here as the HTML5 input type="date" only
+        # accepts the ISO date format. See issue #115 for details:
+        # https://github.com/gregmuellegger/django-floppyforms/issues/115
         self.format = '%Y-%m-%d'
 
     def _format_value(self, value):
