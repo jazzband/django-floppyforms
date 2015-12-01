@@ -171,13 +171,8 @@ function MapWidget(options) {
 	this.options = {
 		base_layer: new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://vmap0.tiles.osgeo.org/wms/vmap0', {layers: 'basic'}),
 		color: 'ee9900',
-		// Choosing 0.1/0.1 here instead of 0/0 because otherwise the
-		// Google Maps widgets won't load the maps tiles on load
-		// automatically. We don't have any idea why it is that way,
-		// but we'll add it anyways as a fix for #159. See the ticket
-		// for details: https://github.com/gregmuellegger/django-floppyforms/issues/159
-		default_lon: 0.1,
-		default_lat: 0.1,
+		default_lat: 0,
+		default_lon: 0,
 		default_zoom: 4,
 		is_collection: false,
 		is_linestring: false,
