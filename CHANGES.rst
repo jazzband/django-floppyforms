@@ -131,7 +131,7 @@ Changelog
         class Meta:
             model = Profile
 
-  This feature will become the default behaviour in floppyforms 1.6.
+  This feature will become the default behaviour in floppyforms 2.0.
 
   See the documentation for more information:
   http://django-floppyforms.readthedocs.org/en/latest/usage.html#modelforms
