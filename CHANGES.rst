@@ -1,8 +1,8 @@
 Changelog
 ---------
 
-1.6.0 (not released yet)
-~~~~~~~~~~~~~~~~~~~~~~~~
+1.6.0
+~~~~~
 
 * `#160`_: Django 1.9 support! Thanks to Jonas Haag for the patch.
 
