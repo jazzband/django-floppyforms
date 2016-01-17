@@ -6,7 +6,7 @@ from django.test import TestCase
 import floppyforms.__future__ as forms
 
 from .compat import unittest
-from .models import ImageFieldModel
+from .models import ImageFieldModel, Registration
 
 
 skipIf = unittest.skipIf
@@ -16,6 +16,39 @@ class ImageFieldModelForm(forms.ModelForm):
     class Meta:
         model = ImageFieldModel
         fields = ('image_field',)
+
+
+@skipIf(django.VERSION < (1, 6), 'Only applies to Django >= 1.6')
+class RequiredFieldTest(TestCase):
+    def test_required_field(self):
+        class RegistrationForm(forms.ModelForm):
+            class Meta:
+                model = Registration
+                fields = ('age', )
+
+        rendered = RegistrationForm().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_age">Age:</label>
+            <input type="number" name="age" id="id_age" required>
+        </p>""")
+
+    def test_not_required_field(self):
+        class RegistrationForm(forms.ModelForm):
+            class Meta:
+                model = Registration
+                fields = ('age', )
+
+            def __init__(self, *args, **kwargs):
+                super(RegistrationForm, self).__init__(*args, **kwargs)
+                self.fields['age'].required = False
+
+        rendered = RegistrationForm().as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_age">Age:</label>
+            <input type="number" name="age" id="id_age">
+        </p>""")
 
 
 class DateTimeFieldTests(TestCase):
