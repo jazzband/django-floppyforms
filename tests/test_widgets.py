@@ -459,15 +459,27 @@ class WidgetRenderingTest(TestCase):
         </p>
         """)
 
-        form = CBForm(data={'cb': 'foo'})
+        form = CBForm(data={'cb': 'on'})
         self.assertTrue(form.is_valid())
         rendered = form.as_p()
-        self.assertHTMLEqual(rendered, """
-        <p>
-            <label for="id_cb">Cb:</label>
-            <input type="checkbox" name="cb" id="id_cb" required checked>
-        </p>
-        """)
+
+        # The behaviour of the value attribute changed with Django 1.5. Prior
+        # it was included as given in ``data``. Now it's always excluded as the
+        # value is casted to a bool. See #167 for more details.
+        if django.VERSION < (1, 5):
+            self.assertHTMLEqual(rendered, """
+            <p>
+                <label for="id_cb">Cb:</label>
+                <input type="checkbox" name="cb" id="id_cb" required checked value="on">
+            </p>
+            """)
+        else:
+            self.assertHTMLEqual(rendered, """
+            <p>
+                <label for="id_cb">Cb:</label>
+                <input type="checkbox" name="cb" id="id_cb" required checked>
+            </p>
+            """)
 
     @skipUnless(sys.version_info[0] < 3, 'Only applies to Python 2')
     def test_checkbox_string_values(self):
