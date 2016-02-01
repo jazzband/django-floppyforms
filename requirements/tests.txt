@@ -1,3 +1,4 @@
+pip<8.0.0
 argparse
 coverage<4.0
 flake8
