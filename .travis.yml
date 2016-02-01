@@ -49,6 +49,7 @@ before_install:
   # GIS requirements.
   - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
+  - pip install pip==7.1.2
   - pip install tox
 script:
   - tox
