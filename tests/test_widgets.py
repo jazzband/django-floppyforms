@@ -465,7 +465,7 @@ class WidgetRenderingTest(TestCase):
         self.assertHTMLEqual(rendered, """
         <p>
             <label for="id_cb">Cb:</label>
-            <input type="checkbox" name="cb" id="id_cb" required checked value="foo">
+            <input type="checkbox" name="cb" id="id_cb" required checked>
         </p>
         """)
 

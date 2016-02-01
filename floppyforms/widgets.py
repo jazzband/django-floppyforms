@@ -443,13 +443,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
         return value
 
     def value_from_datadict(self, data, files, name):
-        if name not in data:
-            return False
-        value = data.get(name)
-        values = {'true': True, 'false': False}
-        if isinstance(value, six.string_types):
-            value = values.get(value.lower(), value)
-        return value
+        return forms.CheckboxInput.value_from_datadict(self, data, files, name)
 
     if django.VERSION < (1, 6):
         def _has_changed(self, initial, data):
