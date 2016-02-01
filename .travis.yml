@@ -13,8 +13,9 @@ env:
   - TOXENV=py32-15
   - TOXENV=py32-16
   - TOXENV=py32-17
-  - TOXENV=py32-18
-  - TOXENV=py32-18
+  # Disabling Python 3.2 tests for now as we have Problems with pip 8 on Travis
+  # - TOXENV=py32-18
+  # - TOXENV=py32-18
   - TOXENV=py33-15
   - TOXENV=py33-16
   - TOXENV=py33-17
