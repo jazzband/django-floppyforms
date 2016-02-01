@@ -1,6 +1,14 @@
 Changelog
 ---------
 
+1.6.1
+~~~~~
+
+* `#167`_: Fix django-floppyforms' ``CheckboxInput.value_from_datadict`` which
+  was inconsistent with Django's behaviour.
+
+.. _#167: https://github.com/gregmuellegger/django-floppyforms/issues/167
+
 1.6.0
 ~~~~~
 
