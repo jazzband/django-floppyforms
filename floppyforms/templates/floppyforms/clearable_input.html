@@ -1,8 +1,8 @@
-{% load i18n %}{% if value.url %}{% trans "Currently:" %} <a target="_blank" href="{{ value.url }}">{{ value }}</a>
+{% load i18n %}{% if value.url %}{{ initial_text }}: <a target="_blank" href="{{ value.url }}">{{ value }}</a>
 {% if not required %}
 <input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">
-<label for="{{ checkbox_id }}">{% trans "Clear" %}</label>
+<label for="{{ checkbox_id }}">{{ clear_checkbox_label }}</label>
 {% endif %}<br />
-{% trans "Change:" %}
+{{ input_text }}:
 {% endif %}
 <input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}{% include "floppyforms/attrs.html" %}>

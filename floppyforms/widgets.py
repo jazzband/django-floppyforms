@@ -232,6 +232,9 @@ class ClearableFileInput(FileInput):
                                                               attrs)
         ccb_name = self.clear_checkbox_name(name)
         context.update({
+            'clear_checkbox_label': self.clear_checkbox_label,
+            'initial_text': self.initial_text,
+            'input_text': self.input_text,
             'checkbox_name': ccb_name,
             'checkbox_id': self.clear_checkbox_id(ccb_name),
         })

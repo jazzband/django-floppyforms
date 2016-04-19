@@ -1182,6 +1182,38 @@ class WidgetRenderingTest(TestCase):
             <input type="file" name="file_" id="id_file_">
         </p>""")
 
+    def test_clearable_file_input_with_custom_labels(self):
+        class MyFileInput(forms.ClearableFileInput):
+            initial_text = 'INITIAL_TEXT'
+            input_text = 'INPUT_TEXT'
+            clear_checkbox_label = 'CLEAR_CHECKBOX_LABEL'
+
+        class Form(forms.Form):
+            file_ = forms.FileField(required=False, widget=MyFileInput)
+
+        fake_instance = {'url': 'test test'}
+        rendered = Form(initial={'file_': fake_instance}).as_p()
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            INITIAL_TEXT: <a target="_blank" href="test test">{&#39;url&#39;: &#39;test test&#39;}</a>
+            <input type="checkbox" name="file_-clear" id="file_-clear_id">
+            <label for="file_-clear_id">CLEAR_CHECKBOX_LABEL</label><br>INPUT_TEXT:
+            <input type="file" name="file_" id="id_file_">
+        </p>""")
+
+        form = Form(initial={'file_': fake_instance},
+                    data={'file_-clear': True})
+        self.assertTrue(form.is_valid())
+        self.assertHTMLEqual(rendered, """
+        <p>
+            <label for="id_file_">File :</label>
+            INITIAL_TEXT: <a target="_blank" href="test test">{&#39;url&#39;: &#39;test test&#39;}</a>
+            <input type="checkbox" name="file_-clear" id="file_-clear_id">
+            <label for="file_-clear_id">CLEAR_CHECKBOX_LABEL</label><br>INPUT_TEXT:
+            <input type="file" name="file_" id="id_file_">
+        </p>""")
+
     def test_rendered_file_input(self):
         class Form(forms.Form):
             file_ = forms.FileField()
