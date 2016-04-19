@@ -185,7 +185,7 @@ If you need to get the same output as standard Django forms:
   ``floppyforms/clearable_input.html``,  ``floppyforms/textarea.html`` and
   ``floppyforms/checkbox_select.html`` to use an XHTML syntax
 
-* Remove the ``required`` attribute from the templates as well
+* Remove the ``required`` attribute from the same templates, as well as ``floppyforms/select.html``
 
 * Make sure your fields which have HTML5 widgets by default get simple
   ``TextInputs`` instead:
