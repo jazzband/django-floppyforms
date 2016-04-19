@@ -221,6 +221,10 @@ class ClearableFileInput(FileInput):
     template_name = 'floppyforms/clearable_input.html'
     omit_value = False
 
+    initial_text = _('Currently')
+    input_text = _('Change')
+    clear_checkbox_label = _('Clear')
+
     def clear_checkbox_name(self, name):
         return name + '-clear'
 
