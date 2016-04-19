@@ -1,6 +1,16 @@
 Changelog
 ---------
 
+1.6.2 (in development)
+~~~~~~~~~~~~~~~~~~~~~~
+
+* `#169`_: Use the attributes ``ClearableFileInput.initial_text``,
+  ``ClearableFileInput.input_text``,
+  ``ClearableFileInput.clear_checkbox_label`` to determine the used text in the
+  template. This was inconsistent so far with Django's behaviour.
+
+.. _#169: https://github.com/gregmuellegger/django-floppyforms/issues/169
+
 1.6.1
 ~~~~~
 
