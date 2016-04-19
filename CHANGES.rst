@@ -1,8 +1,8 @@
 Changelog
 ---------
 
-1.6.2 (in development)
-~~~~~~~~~~~~~~~~~~~~~~
+1.6.2
+~~~~~
 
 * `#169`_: Use the attributes ``ClearableFileInput.initial_text``,
   ``ClearableFileInput.input_text``,
