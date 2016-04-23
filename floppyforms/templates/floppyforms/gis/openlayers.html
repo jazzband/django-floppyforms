@@ -5,11 +5,11 @@
 	#{{ attrs.id }}_span_map { position: relative; vertical-align: top; float: left; }
 	{% if not display_wkt %}#{{ attrs.id }} { display: none; }{% endif %}
 	.olControlEditingToolbar .olControlModifyFeatureItemActive {
-		background-image: url("{{ ADMIN_MEDIA_PREFIX }}img/gis/move_vertex_on.png");
+                background-image: url("{{ STATIC_URL }}floppyforms/gis/img/move_vertex_on.png");
 		background-repeat: no-repeat;
 	}
 	.olControlEditingToolbar .olControlModifyFeatureItemInactive {
-		background-image: url("{{ ADMIN_MEDIA_PREFIX }}img/gis/move_vertex_off.png");
+                background-image: url("{{ STATIC_URL }}floppyforms/gis/img/move_vertex_off.png");
 		background-repeat: no-repeat;
 	}
 </style>
