@@ -204,7 +204,8 @@ Template context
 The following variables are available in the template context:
 
 * ``ADMIN_MEDIA_PREFIX``: this setting, yes. It's useful to display some icons
-  that are missing in OpenLayers.
+  that are missing in OpenLayers. **Deprecated, please switch to use the
+  staticfiles machinery**
 * ``LANGUAGE_BIDI``: the current locale direction.
 * ``attrs``: the traditional attrs dictionnary. This is the attrs dict for a
   ``textarea`` widget, it contains the ``id``, ``cols`` and ``rows``

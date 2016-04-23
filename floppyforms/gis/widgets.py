@@ -87,6 +87,11 @@ class BaseGeometryWidget(forms.Textarea):
         context = super(BaseGeometryWidget, self).get_context(name, wkt, attrs)
         context['module'] = 'map_%s' % name.replace('-', '_')
         context['name'] = name
+
+        # Deprecated, we will remove this in a future release, it's no longer
+        # used. But we keep it here for now as it's documented in
+        # docs/geodjango.rst
+
         # Django >= 1.4 doesn't have ADMIN_MEDIA_PREFIX anymore, we must
         # rely on contrib.staticfiles.
         if hasattr(settings, 'ADMIN_MEDIA_PREFIX'):
