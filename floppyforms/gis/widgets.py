@@ -1,5 +1,12 @@
 from django.conf import settings
+from django.template.defaultfilters import safe
 from django.utils import translation, six
+
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    # Python < 3
+    from urllib import urlencode
 
 try:
     from django.contrib.gis import gdal, geos
@@ -167,10 +174,18 @@ class BaseGMapWidget(BaseGeometryWidget):
     """A Google Maps base widget"""
     map_srid = 3857
     template_name = 'floppyforms/gis/google.html'
+    google_maps_api_key = None
 
-    class Media:
+    @property
+    def media(self):
+        qs_dict = {'v': '3'}
+        if self.google_maps_api_key is not None:
+            qs_dict['key'] = self.google_maps_api_key
+
         js = (
             'floppyforms/openlayers/OpenLayers.js',
             'floppyforms/js/MapWidget.js',
-            'https://maps.google.com/maps/api/js?v=3&sensor=false',
+            # Needs (safe) because may contain "&":
+            safe('https://maps.google.com/maps/api/js?' + urlencode(qs_dict))
         )
+        return forms.Media(js=js)

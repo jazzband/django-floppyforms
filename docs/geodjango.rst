@@ -56,12 +56,12 @@ Here is a quick example:
 
     import floppyforms as forms
 
-    class PointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
+    class PointWidget(forms.gis.PointWidget, forms.gis.BaseOsmWidget):
         pass
 
-Here ``BaseGMapWidget`` is the base widget (i.e. I want to see a Google Map)
-and ``PointWidget`` is the geometry-specific widget (i.e. I want to draw a
-point on the map).
+Here ``BaseOsmWidget`` is the base widget (i.e. I want to see an
+OpenStreetMap) and ``PointWidget`` is the geometry-specific widget (i.e. I
+want to draw a point on the map).
 
 Base Widgets
 ````````````
@@ -79,7 +79,18 @@ The following base widgets are provided:
 .. _OpenStreetMap: http://www.openstreetmap.org/
 
 * ``BaseGMapWidget``: this base widget renders a map using the Google Maps
-  API. It uses the v3 javascript API, no API key is required.
+  API. It uses the v3 javascript API and requires an API Key (which can be
+  obtained at `Google Developers`_). Subclasses must set the attribute
+  ``google_maps_api_key``, otherwise the map will fail to load.
+
+.. _Google Developers: https://developers.google.com/maps/documentation/javascript/get-api-key
+
+.. code-block:: python
+
+    import floppyforms as forms
+
+    class PointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
+        google_maps_api_key = 'YOUR-GOOGLE-MAPS-API-KEY-HERE'
 
 Geometry-specific widgets
 `````````````````````````
@@ -170,10 +181,10 @@ equivalent:
 
     import floppyforms as forms
 
-    class GMapPointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
+    class OsmPointWidget(forms.gis.PointWidget, forms.gis.BaseOsmWidget):
         pass
 
-    class CustomPointWidget(GMapPointWidget):
+    class CustomPointWidget(OsmPointWidget):
         map_width = 1000
         map_height = 700
 
@@ -186,11 +197,11 @@ and:
 
     import floppyforms as forms
 
-    class GMapPointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
+    class OsmPointWidget(forms.gis.PointWidget, forms.gis.BaseOsmWidget):
         pass
 
     class GeoForm(forms.Form):
-        point = forms.gis.PointField(widget=GMapPointWidget(attrs={
+        point = forms.gis.PointField(widget=OsmPointWidget(attrs={
             'map_width': 1000,
             'map_height': 700,
         }))
@@ -259,6 +270,7 @@ widget):
 .. code-block:: python
 
     # forms.py
+    from django.template.defaultfilters import safe
     import floppyforms as forms
 
     class BaseGMapWidget(forms.gis.BaseGeometryWidget):
@@ -269,7 +281,10 @@ widget):
             js = (
                 'http://openlayers.org/dev/OpenLayers.js',
                 'floppyforms/js/MapWidget.js',
-                'http://maps.google.com/maps/api/js?sensor=false',
+
+                # Needs safe() because the ampersand (&):
+                safe('http://maps.google.com/maps/api/js?'
+                     'v=3&key=YOUR-GOOGLE-MAPS-API-KEY-HERE'),
             )
 
 Here we need the development version of OpenLayers because OpenLayers 2.10
@@ -289,7 +304,7 @@ using the google projection.
     options['point_zoom'] = 14;
     {% endblock %}
 
-Calling ``block.super`` generates the options dictionnary with all the
+Calling ``block.super`` generates the options dictionary with all the
 required options. We can then safely alter it at will. In this case we can
 directly add an OpenLayers.Layer instance to the map options and it will be
 picked up as a base layer.
@@ -405,7 +420,7 @@ Google Maps
 
     class GMapPolygonWidget(forms.gis.BaseGMapWidget,
                             forms.gis.PolygonWidget):
-        pass
+        google_maps_api_key = 'YOUR-GOOGLE-MAPS-API-KEY-HERE'
 
     class GmapForm(forms.Form):
         poly = forms.gis.PolygonField(widget=GMapPolygonWidget)
