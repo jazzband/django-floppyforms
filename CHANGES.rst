@@ -1,14 +1,19 @@
 Changelog
 ---------
 
-1.6.3 (in development)
-~~~~~~~~~~~~~~~~~~~~~~
+1.7.0 (in development)
+~~~~~
 
 * `#171`_: Fix path to GIS widget images in ``openlayers.html`` template. The
   files coming with Django admin where used, but the naming changed in 1.9. We
   vendor these know to have better control over it.
+* `#174`_: Support for setting your own Google Maps key in the
+  ``BaseGMapWidget``. `See the documentation
+  <http://django-floppyforms.readthedocs.io/en/latest/geodjango.html>`_ for
+  details
 
 .. _#171: https://github.com/gregmuellegger/django-floppyforms/issues/171
+.. _#174: https://github.com/gregmuellegger/django-floppyforms/pull/174
 
 1.6.2
 ~~~~~
