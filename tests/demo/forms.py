@@ -26,6 +26,11 @@ def mixin(*classes):
         {})
 
 
+class BaseGMapWidget(gis.BaseGMapWidget):
+    # Paste your own Google Maps API key here to test the widgets out.
+    google_maps_api_key = None
+
+
 class AllFieldsForm(forms.Form):
     boolean = forms.BooleanField()
     char = forms.CharField(max_length=50)
@@ -60,9 +65,9 @@ class AllFieldsForm(forms.Form):
         osm_polygon = gis.PolygonField(widget=mixin(gis.PolygonWidget, gis.BaseOsmWidget))
         osm_multipolygon = gis.MultiPolygonField(widget=mixin(gis.MultiPolygonWidget, gis.BaseOsmWidget))
 
-        gmap_point = gis.PointField(widget=mixin(gis.PointWidget, gis.BaseGMapWidget))
-        gmap_multipoint = gis.MultiPointField(widget=mixin(gis.MultiPointWidget, gis.BaseGMapWidget))
-        gmap_linestring = gis.LineStringField(widget=mixin(gis.LineStringWidget, gis.BaseGMapWidget))
-        gmap_multilinestring = gis.MultiLineStringField(widget=mixin(gis.MultiLineStringWidget, gis.BaseGMapWidget))
-        gmap_polygon = gis.PolygonField(widget=mixin(gis.PolygonWidget, gis.BaseGMapWidget))
-        gmap_multipolygon = gis.MultiPolygonField(widget=mixin(gis.MultiPolygonWidget, gis.BaseGMapWidget))
+        gmap_point = gis.PointField(widget=mixin(gis.PointWidget, BaseGMapWidget))
+        gmap_multipoint = gis.MultiPointField(widget=mixin(gis.MultiPointWidget, BaseGMapWidget))
+        gmap_linestring = gis.LineStringField(widget=mixin(gis.LineStringWidget, BaseGMapWidget))
+        gmap_multilinestring = gis.MultiLineStringField(widget=mixin(gis.MultiLineStringWidget, BaseGMapWidget))
+        gmap_polygon = gis.PolygonField(widget=mixin(gis.PolygonWidget, BaseGMapWidget))
+        gmap_multipolygon = gis.MultiPolygonField(widget=mixin(gis.MultiPolygonWidget, BaseGMapWidget))
