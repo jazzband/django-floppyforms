@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-1.7.0 (in development)
+1.7.0
 ~~~~~
 
 * `#171`_: Fix path to GIS widget images in ``openlayers.html`` template. The
