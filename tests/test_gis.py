@@ -112,7 +112,6 @@ class GisTests(TestCase):
     def assertTextarea(self, wkt, rendered):
         """Makes sure the wkt and a textarea are in the content"""
         self.assertTrue('<textarea ' in rendered, rendered)
-        self.assertTrue(' required ' in rendered, rendered)
         self.assertTrue(wkt in rendered, rendered)
 
     @skipUnlessInstalled('django.contrib.gis')
