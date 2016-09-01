@@ -18,7 +18,7 @@
 	<div id="{{ attrs.id }}_map"></div>
 	<a href="javascript:{{ module }}.clearFeatures()">Delete all Features</a>
 	{% if display_wkt %}<p> WKT debugging window:</p>{% endif %}
-	{% include "floppyforms/textarea.html" %}
+	{% include "floppyforms/textarea.html" with required=0 %}
 	<script type="text/javascript">
 		{% block map_options %}var map_options = {};{% endblock %}
 		{% block options %}var options = {

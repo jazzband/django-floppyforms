@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+1.8.0 (in development)
+~~~~~~~~~~~~~~~~~~~~~~
+
+* `#176`_: Fix HTML validation for hidden textarea used with GIS widgets.
+
+.. _#176: https://github.com/gregmuellegger/django-floppyforms/issues/176
+
 1.7.0
 ~~~~~
 
