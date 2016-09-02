@@ -1,15 +1,15 @@
-{% load l10n %}
+{% load l10n static %}
 <style type="text/css">
 	#{{ attrs.id }}_map { width: {{ map_width }}px; height: {{ map_height }}px; }
 	#{{ attrs.id }}_map .aligned label { float: inherit; }
 	#{{ attrs.id }}_span_map { position: relative; vertical-align: top; float: left; }
 	{% if not display_wkt %}#{{ attrs.id }} { display: none; }{% endif %}
 	.olControlEditingToolbar .olControlModifyFeatureItemActive {
-                background-image: url("{{ STATIC_URL }}floppyforms/gis/img/move_vertex_on.png");
+		background-image: url("{% static "floppyforms/gis/img/move_vertex_on.png" %}");
 		background-repeat: no-repeat;
 	}
 	.olControlEditingToolbar .olControlModifyFeatureItemInactive {
-                background-image: url("{{ STATIC_URL }}floppyforms/gis/img/move_vertex_off.png");
+		background-image: url("{% static "floppyforms/gis/img/move_vertex_off.png" %}");
 		background-repeat: no-repeat;
 	}
 </style>
