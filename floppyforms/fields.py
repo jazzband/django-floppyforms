@@ -26,6 +26,16 @@ class Field(forms.Field):
     widget = TextInput
     hidden_widget = HiddenInput
 
+    @property
+    def required(self):
+        return self.__required
+
+    @required.setter
+    def required(self, value):
+        self.__required = value
+        if getattr(self, 'widget', None) and not isinstance(self.widget, type):
+            self.widget.is_required = value
+
 
 class CharField(Field, forms.CharField):
     widget = TextInput
