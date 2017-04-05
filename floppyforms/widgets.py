@@ -89,7 +89,7 @@ class Input(Widget):
 
         if value != '':
             # Only add the value if it is non-empty
-            context['value'] = self._format_value(value)
+            context['value'] = self.format_value(value)
 
         context.update(self.get_context_data())
         context['attrs'] = self.build_attrs(attrs)

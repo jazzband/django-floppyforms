@@ -1,5 +1,4 @@
 import django
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.forms.formsets import formset_factory
 from django.template import Context, Template
@@ -7,10 +6,9 @@ from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 import floppyforms as forms
-
+from floppyforms import set_template_setting, get_template_setting
 from .base import InvalidVariable
 from .compat import unittest
-
 
 skipIf = unittest.skipIf
 
@@ -494,13 +492,13 @@ class TemplateStringIfInvalidTests(TestCase):
     Regression tests for issue #37.
     '''
     def setUp(self):
-        self.original_TEMPLATE_STRING_IF_INVALID = settings.TEMPLATE_STRING_IF_INVALID
+        self.original_TEMPLATE_STRING_IF_INVALID = get_template_setting('STRING_IF_INVALID')
 
     def tearDown(self):
-        settings.TEMPLATE_STRING_IF_INVALID = self.original_TEMPLATE_STRING_IF_INVALID
+        set_template_setting('STRING_IF_INVALID', self.original_TEMPLATE_STRING_IF_INVALID)
 
     def test_none(self):
-        settings.TEMPLATE_STRING_IF_INVALID = None
+        set_template_setting('STRING_IF_INVALID', None)
 
         layout = OneFieldForm().as_p()
         self.assertHTMLEqual(layout, """
@@ -508,7 +506,7 @@ class TemplateStringIfInvalidTests(TestCase):
         """)
 
     def test_non_empty(self):
-        settings.TEMPLATE_STRING_IF_INVALID = InvalidVariable('INVALID')
+        set_template_setting('STRING_IF_INVALID', InvalidVariable('INVALID'))
 
         layout = OneFieldForm().as_p()
         self.assertHTMLEqual(layout, """
