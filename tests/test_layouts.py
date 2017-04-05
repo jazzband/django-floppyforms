@@ -1,4 +1,5 @@
 import django
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.forms.formsets import formset_factory
 from django.template import Context, Template
@@ -6,7 +7,6 @@ from django.test import TestCase
 from django.utils.translation import ugettext_lazy as _
 
 import floppyforms as forms
-from floppyforms import set_template_setting, get_template_setting
 from .base import InvalidVariable
 from .compat import unittest
 
@@ -492,13 +492,32 @@ class TemplateStringIfInvalidTests(TestCase):
     Regression tests for issue #37.
     '''
     def setUp(self):
-        self.original_TEMPLATE_STRING_IF_INVALID = get_template_setting('STRING_IF_INVALID')
+        if django.VERSION < (1, 8):
+            self.original_TEMPLATE_STRING_IF_INVALID = settings.TEMPLATE_STRING_IF_INVALID
+        else:
+            self.original_TEMPLATES = settings.TEMPLATES
 
     def tearDown(self):
-        set_template_setting('STRING_IF_INVALID', self.original_TEMPLATE_STRING_IF_INVALID)
+        if django.VERSION < (1, 8):
+            settings.TEMPLATE_STRING_IF_INVALID = self.original_TEMPLATE_STRING_IF_INVALID
+        else:
+            settings.TEMPLATES = self.original_TEMPLATES
+
+    def set_invalid_string(self, value):
+        if django.VERSION < (1, 8):
+            settings.TEMPLATE_STRING_IF_INVALID = value
+        else:
+            settings.TEMPLATES = [
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'OPTIONS': {
+                        'string_if_invalid': value
+                    }
+                }
+            ]
 
     def test_none(self):
-        set_template_setting('STRING_IF_INVALID', None)
+        self.set_invalid_string(None)
 
         layout = OneFieldForm().as_p()
         self.assertHTMLEqual(layout, """
@@ -506,7 +525,7 @@ class TemplateStringIfInvalidTests(TestCase):
         """)
 
     def test_non_empty(self):
-        set_template_setting('STRING_IF_INVALID', InvalidVariable('INVALID'))
+        self.set_invalid_string(InvalidVariable('INVALID'))
 
         layout = OneFieldForm().as_p()
         self.assertHTMLEqual(layout, """

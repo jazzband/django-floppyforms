@@ -3,7 +3,6 @@ from contextlib import contextmanager
 
 from django.conf import settings
 
-from floppyforms import get_template_setting
 
 try:
     from django.forms.utils import ErrorList
@@ -339,7 +338,7 @@ class ModifierBase(BaseFormNode):
             try:
                 for_ = self.options['for'].resolve(context)
             except VariableDoesNotExist:
-                if get_template_setting('DEBUG', settings.DEBUG):
+                if settings.DEBUG:
                     raise
                 return ''
             filter = ConfigFilter(for_)
@@ -347,7 +346,7 @@ class ModifierBase(BaseFormNode):
             try:
                 template_name = self.options['using'].resolve(context)
             except VariableDoesNotExist:
-                if get_template_setting('DEBUG', settings.DEBUG):
+                if settings.DEBUG:
                     raise
                 return ''
             config.configure(self.template_config_name,
@@ -455,7 +454,7 @@ class BaseFormRenderNode(BaseFormNode):
                 template_name = self.get_template_name(context)
             return get_template(context, template_name)
         except:
-            if get_template_setting('DEBUG', settings.DEBUG):
+            if settings.DEBUG:
                 raise
 
     def get_extra_context(self, context):
