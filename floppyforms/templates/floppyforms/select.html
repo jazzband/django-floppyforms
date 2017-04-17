@@ -1,5 +1,5 @@
 <select name="{{ name }}"{% if multiple %} multiple="multiple"{% endif %}{% if required %} required{% endif %}{% include "floppyforms/attrs.html" %}>{% for group_name, group_choices in optgroups %}{% if group_name %}
 	<optgroup label="{{ group_name }}">{% endif %}{% for option in group_choices %}
-	<option value="{{ option.0 }}"{% if option.0 in value %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}{% if group_name %}
+	<option value="{{ option.0 }}"{% if option.0 == value %} selected="selected"{% endif %}>{{ option.1 }}</option>{% endfor %}{% if group_name %}
 	</optgroup>{% endif %}{% endfor %}
 </select>
