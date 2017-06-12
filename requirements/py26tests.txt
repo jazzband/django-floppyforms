@@ -1,6 +1,0 @@
-pip<8.0.0
-argparse
-coverage<4.0
-flake8
-django-discover-runner
-Pillow==3.4.2

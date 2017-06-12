@@ -1,9 +1,9 @@
 language: python
 python: 2.7
 env:
-  - TOXENV=py26-14
-  - TOXENV=py26-15
-  - TOXENV=py26-16
+#  - TOXENV=py26-14
+#  - TOXENV=py26-15
+#  - TOXENV=py26-16
   - TOXENV=py27-14
   - TOXENV=py27-15
   - TOXENV=py27-16
