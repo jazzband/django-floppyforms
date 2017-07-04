@@ -68,7 +68,6 @@ class Widget(forms.Widget):
         def format_value(self, value):
             return self._format_value(value)
 
-
 class Input(Widget):
     template_name = 'floppyforms/input.html'
     input_type = None
