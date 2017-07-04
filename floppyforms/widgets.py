@@ -40,6 +40,24 @@ __all__ = (
 class Widget(forms.Widget):
     is_required = False
 
+    def render(self, name, value, attrs=None):
+        """
+        Returns this Widget rendered as HTML, as a Unicode string.
+        The 'value' given is not guaranteed to be valid input, so subclass
+        implementations should program defensively.
+        """
+        raise NotImplementedError('subclasses of Widget must provide a render() method')
+
+    def build_attrs(self, extra_attrs=None, **kwargs):
+        """
+        Backported from Django 1.10
+        Helper function for building an attribute dictionary.
+        """
+        attrs = dict(self.attrs, **kwargs)
+        if extra_attrs:
+            attrs.update(extra_attrs)
+        return attrs
+
     # Backported from Django 1.7
     @property
     def is_hidden(self):

@@ -20,7 +20,7 @@ class AllFields(models.Model):
     float_field = models.FloatField()
     integer = models.IntegerField()
     big_integer = models.BigIntegerField()
-    ip_address = models.IPAddressField()
+    # ip_address = models.IPAddressField()
     generic_ip_address = models.GenericIPAddressField()
     null_boolean = models.NullBooleanField()
     positive_integer = models.PositiveIntegerField()
