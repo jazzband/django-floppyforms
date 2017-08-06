@@ -29,7 +29,7 @@ Installation
 ------------
 
 As a requirement of django-floppyforms, you will need to have Django in
-version 1.4 or higher installed and use Python 2.6 or newer.  Python 3 and
+version 1.4 or higher installed and use Python 2.7 or newer. Python >=3.3 and
 PyPy are supported!
 
 Two-step process to install django-floppyforms:
