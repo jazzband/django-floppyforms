@@ -5,8 +5,10 @@ Changelog
 ~~~~~~~~~~~~~~~~~~~~~~
 
 * `#176`_: Fix HTML validation for hidden textarea used with GIS widgets.
+* `#194`_: Remove official support for Python 2.6 and Python 3.2.
 
 .. _#176: https://github.com/gregmuellegger/django-floppyforms/issues/176
+.. _#194: https://github.com/gregmuellegger/django-floppyforms/pull/194
 
 1.7.0
 ~~~~~
