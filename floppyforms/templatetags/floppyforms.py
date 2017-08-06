@@ -1,7 +1,9 @@
+import django
 from collections import defaultdict
 from contextlib import contextmanager
 
 from django.conf import settings
+
 try:
     from django.forms.utils import ErrorList
 except ImportError:
@@ -34,6 +36,49 @@ def is_bound_field(var):
     # We assume it is a BoundField if the var has these fields.
     significant_attributes = ('as_widget', 'as_hidden', 'is_hidden')
     return all(hasattr(var, attr) for attr in significant_attributes)
+
+
+def raise_or_not_variable_does_not_exist_compat_version(context):
+    """This function raise exception if template is in debug mode. If not, it return ''.
+    Multiples ways (depending to the Django version) to retrieve the value of template debug.
+
+    :param context: context for the field.
+    :return: Either '' or raise Exception
+    """
+    if django.VERSION < (1, 8):
+        if settings.TEMPLATE_DEBUG:
+            raise
+        else:
+            return ''
+
+    if django.VERSION >= (1, 8) and django.VERSION < (1, 10):
+        from django.template.engine import Engine
+        template_debug_value = getattr(settings, 'TEMPLATE_DEBUG', None)
+        if template_debug_value:
+            raise
+        if not template_debug_value:
+            return ''
+        if template_debug_value is None:
+            try:
+                engine = context.template.engine
+            except AttributeError:
+                engine = Engine.get_default()
+            if engine.debug:
+                raise
+            return ''
+
+    if django.VERSION >= (1, 10):
+        from django.template.engine import Engine
+        try:
+            engine = context.template.engine
+        except AttributeError:
+            engine = Engine.get_default()
+        if engine.debug:
+            raise
+
+        return ''
+
+    raise
 
 
 class ConfigFilter(object):
@@ -336,17 +381,15 @@ class ModifierBase(BaseFormNode):
             try:
                 for_ = self.options['for'].resolve(context)
             except VariableDoesNotExist:
-                if settings.TEMPLATE_DEBUG:
-                    raise
-                return ''
+                return raise_or_not_variable_does_not_exist_compat_version(context)
+
             filter = ConfigFilter(for_)
         if self.options['using']:
             try:
                 template_name = self.options['using'].resolve(context)
             except VariableDoesNotExist:
-                if settings.TEMPLATE_DEBUG:
-                    raise
-                return ''
+                return raise_or_not_variable_does_not_exist_compat_version(context)
+
             config.configure(self.template_config_name,
                              template_name, filter=filter)
         if self.options['with']:
@@ -452,8 +495,17 @@ class BaseFormRenderNode(BaseFormNode):
                 template_name = self.get_template_name(context)
             return get_template(context, template_name)
         except:
-            if settings.TEMPLATE_DEBUG:
-                raise
+            if django.VERSION < (1, 10):
+                if settings.DEBUG:
+                    raise
+            else:
+                try:
+                    engine = context.template.engine
+                except AttributeError:
+                    if settings.DEBUG:
+                        raise
+                if engine.debug:
+                    raise
 
     def get_extra_context(self, context):
         variables = []
@@ -622,9 +674,7 @@ class FormFieldNode(BaseFormRenderNode):
         try:
             bound_field = self.variables[0].resolve(context)
         except VariableDoesNotExist:
-            if settings.DEBUG:
-                raise
-            return ''
+            return raise_or_not_variable_does_not_exist_compat_version(context)
 
         widget = config.retrieve('widget', bound_field=bound_field)
         extra_context = self.get_extra_context(context)
@@ -634,10 +684,7 @@ class FormFieldNode(BaseFormRenderNode):
             try:
                 template_name = self.options['using'].resolve(context)
             except VariableDoesNotExist:
-                if settings.DEBUG:
-                    raise
-                return ''
-
+                return raise_or_not_variable_does_not_exist_compat_version(context)
         if self.options['only']:
             context_instance = context.new(extra_context)
         else:

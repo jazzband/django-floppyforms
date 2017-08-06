@@ -45,6 +45,11 @@ class Widget(forms.Widget):
     def is_hidden(self):
         return self.input_type == 'hidden' if hasattr(self, 'input_type') else False
 
+    # Backported from Django 1.9
+    if not hasattr(forms.Widget, 'format_value'):
+        def format_value(self, value):
+            return self._format_value(value)
+
 
 class Input(Widget):
     template_name = 'floppyforms/input.html'
@@ -89,7 +94,7 @@ class Input(Widget):
 
         if value != '':
             # Only add the value if it is non-empty
-            context['value'] = self._format_value(value)
+            context['value'] = self.format_value(value)
 
         context.update(self.get_context_data())
         context['attrs'] = self.build_attrs(attrs)

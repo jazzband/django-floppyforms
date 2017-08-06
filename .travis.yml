@@ -1,15 +1,16 @@
 language: python
 python: 2.7
 env:
-  - TOXENV=py26-14
-  - TOXENV=py26-15
-  - TOXENV=py26-16
+#  - TOXENV=py26-14
+#  - TOXENV=py26-15
+#  - TOXENV=py26-16
   - TOXENV=py27-14
   - TOXENV=py27-15
   - TOXENV=py27-16
   - TOXENV=py27-17
   - TOXENV=py27-18
   - TOXENV=py27-19
+  - TOXENV=py27-110
   # Disabling Python 3.2 tests for now as we have Problems with pip 8 on Travis
   # - TOXENV=py32-15
   # - TOXENV=py32-16
@@ -25,14 +26,17 @@ env:
   - TOXENV=py34-17
   - TOXENV=py34-18
   - TOXENV=py34-19
+  - TOXENV=py34-110
   - TOXENV=py35-18
   - TOXENV=py35-19
+  - TOXENV=py35-110
   - TOXENV=pypy-14
   - TOXENV=pypy-15
   - TOXENV=pypy-16
   - TOXENV=pypy-17
   - TOXENV=pypy-18
   - TOXENV=pypy-19
+  - TOXENV=pypy-110
   - TOXENV=docs
   - TOXENV=flake8
 before_install:
