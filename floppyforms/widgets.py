@@ -132,7 +132,7 @@ class Input(Widget):
         template_name = kwargs.pop('template_name', None)
         if template_name is None:
             template_name = self.template_name
-        context = self.get_context(name, value, attrs=attrs or {}, **kwargs)
+        context = self.get_context(name, value, attrs=attrs or {})
         context = flatten_contexts(self.context_instance, context)
         return loader.render_to_string(template_name, context)
 
@@ -604,6 +604,29 @@ class MultiWidget(forms.MultiWidget):
     @property
     def is_hidden(self):
         return all(w.is_hidden for w in self.widgets)
+
+    def build_attrs(self, base_attrs, extra_attrs=None, **kwargs):
+        """
+        Backported from Django 1.10
+        Helper function for building an attribute dictionary.
+        """
+        attrs = dict(self.attrs, **kwargs)
+        attrs.update(base_attrs)
+        if extra_attrs:
+            attrs.update(extra_attrs)
+        return attrs
+
+    def render(self, name, value, attrs=None, **kwargs):
+        template_name = kwargs.pop('template_name', None)
+        if template_name is None:
+            template_name = self.template_name
+        context = self.get_context(name, value, attrs=attrs or {})
+        context = flatten_contexts(self.context_instance, context)
+        return loader.render_to_string(template_name, context)
+
+    def get_context(self, name, value, attrs=None):
+        context = {}
+        return context
 
 
 class SplitDateTimeWidget(MultiWidget):
