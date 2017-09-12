@@ -95,12 +95,14 @@ class Input(Widget):
 
     def get_context(self, name, value, attrs=None):
         context = {
+            'widget': self,
             'type': self.input_type,
             'name': name,
             'hidden': self.is_hidden,
             'required': self.is_required,
             'True': True,
         }
+
         # True is injected in the context to allow stricter comparisons
         # for widget attrs. See #25.
         if self.is_hidden:
@@ -617,16 +619,34 @@ class MultiWidget(forms.MultiWidget):
         return attrs
 
     def render(self, name, value, attrs=None, **kwargs):
-        template_name = kwargs.pop('template_name', None)
-        if template_name is None:
-            template_name = self.template_name
-        context = self.get_context(name, value, attrs=attrs or {})
-        context = flatten_contexts(self.context_instance, context)
-        return loader.render_to_string(template_name, context)
+        context = self.get_context(name, value, attrs)
+        if self.is_localized:
+            for widget in self.widgets:
+                widget.is_localized = self.is_localized
+        # value is a list of values, each corresponding to a widget
+        # in self.widgets.
+        if not isinstance(value, list):
+            value = self.decompress(value)
 
-    def get_context(self, name, value, attrs=None):
-        context = {}
-        return context
+        final_attrs = context['widget']['attrs']
+        input_type = final_attrs.pop('type', None)
+        id_ = final_attrs.get('id')
+        rendered_template = ''
+        for i, widget in enumerate(self.widgets):
+            if input_type is not None:
+                widget.input_type = input_type
+            widget_name = '%s_%s' % (name, i)
+            try:
+                widget_value = value[i]
+            except IndexError:
+                widget_value = None
+            if id_:
+                widget_attrs = final_attrs.copy()
+                widget_attrs['id'] = '%s_%s' % (id_, i)
+            else:
+                widget_attrs = final_attrs
+            rendered_template += widget.render(widget_name, widget_value, widget_attrs)
+        return rendered_template
 
 
 class SplitDateTimeWidget(MultiWidget):

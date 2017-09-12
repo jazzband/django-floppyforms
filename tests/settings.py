@@ -13,6 +13,7 @@ USE_L10N = True
 
 INSTALLED_APPS = [
     'django.contrib.gis',
+    'django.forms',
     'floppyforms',
     'tests',
 ]
