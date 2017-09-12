@@ -68,6 +68,7 @@ class Widget(forms.Widget):
         def format_value(self, value):
             return self._format_value(value)
 
+
 class Input(Widget):
     template_name = 'floppyforms/input.html'
     input_type = None
@@ -617,6 +618,60 @@ class MultiWidget(forms.MultiWidget):
         if extra_attrs:
             attrs.update(extra_attrs)
         return attrs
+
+    if django.VERSION < (1, 11):
+        # backport
+        def format_value(self, value):
+            """
+            Return a value as it should appear when rendered in a template.
+            """
+            if value == '' or value is None:
+                return None
+            if self.is_localized:
+                return formats.localize_input(value)
+            return force_text(value)
+
+        # backport port
+        def get_context(self, name, value, attrs):
+            # context = super(MultiWidget, self).get_context(name, value, attrs)
+            # the following is an inline version of the previous call
+            context = {}
+            context['widget'] = {
+                'name': name,
+                'is_hidden': self.is_hidden,
+                'required': self.is_required,
+                'value': self.format_value(value),
+                'attrs': self.build_attrs(self.attrs, attrs),
+                'template_name': self.template_name,
+            }
+            if self.is_localized:
+                for widget in self.widgets:
+                    widget.is_localized = self.is_localized
+            # value is a list of values, each corresponding to a widget
+            # in self.widgets.
+            if not isinstance(value, list):
+                value = self.decompress(value)
+
+            final_attrs = context['widget']['attrs']
+            input_type = final_attrs.pop('type', None)
+            id_ = final_attrs.get('id')
+            subwidgets = []
+            for i, widget in enumerate(self.widgets):
+                if input_type is not None:
+                    widget.input_type = input_type
+                widget_name = '%s_%s' % (name, i)
+                try:
+                    widget_value = value[i]
+                except IndexError:
+                    widget_value = None
+                if id_:
+                    widget_attrs = final_attrs.copy()
+                    widget_attrs['id'] = '%s_%s' % (id_, i)
+                else:
+                    widget_attrs = final_attrs
+                subwidgets.append(widget.get_context(widget_name, widget_value, widget_attrs)['widget'])
+            context['widget']['subwidgets'] = subwidgets
+            return context
 
     def render(self, name, value, attrs=None, **kwargs):
         context = self.get_context(name, value, attrs)
