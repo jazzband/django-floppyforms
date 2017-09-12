@@ -1,9 +1,6 @@
 language: python
 python: 2.7
 env:
-#  - TOXENV=py26-14
-#  - TOXENV=py26-15
-#  - TOXENV=py26-16
   - TOXENV=py27-14
   - TOXENV=py27-15
   - TOXENV=py27-16
@@ -11,12 +8,6 @@ env:
   - TOXENV=py27-18
   - TOXENV=py27-19
   - TOXENV=py27-110
-  # Disabling Python 3.2 tests for now as we have Problems with pip 8 on Travis
-  # - TOXENV=py32-15
-  # - TOXENV=py32-16
-  # - TOXENV=py32-17
-  # - TOXENV=py32-18
-  # - TOXENV=py32-18
   - TOXENV=py33-15
   - TOXENV=py33-16
   - TOXENV=py33-17
