@@ -10,6 +10,7 @@ env:
   - TOXENV=py35-18
   - TOXENV=py35-110
   - TOXENV=py35-111
+  - TOXENV=py36-111
   - TOXENV=pypy-18
   - TOXENV=pypy-110
   - TOXENV=pypy-111
@@ -29,8 +30,7 @@ before_install:
   # GIS requirements.
   - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
-  # pip >= 8 dropped Python 3.2 support
-  - pip install "pip<8.0.0" wheel
+  - pip install pip wheel
   - pip install tox
 script:
   - tox
