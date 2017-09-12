@@ -12,7 +12,6 @@ env:
   - TOXENV=py35-18
   - TOXENV=py35-110
   - TOXENV=py35-111
-  - TOXENV=py36-111
   - TOXENV=pypy-18
   - TOXENV=pypy-110
   - TOXENV=pypy-111
