@@ -1,5 +1,7 @@
 language: python
 python: 2.7
+dist: precise
+
 env:
   - TOXENV=py27-18
   - TOXENV=py27-110
