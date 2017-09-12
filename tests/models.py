@@ -1,3 +1,4 @@
+import django
 from django.db import models
 
 
@@ -20,7 +21,8 @@ class AllFields(models.Model):
     float_field = models.FloatField()
     integer = models.IntegerField()
     big_integer = models.BigIntegerField()
-    # ip_address = models.IPAddressField()
+    if django.VERSION < (1, 9):
+        ip_address = models.IPAddressField()
     generic_ip_address = models.GenericIPAddressField()
     null_boolean = models.NullBooleanField()
     positive_integer = models.PositiveIntegerField()
