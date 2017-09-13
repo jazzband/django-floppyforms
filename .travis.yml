@@ -1,22 +1,39 @@
 language: python
-python: 2.7
-dist: precise
-
-env:
-  - TOXENV=py27-18
-  - TOXENV=py27-110
-  - TOXENV=py27-111
-  - TOXENV=py33-18
-  - TOXENV=py34-18
-  - TOXENV=py34-110
-  - TOXENV=py35-18
-  - TOXENV=py35-110
-  - TOXENV=py35-111
-  - TOXENV=pypy-18
-  - TOXENV=pypy-110
-  - TOXENV=pypy-111
-  - TOXENV=docs
-  - TOXENV=flake8
+matrix:
+    include:
+        - python: 2.7
+          env: TOXENV=py27-18
+        - python: 2.7
+          env: TOXENV=py27-110
+        - python: 2.7
+          env: TOXENV=py27-111
+        - python: 3.3
+          dist: precise
+          env: TOXENV=py33-18
+        - python: 3.4
+          env: TOXENV=py34-18
+        - python: 3.4
+          env: TOXENV=py34-110
+        - python: 3.4
+          env: TOXENV=py34-111
+        - python: 3.5
+          env: TOXENV=py35-18
+        - python: 3.5
+          env: TOXENV=py35-110
+        - python: 3.5
+          env: TOXENV=py35-111
+        - python: 3.6
+          env: TOXENV=py36-111
+        - python: pypy
+          env: TOXENV=pypy-18
+        - python: pypy
+          env: TOXENV=pypy-110
+        - python: pypy
+          env: TOXENV=pypy-111
+        - python: 2.7
+          env: TOXENV=docs
+        - python: 2.7
+          env: TOXENV=flake8
 before_install:
   - sudo apt-get -q -y update
 
@@ -34,7 +51,7 @@ install:
   - pip install pip wheel
   - pip install tox
 script:
-  - tox
+  - tox -e $TOXENV
 notifications:
   irc:
     channels:
