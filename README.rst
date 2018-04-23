@@ -49,7 +49,7 @@ Bugs
 Really? Oh well... Please Report. Or better, fix :) We are happy to help you
 through the process of fixing and testing a bug. Just get in touch.
 
-Disable floppyforms.gif
+Disable django gis
 -----------------------
 Add option to your `settings.py` on the below
 
