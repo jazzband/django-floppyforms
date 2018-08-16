@@ -156,7 +156,7 @@ class RegexField(Field, forms.RegexField):
     def __init__(self, regex, js_regex=None, max_length=None, min_length=None,
                  error_message=None, *args, **kwargs):
         self.js_regex = js_regex
-        super(RegexField, self).__init__(regex, max_length, min_length,
+        super(RegexField, self).__init__(regex=regex, max_length=max_length, min_length=min_length,
                                          *args, **kwargs)
 
     def widget_attrs(self, widget):
