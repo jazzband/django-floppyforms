@@ -494,7 +494,7 @@ class BaseFormRenderNode(BaseFormNode):
             else:
                 template_name = self.get_template_name(context)
             return get_template(context, template_name)
-        except:
+        except:  # noqa: E722
             if django.VERSION < (1, 10):
                 if settings.DEBUG:
                     raise
@@ -567,7 +567,7 @@ class FormNode(BaseFormRenderNode):
         if not hasattr(var, '__iter__'):
             return False
         if is_formset(var):
-                return True
+            return True
         if is_form(var):
             return False
         # form duck-typing was not successful so it must be a list

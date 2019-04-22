@@ -72,10 +72,7 @@ class BaseGeometryWidget(forms.Textarea):
             except (geos.GEOSException, ValueError):
                 value = None
 
-        if (
-            value and value.geom_type.upper() != self.geom_type and
-            self.geom_type != 'GEOMETRY'
-        ):
+        if value and value.geom_type.upper() != self.geom_type and self.geom_type != 'GEOMETRY':
             value = None
 
         # Defaulting the WKT value to a blank string
