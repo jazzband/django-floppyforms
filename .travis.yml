@@ -2,34 +2,13 @@ language: python
 matrix:
     include:
         - python: 2.7
-          env: TOXENV=py27-18
-        - python: 2.7
-          env: TOXENV=py27-110
-        - python: 2.7
           env: TOXENV=py27-111
-        - python: 3.3
-          dist: precise
-          env: TOXENV=py33-18
-        - python: 3.4
-          env: TOXENV=py34-18
-        - python: 3.4
-          env: TOXENV=py34-110
-        - python: 3.4
-          env: TOXENV=py34-111
-        - python: 3.5
-          env: TOXENV=py35-18
-        - python: 3.5
-          env: TOXENV=py35-110
-        - python: 3.5
-          env: TOXENV=py35-111
         - python: 3.6
           env: TOXENV=py36-111
-        - python: pypy
-          env: TOXENV=pypy-18
-        - python: pypy
-          env: TOXENV=pypy-110
-        - python: pypy
-          env: TOXENV=pypy-111
+        - python: 3.6
+          env: TOXENV=py36-20
+        - python: 3.7
+          env: TOXENV=py37-20
         - python: 2.7
           env: TOXENV=docs
         - python: 2.7
