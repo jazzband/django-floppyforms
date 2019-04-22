@@ -40,7 +40,7 @@ __all__ = (
 class Widget(forms.Widget):
     is_required = False
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         """
         Returns this Widget rendered as HTML, as a Unicode string.
         The 'value' given is not guaranteed to be valid input, so subclass
@@ -89,7 +89,7 @@ class Input(Widget):
     def get_context_data(self):
         return {}
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if self.is_localized:
             value = formats.localize_input(value)
         return force_text(value)
@@ -158,10 +158,10 @@ class PasswordInput(TextInput):
         super(PasswordInput, self).__init__(attrs)
         self.render_value = render_value
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if not self.render_value:
             value = None
-        return super(PasswordInput, self).render(name, value, attrs)
+        return super(PasswordInput, self).render(name, value, attrs, renderer=renderer)
 
 
 class HiddenInput(Input):
@@ -175,7 +175,7 @@ class MultipleHiddenInput(HiddenInput):
         super(MultipleHiddenInput, self).__init__(attrs)
         self.choices = choices
 
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None, choices=(), renderer=None):
         if value is None:
             value = []
 
@@ -188,7 +188,7 @@ class MultipleHiddenInput(HiddenInput):
                 input_attrs['id'] = '%s_%s' % (id_, i)
             input_ = HiddenInput()
             input_.is_required = self.is_required
-            inputs.append(input_.render(name, force_text(v), input_attrs))
+            inputs.append(input_.render(name, force_text(v), input_attrs, renderer=renderer))
         return mark_safe("\n".join(inputs))
 
     def value_from_datadict(self, data, files, name):
@@ -203,7 +203,7 @@ class SlugInput(TextInput):
     """<input type="text"> validating slugs with a pattern"""
     def get_context(self, name, value, attrs):
         context = super(SlugInput, self).get_context(name, value, attrs)
-        context['attrs']['pattern'] = "[-\w]+"
+        context['attrs']['pattern'] = r"[-\w]+"
         return context
 
 
@@ -211,8 +211,8 @@ class IPAddressInput(TextInput):
     template_name = 'floppyforms/ipaddress.html'
 
     """<input type="text"> validating IP addresses with a pattern"""
-    ip_pattern = ("(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25"
-                  "[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}")
+    ip_pattern = (r"(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25"
+                  r"[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}")
 
     def get_context(self, name, value, attrs):
         context = super(IPAddressInput, self).get_context(name, value, attrs)
@@ -226,11 +226,11 @@ class FileInput(Input):
     needs_multipart_form = True
     omit_value = True
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if self.omit_value:
             # File inputs can't render an existing value if it's not saved
             value = None
-        return super(FileInput, self).render(name, value, attrs=attrs)
+        return super(FileInput, self).render(name, value, attrs=attrs, renderer=renderer)
 
     def value_from_datadict(self, data, files, name):
         return files.get(name, None)
@@ -281,7 +281,7 @@ class ClearableFileInput(FileInput):
             return False
         return upload
 
-    def _format_value(self, value):
+    def format_value(self, value):
         # If the value is falsy, then it might be a file instance with no file
         # associated with. That can happen if you get the value from a
         # models.ImageField that is set to None. In that case we just return
@@ -303,7 +303,7 @@ class Textarea(Input):
             default_attrs.update(attrs)
         super(Textarea, self).__init__(default_attrs)
 
-    def _format_value(self, value):
+    def format_value(self, value):
         return conditional_escape(force_text(value))
 
 
@@ -319,7 +319,7 @@ class DateInput(Input):
         # https://github.com/gregmuellegger/django-floppyforms/issues/115
         self.format = '%Y-%m-%d'
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if hasattr(value, 'strftime'):
             value = datetime_safe.new_date(value)
             return value.strftime(self.format)
@@ -351,7 +351,7 @@ class DateTimeInput(Input):
             self.format = formats.get_format('DATETIME_INPUT_FORMATS')[0]
             self.manual_format = False
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if hasattr(value, 'strftime'):
             value = datetime_safe.new_datetime(value)
             return value.strftime(self.format)
@@ -383,7 +383,7 @@ class TimeInput(Input):
             self.format = formats.get_format('TIME_INPUT_FORMATS')[0]
             self.manual_format = False
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if hasattr(value, 'strftime'):
             return value.strftime(self.format)
         return value
@@ -467,7 +467,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
             context['attrs']['checked'] = True
         return context
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if value in ('', True, False, None):
             value = None
         else:
@@ -529,7 +529,7 @@ class Select(Input):
         context["optgroups"] = groups
         return context
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if len(value) == 1 and value[0] is None:
             return []
         return set(force_text(v) for v in value)
@@ -542,7 +542,7 @@ class NullBooleanSelect(Select):
                    ('3', _('No')))
         super(NullBooleanSelect, self).__init__(attrs, choices)
 
-    def _format_value(self, value):
+    def format_value(self, value):
         value = value[0]
         try:
             value = {True: '2', False: '3', '2': '2', '3': '3'}[value]
@@ -571,10 +571,10 @@ class NullBooleanSelect(Select):
 class SelectMultiple(Select):
     allow_multiple_selected = True
 
-    def _format_value(self, value):
+    def format_value(self, value):
         if len(value) == 1 and value[0] is None:
             value = []
-        return [force_text(v) for v in value]
+        return set(force_text(v) for v in value)
 
     def value_from_datadict(self, data, files, name):
         if isinstance(data, MULTIVALUE_DICT_TYPES):
@@ -781,7 +781,7 @@ class SelectDateWidget(forms.Widget):
         context['attrs'] = attrs
         return context
 
-    def render(self, name, value, attrs=None, extra_context={}):
+    def render(self, name, value, attrs=None, extra_context={}, renderer=None):
         try:
             year_val, month_val, day_val = value.year, value.month, value.day
         except AttributeError:

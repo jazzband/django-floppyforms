@@ -635,7 +635,7 @@ class WidgetRenderingTest(TestCase):
         self.assertHTMLEqual(rendered, """
         <p>
             <label for="id_multi">Multi:</label>
-            <select name="multi" id="id_multi" required multiple>
+            <select name="multi" id="id_multi" required multiple="multiple">
                 <option value="1">English</option>
                 <option value="12">Deutsch</option>
                 <option value="123" selected>Francais</option>

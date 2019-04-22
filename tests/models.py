@@ -1,4 +1,5 @@
 import django
+from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 
 
@@ -12,7 +13,7 @@ class Registration(models.Model):
 class AllFields(models.Model):
     boolean = models.BooleanField(default=False)
     char = models.CharField(max_length=50)
-    comma_separated = models.CommaSeparatedIntegerField(max_length=50)
+    comma_separated = models.CharField(max_length=50, validators=[validate_comma_separated_integer_list])
     date = models.DateField()
     datetime = models.DateTimeField()
     decimal = models.DecimalField(decimal_places=2, max_digits=4)
@@ -34,9 +35,9 @@ class AllFields(models.Model):
     url = models.URLField()
     file_field = models.FileField(upload_to="test/")
     image = models.ImageField(upload_to="test/")
-    fk = models.ForeignKey(Registration, related_name='all_fk')
+    fk = models.ForeignKey(Registration, on_delete=models.CASCADE, related_name='all_fk')
     m2m = models.ManyToManyField(Registration, related_name='all_m2m')
-    one = models.OneToOneField(Registration, related_name='all_one')
+    one = models.OneToOneField(Registration, on_delete=models.CASCADE, related_name='all_one')
     choices = models.CharField(max_length=50, choices=(('a', 'a'),))
 
 
