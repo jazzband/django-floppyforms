@@ -132,7 +132,7 @@ class ImageFieldTests(TestCase):
         # ``models.ImageField``s return a file object with no associated file.
         # These objects raise errors if you try to access the url etc. So we
         # test here that this does not raise any errors.
-        # See: https://github.com/gregmuellegger/django-floppyforms/issues/128
+        # See: https://github.com/jazzband/django-floppyforms/issues/128
         instance = ImageFieldModel.objects.create(image_field=None)
         form = ImageFieldModelForm(instance=instance)
         rendered = form.as_p()

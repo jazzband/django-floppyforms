@@ -27,7 +27,7 @@ setup(
     author_email='gregor@muellegger.de',
     packages=find_packages(exclude=["tests.*", "tests"]),
     include_package_data=True,
-    url='https://github.com/gregmuellegger/django-floppyforms',
+    url='https://github.com/jazzband/django-floppyforms',
     license='BSD licence, see LICENSE file',
     description='Full control of form rendering in the templates',
     long_description='\n\n'.join((

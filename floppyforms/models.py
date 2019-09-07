@@ -11,7 +11,7 @@ __all__ = ('ModelForm', 'ModelChoiceField', 'ModelMultipleChoiceField')
 
 class ModelForm(LayoutRenderer, models.ModelForm):
     def __new__(cls, *args, **kwargs):
-        url = 'https://github.com/gregmuellegger/django-floppyforms/tree/1.2.0/CHANGES.rst'
+        url = 'https://github.com/jazzband/django-floppyforms/tree/1.2.0/CHANGES.rst'
         warnings.warn(
             'The behaviour of subclasses of floppyforms.models.ModelForm will '
             'change with django-floppyforms 2.0. '
