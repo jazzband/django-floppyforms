@@ -1,9 +1,9 @@
 django-floppyforms
 ==================
 
-.. image:: https://api.travis-ci.org/gregmuellegger/django-floppyforms.png
+.. image:: https://api.travis-ci.org/jazzband/django-floppyforms.png
    :alt: Build Status
-   :target: https://travis-ci.org/gregmuellegger/django-floppyforms
+   :target: https://travis-ci.org/jazzband/django-floppyforms
 
 Full control of form rendering in the templates.
 
@@ -12,7 +12,7 @@ Full control of form rendering in the templates.
 * Licence: BSD
 * Requirements: homework -- read `this`_.
 
-.. _contributors: https://github.com/gregmuellegger/django-floppyforms/contributors
+.. _contributors: https://github.com/jazzband/django-floppyforms/contributors
 .. _this: http://diveintohtml5.info/forms.html
 
 Installation
@@ -27,9 +27,9 @@ readthedocs`_
 .. _read it on readthedocs: http://django-floppyforms.readthedocs.org/
 
 To install the `in-development version`_ of django-floppyforms, run ``pip
-install "https://github.com/gregmuellegger/django-floppyforms/tarball/master#egg=django-floppyforms"``.
+install "https://github.com/jazzband/django-floppyforms/tarball/master#egg=django-floppyforms"``.
 
-.. _in-development version: https://github.com/gregmuellegger/django-floppyforms
+.. _in-development version: https://github.com/jazzband/django-floppyforms
 
 Help
 ----
@@ -40,7 +40,7 @@ Create a ticket in the `issues section on github`_ or ask your questions on the
 You can get professional consulting regarding django-floppyforms or any other
 Django related work from django-floppyforms' maintainer `Gregor Müllegger`_.
 
-.. _issues section on github: https://github.com/gregmuellegger/django-floppyforms/issues
+.. _issues section on github: https://github.com/jazzband/django-floppyforms/issues
 .. _Gregor Müllegger: http://gremu.net/
 
 Bugs
@@ -56,7 +56,7 @@ Thanks for asking!
 
 Get the code::
 
-    git clone git@github.com:gregmuellegger/django-floppyforms.git
+    git clone git@github.com:jazzband/django-floppyforms.git
     cd django-floppyforms
     virtualenv -p python2 env
     source env/bin/activate

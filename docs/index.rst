@@ -23,7 +23,7 @@ convenience.
 
 The source code is hosted on `github`_.
 
-.. _github: https://github.com/gregmuellegger/django-floppyforms
+.. _github: https://github.com/jazzband/django-floppyforms
 
 Installation
 ------------

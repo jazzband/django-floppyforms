@@ -42,5 +42,5 @@ deploy:
     secure: HAgxb7ebUfIQSfcxtjKoXO3FCBiujCo4GU2lYO8IUPeSdurPG6e+uABzwg88d7Zt1Zuay2eleAJzqhvwU2bCOKr68wjkNw3yWRslvLAMK3vj2LPPoWYsgmLJ1YiOvPloCdD2sIVSmpLEiN5HLUteh5j6D2BUbw67a9S2TXx1J8c=
   on:
     tags: true
-    repo: gregmuellegger/django-floppyforms
+    Repo: jazzband/django-floppyforms
     condition: "$TOXENV = py35-18"
