@@ -162,7 +162,7 @@ class BaseOsmWidget(BaseGeometryWidget):
     class Media:
         js = (
             'floppyforms/openlayers/OpenLayers.js',
-            'http://www.openstreetmap.org/openlayers/OpenStreetMap.js',
+            'https://www.openstreetmap.org/openlayers/OpenStreetMap.js',
             'floppyforms/js/MapWidget.js',
         )
 
