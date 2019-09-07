@@ -386,7 +386,7 @@ If you need a custom base widget, it is important to inherit from
 widget, you may end up with conflicting media files. ``BaseGeometryWidget``
 doesn't specify any javascript file so get more control by subclassing it.
 
-.. _contribute them back!: https://github.com/gregmuellegger/django-floppyforms
+.. _contribute them back!: https://github.com/jazzband/django-floppyforms
 
 Examples
 --------
