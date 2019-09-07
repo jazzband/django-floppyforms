@@ -28,9 +28,14 @@ The source code is hosted on `github`_.
 Installation
 ------------
 
-As a requirement of django-floppyforms, you will need to have Django in
-version 1.4 or higher installed and use Python 2.7 or newer. Python >=3.3 and
-PyPy are supported!
+django-floppyforms is tested under the following configurations:
+
+ - Django 1.11 and Pythons 2.7 or >=3.5
+ - Django 2.1 and Python >= 3.5
+
+As a general principle, we aim to support Django + Python combinations that still receive security fixes,
+so bug reports on other combinations of library + interpreter are welcome.
+
 
 Two-step process to install django-floppyforms:
 
@@ -61,11 +66,6 @@ Using ``django-floppyforms``
    :maxdepth: 2
 
    changelog
-
-Getting help
-------------
-
-Feel free to join the ``#django-floppyforms`` IRC channel on freenode.
 
 Why the name?
 -------------
