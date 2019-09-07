@@ -32,8 +32,7 @@ if django.VERSION < (1, 11):
 else:
     template_directories = [
         os.path.join(
-            os.path.dirname(django.__file__),
-            "forms/templates/"
+            os.path.dirname(django.__file__), "forms/templates/"
         )
     ]
 TEMPLATES = [
