@@ -1,35 +1,16 @@
 language: python
-python: 2.7
-env:
-  - TOXENV=py27-14
-  - TOXENV=py27-15
-  - TOXENV=py27-16
-  - TOXENV=py27-17
-  - TOXENV=py27-18
-  - TOXENV=py27-19
-  - TOXENV=py27-110
-  - TOXENV=py33-15
-  - TOXENV=py33-16
-  - TOXENV=py33-17
-  - TOXENV=py33-18
-  - TOXENV=py34-15
-  - TOXENV=py34-16
-  - TOXENV=py34-17
-  - TOXENV=py34-18
-  - TOXENV=py34-19
-  - TOXENV=py34-110
-  - TOXENV=py35-18
-  - TOXENV=py35-19
-  - TOXENV=py35-110
-  - TOXENV=pypy-14
-  - TOXENV=pypy-15
-  - TOXENV=pypy-16
-  - TOXENV=pypy-17
-  - TOXENV=pypy-18
-  - TOXENV=pypy-19
-  - TOXENV=pypy-110
-  - TOXENV=docs
-  - TOXENV=flake8
+matrix:
+    include:
+        - python: 2.7
+          env: TOXENV=py27-111
+        - python: 3.6
+          env: TOXENV=py36-111
+        - python: 3.6
+          env: TOXENV=py36-20
+        - python: 2.7
+          env: TOXENV=docs
+        - python: 2.7
+          env: TOXENV=flake8
 before_install:
   - sudo apt-get -q -y update
 
@@ -44,11 +25,10 @@ before_install:
   # GIS requirements.
   - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1
 install:
-  # pip >= 8 dropped Python 3.2 support
-  - pip install "pip<8.0.0" wheel
+  - pip install pip wheel
   - pip install tox
 script:
-  - tox
+  - tox -e $TOXENV
 notifications:
   irc:
     channels:

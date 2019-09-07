@@ -1,4 +1,8 @@
+import os.path
+
+import django
 import warnings
+
 warnings.simplefilter('always')
 
 DATABASES = {
@@ -23,10 +27,19 @@ STATIC_URL = '/static/'
 
 SECRET_KEY = '0'
 
+if django.VERSION < (1, 11):
+    template_directories = []
+else:
+    template_directories = [
+        os.path.join(
+            os.path.dirname(django.__file__),
+            "forms/templates/"
+        )
+    ]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': template_directories,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
