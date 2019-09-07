@@ -9,9 +9,9 @@ Changelog
 * `#194`_: Remove official support for Python 2.6 and Python 3.2.
 * `#204`_: Use HTTPS for OpenStreetMap links. Thanks to dryice for the patch.
 
-.. _#176: https://github.com/gregmuellegger/django-floppyforms/issues/176
-.. _#191: https://github.com/gregmuellegger/django-floppyforms/pull/191
-.. _#194: https://github.com/gregmuellegger/django-floppyforms/pull/194
+.. _#176: https://github.com/jazzband/django-floppyforms/issues/176
+.. _#191: https://github.com/jazzband/django-floppyforms/pull/191
+.. _#194: https://github.com/jazzband/django-floppyforms/pull/194
 .. _#204: https://github.com/jazzband/django-floppyforms/pull/204
 
 1.7.0
@@ -25,8 +25,8 @@ Changelog
   <http://django-floppyforms.readthedocs.io/en/latest/geodjango.html>`_ for
   details
 
-.. _#171: https://github.com/gregmuellegger/django-floppyforms/issues/171
-.. _#174: https://github.com/gregmuellegger/django-floppyforms/pull/174
+.. _#171: https://github.com/jazzband/django-floppyforms/issues/171
+.. _#174: https://github.com/jazzband/django-floppyforms/pull/174
 
 1.6.2
 ~~~~~
@@ -36,7 +36,7 @@ Changelog
   ``ClearableFileInput.clear_checkbox_label`` to determine the used text in the
   template. This was inconsistent so far with Django's behaviour.
 
-.. _#169: https://github.com/gregmuellegger/django-floppyforms/issues/169
+.. _#169: https://github.com/jazzband/django-floppyforms/issues/169
 
 1.6.1
 ~~~~~
@@ -44,14 +44,14 @@ Changelog
 * `#167`_: Fix django-floppyforms' ``CheckboxInput.value_from_datadict`` which
   was inconsistent with Django's behaviour.
 
-.. _#167: https://github.com/gregmuellegger/django-floppyforms/issues/167
+.. _#167: https://github.com/jazzband/django-floppyforms/issues/167
 
 1.6.0
 ~~~~~
 
 * `#160`_: Django 1.9 support! Thanks to Jonas Haag for the patch.
 
-.. _#160: https://github.com/gregmuellegger/django-floppyforms/pull/160
+.. _#160: https://github.com/jazzband/django-floppyforms/pull/160
 
 1.5.2
 ~~~~~
@@ -61,7 +61,7 @@ Changelog
   ``0.01`` as ``0,01`` in respective locales). Those attributes won't get
   localized anymore. Thanks to Yannick Chabbert for the fix.
 
-.. _#156: https://github.com/gregmuellegger/django-floppyforms/pull/156
+.. _#156: https://github.com/jazzband/django-floppyforms/pull/156
 
 1.5.1
 ~~~~~
@@ -82,8 +82,8 @@ Changelog
   ``<form>`` tag to disable HTML5 input validation in the browser. Thanks to
   caacree for the patch.
 
-.. _#148: https://github.com/gregmuellegger/django-floppyforms/issues/148
-.. _#70: https://github.com/gregmuellegger/django-floppyforms/issues/70
+.. _#148: https://github.com/jazzband/django-floppyforms/issues/148
+.. _#70: https://github.com/jazzband/django-floppyforms/issues/70
 
 1.4.1
 ~~~~~
