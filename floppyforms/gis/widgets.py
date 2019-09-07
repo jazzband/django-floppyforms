@@ -84,7 +84,7 @@ class BaseGeometryWidget(forms.Textarea):
                     ogr = value.ogr
                     ogr.transform(srid)
                     wkt = ogr.wkt
-                except gdal.OGRException:
+                except gdal.GDALException:
                     pass  # wkt left as an empty string
             else:
                 wkt = value.wkt
