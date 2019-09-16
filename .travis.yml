@@ -1,38 +1,31 @@
 language: python
 matrix:
-    include:
-        - python: 2.7
-          env: TOXENV=py27-111
-        - python: 3.6
-          env: TOXENV=py36-111
-        - python: 3.6
-          env: TOXENV=py36-21
-        - python: 2.7
-          env: TOXENV=docs
-        - python: 2.7
-          env: TOXENV=flake8
+  include:
+  - python: 2.7
+    env: TOXENV=py27-111
+  - python: 3.6
+    env: TOXENV=py36-111
+  - python: 3.6
+    env: TOXENV=py36-21
+  - python: 2.7
+    env: TOXENV=docs
+  - python: 2.7
+    env: TOXENV=flake8
 before_install:
-  - sudo apt-get -q -y update
-
-  # The following three lines is a fix for travis CI, since it wouldn't be
-  # able to install the dependencies correctly.
-  # See: https://github.com/travis-ci/travis-ci/issues/2683
-  - sudo apt-get remove -q -y binutils gdal-bin libproj-dev libgeos-c1v5
-  - sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
-
-  # Required to install Pillow
-  - sudo apt-get -q -y install build-essential
-  # GIS requirements.
-  - sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1v5
+- sudo apt-get -q -y update
+- sudo apt-get remove -q -y binutils gdal-bin libproj-dev libgeos-c1v5
+- sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
+- sudo apt-get -q -y install build-essential
+- sudo apt-get -q -y install binutils gdal-bin libproj-dev libgeos-c1v5
 install:
-  - pip install pip wheel
-  - pip install tox
+- pip install pip wheel
+- pip install tox
 script:
-  - tox -e $TOXENV
+- tox -e $TOXENV
 notifications:
   irc:
     channels:
-      - "irc.freenode.org#django-floppyforms"
+    - irc.freenode.org#django-floppyforms
     on_success: change
     on_failure: always
 deploy:
