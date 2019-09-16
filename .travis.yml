@@ -30,9 +30,11 @@ notifications:
     on_failure: always
 deploy:
   provider: pypi
-  user: gremu
+  user: jazzband
+  distributions: sdist bdist_wheel
+  server: https://jazzband.co/projects/django-floppyforms/upload
   password:
-    secure: HAgxb7ebUfIQSfcxtjKoXO3FCBiujCo4GU2lYO8IUPeSdurPG6e+uABzwg88d7Zt1Zuay2eleAJzqhvwU2bCOKr68wjkNw3yWRslvLAMK3vj2LPPoWYsgmLJ1YiOvPloCdD2sIVSmpLEiN5HLUteh5j6D2BUbw67a9S2TXx1J8c=
+    secure: FDtgzOv3wsBPnqF0LQKlGGyBVEfY9skxArRDHXz450InbsKZtmpGM5BWf98/GZzEOQQKNKP0E7dghrPFdYU95T+qAigUCFLSQLs8Hd/TrwatPRRkFTxzVsP5k2z9sq8yRg3N08zg2fsXP+RdrZ6puduqFso6fz7EGIv8v94ugyk=
   on:
     tags: true
     repo: jazzband/django-floppyforms
