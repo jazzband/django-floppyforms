@@ -1,11 +1,47 @@
 Changelog
 ---------
 
-1.8.0 (in development)
-~~~~~~~~~~~~~~~~~~~~~~
+1.8.0
+~~~~~
+
+This is the first release to be done under the Jazzband organization.
+
+It collects several compatibility fixes to support Django 1.11 and 2.1.
+
+The currently tested versions of `django-floppyforms` is now:
+ - Django 1.11 and Python 2.7 or 3.6
+ - Django 2.1 and Python 3.6
+
+In principle, we want to support any reasonable combination of Django and Python that still receives security releases, so if you are using an untested combination and hit an issue, bug reports are welcome.
+
+*Breaking Change*:
+
+Because Django's widgets now render through a form-specific template renderer, but `floppyforms` widgets
+use the standard rendering template (that doesn't automatically include Django's form templates), it is
+recommended to manuallyput Django's form template directory directly into your own template backend
+configuration.
+
+If you don't add the following, you might experience issues mixing and matching vanilla widgets with
+floppyform widgets::
+
+    import django
+
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [
+                ..., # your other template directories
+                # django's own form template directories
+                os.path.join(os.path.dirname(django.__file__), "forms/templates/",
+            ],
+            ...
+        },
+        ...
+    ]
+
 
 * `#176`_: Fix HTML validation for hidden textarea used with GIS widgets.
-* `#191`_: Support for Django 1.10. Thanks to MrJmad for the patch.
+* `#191`_ + `#196`_ + `#209`_: Support for Django 1.11 and 2.1. Thanks to MrJmad and dryice for patches.
 * `#194`_: Remove official support for Python 2.6 and Python 3.2.
 * `#204`_: Use HTTPS for OpenStreetMap links. Thanks to dryice for the patch.
 
@@ -13,6 +49,8 @@ Changelog
 .. _#191: https://github.com/jazzband/django-floppyforms/pull/191
 .. _#194: https://github.com/jazzband/django-floppyforms/pull/194
 .. _#204: https://github.com/jazzband/django-floppyforms/pull/204
+.. _#196: https://github.com/jazzband/django-floppyforms/pull/196
+.. _#209: https://github.com/jazzband/django-floppyforms/pull/209
 
 1.7.0
 ~~~~~

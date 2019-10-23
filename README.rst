@@ -25,6 +25,21 @@ Installation
 * ``pip install -U django-floppyforms``
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
 
+For those who want to mix and match with vanilla Django widgets, it is also recommended
+to put Django's form template directory into your template directories::
+
+    # in your template configuration
+    TEMPLATES = [{
+        ...,
+        # inside the directories parameter
+        'DIRS': [
+            # include django's form templates
+            os.path.join(
+                os.path.dirname(django.__file__), "forms/templates/"
+            ),
+            ... # the rest of your template directories
+    }]
+
 For extensive documentation see the ``docs`` folder or `read it on
 readthedocs`_
 
