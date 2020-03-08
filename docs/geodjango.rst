@@ -174,7 +174,7 @@ The following attributes can be set on the widget class:
   are serialized. Usually useful for debugging. Default: ``False``.
 
 These options can be set as class attributes or passed into the ``attrs``
-dictionnary used when instantiating a widget. The following snippets are
+dictionary used when instantiating a widget. The following snippets are
 equivalent:
 
 .. code-block:: python
@@ -218,7 +218,7 @@ The following variables are available in the template context:
   that are missing in OpenLayers. **Deprecated, please switch to use the
   staticfiles machinery**
 * ``LANGUAGE_BIDI``: the current locale direction.
-* ``attrs``: the traditional attrs dictionnary. This is the attrs dict for a
+* ``attrs``: the traditional attrs dictionary. This is the attrs dict for a
   ``textarea`` widget, it contains the ``id``, ``cols`` and ``rows``
   attributes.
 * ``display_wkt``: the value from the widget class.
@@ -333,7 +333,7 @@ The following options can be passed to the widget constructor:
 * ``layerswitcher``: whether to show OpenLayers' layerswitcher control.
   Default: false.
 * ``map_id``: the id of the div containing the map.
-* ``map_options``: a dictionnary for the options passed to the OpenLayers.Map
+* ``map_options``: a dictionary for the options passed to the OpenLayers.Map
   constructor. Default: {}.
 * ``map_srid``: the SRID to use for the map. Default: 4326.
 * ``modifiable``: whether the feature can be modifiable or not. Default: true.
@@ -351,7 +351,7 @@ The following options can be passed to the widget constructor:
   and out.
 
 There is also a ``map_options`` block that can be overridden. Its purpose is
-to declare a ``map_options`` dictionnary that can be passed to the
+to declare a ``map_options`` dictionary that can be passed to the
 ``OpenLayers.Map`` constructor. For instance:
 
 .. code-block:: jinja
@@ -366,7 +366,7 @@ to declare a ``map_options`` dictionnary that can be passed to the
     {% endblock %}
 
 Here we don't need to call ``block.super`` since the base template only
-instantiates an empty dictionnary.
+instantiates an empty dictionary.
 
 Going further
 `````````````
