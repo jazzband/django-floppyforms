@@ -43,7 +43,7 @@ Widgets are rendered with the following context variables:
 * ``required``: set to ``True`` if the field is required.
 * ``type``: the input type. Can be ``text``, ``password``, etc. etc.
 * ``name``: the name of the input.
-* ``attrs``: the dictionnary passed as a keyword argument to the widget. It
+* ``attrs``: the dictionary passed as a keyword argument to the widget. It
   contains the ``id`` attribute of the widget by default.
 
 Each widget has a ``template_name`` attribute which points to the template to
