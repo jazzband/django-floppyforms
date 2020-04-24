@@ -9,14 +9,19 @@ from django.forms.models import (ModelForm as _ModelForm,
                                  model_to_dict, fields_for_model, BaseModelForm,
                                  BaseModelFormSet,
                                  BaseInlineFormSet)
-if django.VERSION < (1, 9):
-    from django.forms.models import save_instance
-from django.utils import six
 
 from floppyforms import fields
 from floppyforms.forms import LayoutRenderer
 from floppyforms.models import (ModelChoiceField, ModelMultipleChoiceField)
 from floppyforms.widgets import Textarea
+
+if django.VERSION < (1, 9):
+    from django.forms.models import save_instance
+
+if django.VERSION < (3, 0):
+    from django.utils import six
+else:
+    import six
 
 
 __all__ = (

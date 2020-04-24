@@ -4,3 +4,4 @@ coverage<4.0
 flake8
 django-discover-runner
 Pillow
+six

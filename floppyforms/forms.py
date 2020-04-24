@@ -1,8 +1,14 @@
+import django
 from django import forms
 from django.template.loader import get_template
-from django.utils.encoding import python_2_unicode_compatible
 
 from .compat import get_context
+
+
+if django.VERSION < (3, 0):
+    from django.utils.encoding import python_2_unicode_compatible
+else:
+    from six import python_2_unicode_compatible
 
 
 __all__ = ('BaseForm', 'Form',)

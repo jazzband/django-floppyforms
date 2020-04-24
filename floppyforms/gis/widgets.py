@@ -1,6 +1,15 @@
+import django
 from django.conf import settings
 from django.template.defaultfilters import safe
-from django.utils import translation, six
+from django.utils import translation
+
+import floppyforms as forms
+
+
+if django.VERSION < (3, 0):
+    from django.utils import six
+else:
+    import six
 
 try:
     from urllib.parse import urlencode
@@ -13,7 +22,6 @@ try:
 except ImportError:
     """GDAL / GEOS not installed"""
 
-import floppyforms as forms
 
 __all__ = ('GeometryWidget', 'GeometryCollectionWidget',
            'PointWidget', 'MultiPointWidget',
