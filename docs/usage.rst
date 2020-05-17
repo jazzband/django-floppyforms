@@ -4,7 +4,9 @@ Usage
 Forms
 `````
 
-Floppyforms are supposed to work just like Django forms::
+Floppyforms are supposed to work just like Django forms:
+
+.. code-block:: python
 
     import floppyforms as forms
 
@@ -78,7 +80,9 @@ CheckboxSelectMultiple ``optgroups``, ``multiple`` (``True``)
 ====================== ====================================== ==============
 
 Furthermore, you can specify custom ``attrs`` during widget definition. For
-instance, with a field created this way::
+instance, with a field created this way:
+
+.. code-block:: python
 
     bar = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'john@example.com'}))
 
@@ -91,13 +95,17 @@ ModelForms
 ``````````
 
 You can use ``ModelForms`` with floppyforms as you would use a ordinary django
-``ModelForm``.  Here is an example showing it for a basic ``Profile`` model::
+``ModelForm``.  Here is an example showing it for a basic ``Profile`` model:
+
+.. code-block:: python
 
     class Profile(models.Model):
         name = models.CharField(max_length=255)
         url = models.URLField()
 
-Now create a ``ModelForm`` using floppyforms::
+Now create a ``ModelForm`` using floppyforms:
+
+.. code-block:: python
 
     import floppyforms.__future__ as forms
 
@@ -120,7 +128,9 @@ field and a ``floppyforms.URLField`` for ``Profile.url``.
     take care of assigning the floppyforms widgets to the django form fields
     yourself to use the template based rendering provided by floppyforms. Here
     is an example of how you would have done it with django-floppyforms 1.1
-    and earlier::
+    and earlier:
+    
+    .. code-block:: python
 
         import floppyforms as forms
 
