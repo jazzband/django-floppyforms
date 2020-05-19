@@ -77,7 +77,7 @@ Get the code::
 
     git clone git@github.com:jazzband/django-floppyforms.git
     cd django-floppyforms
-    virtualenv -p python2 env
+    virtualenv env
     source env/bin/activate
     add2virtualenv .
 
@@ -85,8 +85,14 @@ Install the development requirements::
 
     pip install "tox>=1.8"
 
+
+Currently, you'll need to `install the GeoDjango requirements`_ when running tests.
+
+:: _install the GeoDjango requirements: https://docs.djangoproject.com/en/3.0/ref/contrib/gis/install/geolibs/
+
 Run the tests::
 
-    tox -e py27-16
+    tox
+    tox -e py36-22
 
 You can see all the supported test configurations with ``tox -l``.

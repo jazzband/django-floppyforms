@@ -1,15 +1,15 @@
 language: python
 matrix:
   include:
-  - python: 2.7
-    env: TOXENV=py27-111
   - python: 3.6
-    env: TOXENV=py36-111
-  - python: 3.6
-    env: TOXENV=py36-21
-  - python: 2.7
+    env: TOXENV=py36-22
+  - python: 3.7
+    env: TOXENV=py37-22
+  - python: 3.8
+    env: TOXENV=py38-22
+  - python: 3.7
     env: TOXENV=docs
-  - python: 2.7
+  - python: 3.7
     env: TOXENV=flake8
 before_install:
 - sudo apt-get -q -y update
@@ -38,4 +38,4 @@ deploy:
   on:
     tags: true
     repo: jazzband/django-floppyforms
-    condition: "$TOXENV = py36-21"
+    condition: "$TOXENV = py37-22"

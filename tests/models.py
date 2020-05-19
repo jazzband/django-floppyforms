@@ -18,7 +18,7 @@ class AllFields(models.Model):
     datetime = models.DateTimeField()
     decimal = models.DecimalField(decimal_places=2, max_digits=4)
     email = models.EmailField()
-    file_path = models.FilePathField()
+    file_path = models.FilePathField(path="tests")
     float_field = models.FloatField()
     integer = models.IntegerField()
     big_integer = models.BigIntegerField()

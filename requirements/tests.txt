@@ -1,6 +1,6 @@
-pip<8.0.0
 argparse
-coverage<4.0
+coverage<6.0
 flake8
 django-discover-runner
 Pillow
+pip <= 21

@@ -6,6 +6,6 @@ docs/_build
 .tox/
 *.pyc
 __pycache__
-
+.mypy_cache
 # PyCharm IDE files
 .idea/
