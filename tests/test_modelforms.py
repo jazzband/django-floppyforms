@@ -2,11 +2,6 @@ import django
 from django.db import models
 from django.test import TestCase
 
-if django.VERSION < (3, 0):
-    from django.utils.encoding import python_2_unicode_compatible
-else:
-    from six import python_2_unicode_compatible
-
 import floppyforms.__future__ as forms
 from floppyforms.__future__.models import modelform_factory, modelformset_factory, inlineformset_factory
 
@@ -17,7 +12,6 @@ from .models import Registration, AllFields
 skipIf = unittest.skipIf
 
 
-@python_2_unicode_compatible
 class SomeModel2(models.Model):
     some_field = models.CharField(max_length=255)
 
@@ -61,7 +55,6 @@ class BaseModelFormFieldRewritingTests(object):
         form_obj = self.get_test_object('email')
         self.check_field(form_obj, 'email', forms.EmailField)
 
-    @skipIf(django.VERSION > (2, 1), 'FilePathField checks whether the path already exists with Django > 2.1')
     def test_auto_file_path(self):
         form_obj = self.get_test_object('file_path')
         self.check_field(form_obj, 'file_path', forms.FilePathField)

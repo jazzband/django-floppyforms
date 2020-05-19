@@ -1,4 +1,5 @@
 # flake8: noqa
+
 import django
 from django.db import models as db_models
 from django.forms.models import (ModelForm as _ModelForm,
@@ -15,24 +16,12 @@ from floppyforms.forms import LayoutRenderer
 from floppyforms.models import (ModelChoiceField, ModelMultipleChoiceField)
 from floppyforms.widgets import Textarea
 
-if django.VERSION < (1, 9):
-    from django.forms.models import save_instance
-
-if django.VERSION < (3, 0):
-    from django.utils import six
-else:
-    import six
-
-
 __all__ = (
     'ModelForm', 'BaseModelForm', 'model_to_dict', 'fields_for_model',
     'ModelChoiceField', 'ModelMultipleChoiceField',
     'BaseModelFormSet', 'modelformset_factory', 'BaseInlineFormSet',
     'inlineformset_factory',
 )
-if django.VERSION < (1, 9):
-    __all__ += ('save_instance',)
-
 
 if django.VERSION > (1, 7):
     from django.forms.models import ALL_FIELDS
@@ -90,7 +79,7 @@ class ModelFormMetaclass(_ModelFormMetaclass):
         return super(ModelFormMetaclass, mcs).__new__(mcs, name, bases, attrs)
 
 
-class ModelForm(six.with_metaclass(ModelFormMetaclass, LayoutRenderer, _ModelForm)):
+class ModelForm(LayoutRenderer, _ModelForm, metaclass=ModelFormMetaclass):
     pass
 
 

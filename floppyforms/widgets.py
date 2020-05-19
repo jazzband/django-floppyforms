@@ -17,15 +17,7 @@ from django.utils.translation import gettext_lazy as _
 from .compat import MULTIVALUE_DICT_TYPES, flatten_contexts
 
 
-if django.VERSION < (1, 6):
-    from django.forms.util import to_current_timezone
-else:
-    from django.forms.utils import to_current_timezone
-
-if django.VERSION < (3, 0):
-    from django.utils import six
-else:
-    import six
+from django.forms.utils import to_current_timezone
 
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
@@ -501,7 +493,7 @@ class Select(Input):
 
     def get_context(self, name, value, attrs=None, choices=()):
         if not hasattr(value, '__iter__') or isinstance(value,
-                                                        six.string_types):
+                                                        str):
             value = [value]
         context = super(Select, self).get_context(name, value, attrs)
 
@@ -792,7 +784,7 @@ class SelectDateWidget(forms.Widget):
             year_val, month_val, day_val = value.year, value.month, value.day
         except AttributeError:
             year_val = month_val = day_val = None
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 if settings.USE_L10N:
                     try:
                         input_format = formats.get_format(

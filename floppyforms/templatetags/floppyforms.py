@@ -11,10 +11,7 @@ from django.utils.functional import empty
 from ..compat import get_template
 
 
-if django.VERSION < (1, 6):
-    from django.forms.util import ErrorList
-else:
-    from django.forms.utils import ErrorList
+from django.forms.utils import ErrorList
 
 
 register = Library()

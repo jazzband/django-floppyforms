@@ -3,11 +3,6 @@ import django
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-if django.VERSION < (3, 0):
-    from django.utils import six
-else:
-    import six
-
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
@@ -61,13 +56,13 @@ class FormRenderAsMethodsTests(TestCase):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/default.html'):
             with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-                rendered = six.text_type(form)
+                rendered = str(form)
                 self.assertTrue(' name="firstname"' in rendered)
 
         form = RegistrationModelForm()
         with self.assertTemplateUsed('floppyforms/layouts/default.html'):
             with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-                rendered = six.text_type(form)
+                rendered = str(form)
                 self.assertTrue(' name="firstname"' in rendered)
 
     def test_as_p(self):
