@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 import argparse
+import logging
+
 import os, sys
+
+log = logging.getLogger(__name__)
 
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
@@ -18,7 +22,13 @@ def runtests(*argv):
     ]
     opts = argparser.parse_args(argv)
 
-    if opts.coverage:
+    is_py38 = sys.version_info.major == 3 and sys.version_info.minor == 8
+    if is_py38:
+        log.warning("Coverage is currently broken in Python 3.8, coveragfe option ignored")
+        use_coverage = False
+    else:
+        use_coverage = opts.coverage
+    if use_coverage:
         from coverage import coverage
         test_coverage = coverage(
             branch=True,
@@ -29,7 +39,7 @@ def runtests(*argv):
     from django.core.management import execute_from_command_line
     execute_from_command_line([sys.argv[0], 'test'] + opts.appname)
 
-    if opts.coverage:
+    if use_coverage:
         test_coverage.stop()
 
         # Report coverage to commandline.
