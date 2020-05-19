@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, url
+from django.urls import path
+from . import views
 
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', 'tests.demo.views.index'),
-)
+urlpatterns = [
+    path('', views.index),
+]

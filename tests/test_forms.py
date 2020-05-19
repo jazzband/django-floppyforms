@@ -2,9 +2,14 @@ from decimal import Decimal
 import django
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.utils import six
+
+if django.VERSION < (3, 0):
+    from django.utils import six
+else:
+    import six
+
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 import floppyforms.__future__ as forms
 

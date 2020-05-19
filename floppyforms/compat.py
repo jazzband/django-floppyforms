@@ -3,11 +3,11 @@ from contextlib import contextmanager
 import django
 from django.template import Context
 
-try:
+
+if django.VERSION < (1, 9):
     from django.utils.datastructures import MultiValueDict, MergeDict
     MULTIVALUE_DICT_TYPES = (MultiValueDict, MergeDict)
-except ImportError:
-    # Django >= 1.9
+else:
     from django.utils.datastructures import MultiValueDict
     MULTIVALUE_DICT_TYPES = (MultiValueDict,)
 

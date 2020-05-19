@@ -1,25 +1,31 @@
-from itertools import chain
-import re
 import datetime
+import re
+from itertools import chain
 
 import django
 from django import forms
-try:
-    from django.forms.utils import to_current_timezone
-except ImportError:
-    # Fall back to old module name for Django <= 1.5
-    from django.forms.util import to_current_timezone
-from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.conf import settings
+from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.template import loader
-from django.utils.html import conditional_escape
-from django.utils.translation import ugettext_lazy as _
-from django.utils import datetime_safe, formats, six
+from django.utils import datetime_safe, formats
 from django.utils.dates import MONTHS
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
+from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 from .compat import MULTIVALUE_DICT_TYPES, flatten_contexts
+
+
+if django.VERSION < (1, 6):
+    from django.forms.util import to_current_timezone
+else:
+    from django.forms.utils import to_current_timezone
+
+if django.VERSION < (3, 0):
+    from django.utils import six
+else:
+    import six
 
 
 RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
@@ -92,7 +98,7 @@ class Input(Widget):
     def format_value(self, value):
         if self.is_localized:
             value = formats.localize_input(value)
-        return force_text(value)
+        return force_str(value)
 
     def get_context(self, name, value, attrs=None):
         context = {
@@ -188,7 +194,7 @@ class MultipleHiddenInput(HiddenInput):
                 input_attrs['id'] = '%s_%s' % (id_, i)
             input_ = HiddenInput()
             input_.is_required = self.is_required
-            inputs.append(input_.render(name, force_text(v), input_attrs, renderer=renderer))
+            inputs.append(input_.render(name, force_str(v), input_attrs, renderer=renderer))
         return mark_safe("\n".join(inputs))
 
     def value_from_datadict(self, data, files, name):
@@ -304,7 +310,7 @@ class Textarea(Input):
         super(Textarea, self).__init__(default_attrs)
 
     def format_value(self, value):
-        return conditional_escape(force_text(value))
+        return conditional_escape(force_str(value))
 
 
 class DateInput(Input):
@@ -471,7 +477,7 @@ class CheckboxInput(Input, forms.CheckboxInput):
         if value in ('', True, False, None):
             value = None
         else:
-            value = force_text(value)
+            value = force_str(value)
         return value
 
     def value_from_datadict(self, data, files, name):
@@ -518,10 +524,10 @@ class Select(Input):
             if isinstance(option_label, (list, tuple)):
                 group = []
                 for val, lab in option_label:
-                    group.append((force_text(val), lab))
+                    group.append((force_str(val), lab))
                 groups.append((option_value, group))
             else:
-                option_value = force_text(option_value)
+                option_value = force_str(option_value)
                 if groups and groups[-1][0] is None:
                     groups[-1][1].append((option_value, option_label))
                 else:
@@ -532,7 +538,7 @@ class Select(Input):
     def format_value(self, value):
         if len(value) == 1 and value[0] is None:
             return []
-        return set(force_text(v) for v in value)
+        return set(force_str(v) for v in value)
 
 
 class NullBooleanSelect(Select):
@@ -574,7 +580,7 @@ class SelectMultiple(Select):
     def format_value(self, value):
         if len(value) == 1 and value[0] is None:
             value = []
-        return set(force_text(v) for v in value)
+        return set(force_str(v) for v in value)
 
     def value_from_datadict(self, data, files, name):
         if isinstance(data, MULTIVALUE_DICT_TYPES):
@@ -589,8 +595,8 @@ class SelectMultiple(Select):
                 data = []
             if len(initial) != len(data):
                 return True
-            initial_set = set([force_text(value) for value in initial])
-            data_set = set([force_text(value) for value in data])
+            initial_set = set([force_str(value) for value in initial])
+            data_set = set([force_str(value) for value in data])
             return data_set != initial_set
 
 
@@ -629,7 +635,7 @@ class MultiWidget(forms.MultiWidget):
                 return None
             if self.is_localized:
                 return formats.localize_input(value)
-            return force_text(value)
+            return force_str(value)
 
         # backport port
         def get_context(self, name, value, attrs):
