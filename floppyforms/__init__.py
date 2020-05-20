@@ -20,4 +20,4 @@ except Exception:
     warnings.warn(
         "Unable to import floppyforms.gis, geometry widgets not available")
 
-__version__ = '1.8.0'
+__version__ = '1.9.0'

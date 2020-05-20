@@ -1,6 +1,24 @@
 Changelog
 ---------
 
+1.9.0
+~~~~~
+
+ This release changes the compatibility matrix for the project.
+
+ We now support the following Django releases:
+   - Django 2.2
+   - Django 3.0
+
+ We are also testing under the following Python versions:
+   - Python 3.6
+   - Python 3.7
+   - Python 3.8
+
+
+  No other significant changes in this release, but Django 1.11 and 2.1
+  are no longer supported.
+
 1.8.0
 ~~~~~
 
