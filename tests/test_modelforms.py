@@ -1,7 +1,6 @@
 import django
 from django.db import models
 from django.test import TestCase
-from django.utils.encoding import python_2_unicode_compatible
 
 import floppyforms.__future__ as forms
 from floppyforms.__future__.models import modelform_factory, modelformset_factory, inlineformset_factory
@@ -13,7 +12,6 @@ from .models import Registration, AllFields
 skipIf = unittest.skipIf
 
 
-@python_2_unicode_compatible
 class SomeModel2(models.Model):
     some_field = models.CharField(max_length=255)
 

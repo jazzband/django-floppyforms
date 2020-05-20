@@ -2,14 +2,9 @@ from contextlib import contextmanager
 
 import django
 from django.template import Context
+from django.utils.datastructures import MultiValueDict
 
-try:
-    from django.utils.datastructures import MultiValueDict, MergeDict
-    MULTIVALUE_DICT_TYPES = (MultiValueDict, MergeDict)
-except ImportError:
-    # Django >= 1.9
-    from django.utils.datastructures import MultiValueDict
-    MULTIVALUE_DICT_TYPES = (MultiValueDict,)
+MULTIVALUE_DICT_TYPES = (MultiValueDict,)
 
 
 REQUIRED_CONTEXT_ATTRIBTUES = (

@@ -1,20 +1,17 @@
-import django
 from collections import defaultdict
 from contextlib import contextmanager
 
+import django
 from django.conf import settings
-
-try:
-    from django.forms.utils import ErrorList
-except ImportError:
-    # Fall back to old module name for Django <= 1.5
-    from django.forms.util import ErrorList
 from django.template import (Library, Node, Variable,
                              TemplateSyntaxError, VariableDoesNotExist)
 from django.template.base import token_kwargs
 from django.utils.functional import empty
 
 from ..compat import get_template
+
+
+from django.forms.utils import ErrorList
 
 
 register = Library()

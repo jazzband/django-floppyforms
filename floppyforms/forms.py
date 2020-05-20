@@ -1,6 +1,5 @@
 from django import forms
 from django.template.loader import get_template
-from django.utils.encoding import python_2_unicode_compatible
 
 from .compat import get_context
 
@@ -8,7 +7,6 @@ from .compat import get_context
 __all__ = ('BaseForm', 'Form',)
 
 
-@python_2_unicode_compatible
 class LayoutRenderer(object):
     _render_as_template_name = 'floppyforms/_render_as.html'
 

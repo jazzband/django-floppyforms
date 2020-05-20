@@ -1,19 +1,16 @@
 from django.conf import settings
 from django.template.defaultfilters import safe
-from django.utils import translation, six
+from django.utils import translation
 
-try:
-    from urllib.parse import urlencode
-except ImportError:
-    # Python < 3
-    from urllib import urlencode
+import floppyforms as forms
+
+from urllib.parse import urlencode
 
 try:
     from django.contrib.gis import gdal, geos
 except ImportError:
     """GDAL / GEOS not installed"""
 
-import floppyforms as forms
 
 __all__ = ('GeometryWidget', 'GeometryCollectionWidget',
            'PointWidget', 'MultiPointWidget',
@@ -66,7 +63,7 @@ class BaseGeometryWidget(forms.Textarea):
     def get_context(self, name, value, attrs=None, extra_context={}):
         # If a string reaches here (via a validation error on another
         # field) then just reconstruct the Geometry.
-        if isinstance(value, six.text_type):
+        if isinstance(value, str):
             try:
                 value = geos.GEOSGeometry(value)
             except (geos.GEOSException, ValueError):

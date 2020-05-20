@@ -11,7 +11,7 @@ from django.template.loader import render_to_string
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils.dates import MONTHS
-from django.utils.encoding import python_2_unicode_compatible
+
 from django.utils.timezone import now
 
 import floppyforms as forms
@@ -25,7 +25,6 @@ skipIf = unittest.skipIf
 skipUnless = unittest.skipUnless
 
 
-@python_2_unicode_compatible
 class SomeModel(models.Model):
     some_field = models.CharField(max_length=255)
 

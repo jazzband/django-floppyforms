@@ -2,9 +2,9 @@ from decimal import Decimal
 import django
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.utils import six
+
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 import floppyforms.__future__ as forms
 
@@ -56,13 +56,13 @@ class FormRenderAsMethodsTests(TestCase):
         form = RegistrationForm()
         with self.assertTemplateUsed('floppyforms/layouts/default.html'):
             with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-                rendered = six.text_type(form)
+                rendered = str(form)
                 self.assertTrue(' name="firstname"' in rendered)
 
         form = RegistrationModelForm()
         with self.assertTemplateUsed('floppyforms/layouts/default.html'):
             with self.assertTemplateUsed('floppyforms/layouts/table.html'):
-                rendered = six.text_type(form)
+                rendered = str(form)
                 self.assertTrue(' name="firstname"' in rendered)
 
     def test_as_p(self):
