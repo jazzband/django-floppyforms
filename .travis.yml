@@ -10,7 +10,7 @@ matrix:
   - python: 3.7
     env: TOXENV=docs
   - python: 3.7
-    env: TOXENV=flake8
+    env: TOXENV=checks
 before_install:
 - sudo apt-get -q -y update
 - sudo apt-get remove -q -y binutils gdal-bin libproj-dev libgeos-c1v5

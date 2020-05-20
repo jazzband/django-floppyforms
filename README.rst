@@ -88,7 +88,7 @@ Install the development requirements::
 
 Currently, you'll need to `install the GeoDjango requirements`_ when running tests.
 
-:: _install the GeoDjango requirements: https://docs.djangoproject.com/en/3.0/ref/contrib/gis/install/geolibs/
+.. _install the GeoDjango requirements: https://docs.djangoproject.com/en/3.0/ref/contrib/gis/install/geolibs/
 
 Run the tests::
 
