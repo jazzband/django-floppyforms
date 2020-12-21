@@ -5,9 +5,13 @@ django-floppyforms
    :target: https://jazzband.co/
    :alt: Jazzband
 
-.. image:: https://api.travis-ci.org/jazzband/django-floppyforms.png
-   :alt: Build Status
-   :target: https://travis-ci.org/jazzband/django-floppyforms
+.. image:: https://github.com/jazzband/django-floppyforms/workflows/Test/badge.svg
+   :target: https://github.com/jazzband/django-floppyforms/actions
+   :alt: GitHub Actions
+
+.. image:: https://codecov.io/gh/jazzband/django-floppyforms/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/jazzband/django-floppyforms
+   :alt: Coverage
 
 Full control of form rendering in the templates.
 
