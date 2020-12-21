@@ -9,3 +9,4 @@ __pycache__
 .mypy_cache
 # PyCharm IDE files
 .idea/
+coverage.xml
