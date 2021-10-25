@@ -30,7 +30,9 @@ Installation
 * Add ``floppyforms`` to your ``INSTALLED_APPS``
 
 For those who want to mix and match with vanilla Django widgets, it is also recommended
-to put Django's form template directory into your template directories::
+to put Django's form template directory into your template directories:
+
+.. code-block:: python
 
     # in your template configuration
     TEMPLATES = [{
@@ -77,7 +79,9 @@ Development
 
 Thanks for asking!
 
-Get the code::
+Get the code:
+
+.. code-block:: bash
 
     git clone git@github.com:jazzband/django-floppyforms.git
     cd django-floppyforms
