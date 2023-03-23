@@ -22,7 +22,7 @@ OpenLayers.Util.properFeatures = function(features, geom_type) {
 /**
  * Class: OpenLayers.Format.DjangoWKT
  * Class for reading Well-Known Text, with workarounds to successfully parse
- * geometries and collections as returnes by django.contrib.gis.geos.
+ * geometries and collections as returned by django.contrib.gis.geos.
  *
  * Inherits from:
  *  - <OpenLayers.Format.WKT>

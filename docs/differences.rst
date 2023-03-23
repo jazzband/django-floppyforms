@@ -103,7 +103,7 @@ ModelForms
 
 Prior to version 1.2 of django-floppyforms, you had to take some manual
 efforts to make your modelforms work with floppyforms. This is now done
-seemlesly, but since this was introduced a backwards incompatible change, it
+seamlessly, but since this was introduced a backwards incompatible change, it
 was necessary to provde a deprecation path.
 
 So if you start out new with django-floppyforms just use ``import

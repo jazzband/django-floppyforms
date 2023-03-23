@@ -88,7 +88,7 @@ extend ``get_context_data()`` which doesn't take any arguments::
 Altering the widget's ``attrs``
 -------------------------------
 
-All widget attibutes except for ``type``, ``name``, ``value`` and ``required``
+All widget attributes except for ``type``, ``name``, ``value`` and ``required``
 are put in the ``attrs`` context variable, which you can extend in
 ``get_context()``:
 
