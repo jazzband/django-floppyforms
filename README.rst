@@ -72,6 +72,15 @@ Bugs
 Really? Oh well... Please Report. Or better, fix :) We are happy to help you
 through the process of fixing and testing a bug. Just get in touch.
 
+Disable django gis
+-----------------------
+Add option to your `settings.py` on the below
+
+```
+FLOPPY_FORMS_USE_GIS = False
+```
+
+
 Development
 -----------
 
