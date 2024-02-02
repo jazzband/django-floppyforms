@@ -7,7 +7,7 @@ from django import forms
 from django.conf import settings
 from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.template import loader
-from django.utils import datetime_safe, formats
+from django.utils import formats
 from django.utils.dates import MONTHS
 from django.utils.encoding import force_str
 from django.utils.html import conditional_escape
@@ -319,7 +319,6 @@ class DateInput(Input):
 
     def format_value(self, value):
         if hasattr(value, 'strftime'):
-            value = datetime_safe.new_date(value)
             return value.strftime(self.format)
         return value
 
@@ -351,7 +350,6 @@ class DateTimeInput(Input):
 
     def format_value(self, value):
         if hasattr(value, 'strftime'):
-            value = datetime_safe.new_datetime(value)
             return value.strftime(self.format)
         return value
 
@@ -840,7 +838,6 @@ class SelectDateWidget(forms.Widget):
                 except ValueError:
                     return '%s-%s-%s' % (y, m, d)
                 else:
-                    date_value = datetime_safe.new_date(date_value)
                     return date_value.strftime(input_format)
             else:
                 return '%s-%s-%s' % (y, m, d)
