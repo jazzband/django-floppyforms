@@ -3,8 +3,13 @@ from contextlib import contextmanager
 
 import django
 from django.conf import settings
-from django.template import (Library, Node, Variable,
-                             TemplateSyntaxError, VariableDoesNotExist)
+from django.template import (
+    Library,
+    Node,
+    Variable,
+    TemplateSyntaxError,
+    VariableDoesNotExist,
+)
 from django.template.base import token_kwargs
 from django.utils.functional import empty
 
@@ -19,19 +24,19 @@ register = Library()
 
 def is_formset(var):
     # We assume it is a formset if the var has these fields.
-    significant_attributes = ('forms', 'management_form')
+    significant_attributes = ("forms", "management_form")
     return all(hasattr(var, attr) for attr in significant_attributes)
 
 
 def is_form(var):
     # We assume it is a form if the var has these fields.
-    significant_attributes = ('is_bound', 'data', 'fields')
+    significant_attributes = ("is_bound", "data", "fields")
     return all(hasattr(var, attr) for attr in significant_attributes)
 
 
 def is_bound_field(var):
     # We assume it is a BoundField if the var has these fields.
-    significant_attributes = ('as_widget', 'as_hidden', 'is_hidden')
+    significant_attributes = ("as_widget", "as_hidden", "is_hidden")
     return all(hasattr(var, attr) for attr in significant_attributes)
 
 
@@ -46,15 +51,16 @@ def raise_or_not_variable_does_not_exist_compat_version(context):
         if settings.TEMPLATE_DEBUG:
             raise
         else:
-            return ''
+            return ""
 
     if django.VERSION >= (1, 8) and django.VERSION < (1, 10):
         from django.template.engine import Engine
-        template_debug_value = getattr(settings, 'TEMPLATE_DEBUG', None)
+
+        template_debug_value = getattr(settings, "TEMPLATE_DEBUG", None)
         if template_debug_value:
             raise
         if not template_debug_value:
-            return ''
+            return ""
         if template_debug_value is None:
             try:
                 engine = context.template.engine
@@ -62,10 +68,11 @@ def raise_or_not_variable_does_not_exist_compat_version(context):
                 engine = Engine.get_default()
             if engine.debug:
                 raise
-            return ''
+            return ""
 
     if django.VERSION >= (1, 10):
         from django.template.engine import Engine
+
         try:
             engine = context.template.engine
         except AttributeError:
@@ -73,7 +80,7 @@ def raise_or_not_variable_does_not_exist_compat_version(context):
         if engine.debug:
             raise
 
-        return ''
+        return ""
 
     raise
 
@@ -90,6 +97,7 @@ class ConfigFilter(object):
     * the string passed into the constructor equals the field's class name.
     * the string passed into the constructor equals the field's widget class name.
     """
+
     def __init__(self, var):
         self.var = var
 
@@ -97,7 +105,7 @@ class ConfigFilter(object):
         # when var is a bound_field ...
         # bound fields cannot be compared directly since form['field'] returns
         # a new instance every time it's called
-        if hasattr(self.var, 'form') and hasattr(self.var, 'name'):
+        if hasattr(self.var, "form") and hasattr(self.var, "name"):
             if self.var.form is bound_field.form:
                 if self.var.name == bound_field.name:
                     return True
@@ -107,12 +115,12 @@ class ConfigFilter(object):
         # anyway. And 'object' could clash with a field that is named the
         # same.
         for class_ in bound_field.field.__class__.__mro__:
-            if class_.__name__ == 'object':
+            if class_.__name__ == "object":
                 continue
             if self.var == class_.__name__:
                 return True
         for class_ in bound_field.field.widget.__class__.__mro__:
-            if class_.__name__ == 'object':
+            if class_.__name__ == "object":
                 continue
             if self.var == class_.__name__:
                 return True
@@ -138,7 +146,7 @@ def default_widget(bound_field, **kwargs):
 
 def default_widget_template(bound_field, **kwargs):
     if bound_field:
-        if hasattr(bound_field.field.widget, 'template_name'):
+        if hasattr(bound_field.field.widget, "template_name"):
             return bound_field.field.widget.template_name
         return None
 
@@ -155,13 +163,14 @@ class FormConfig(object):
     applies in specific situations.
 
     """
+
     defaults = {
-        'layout': lambda **kwargs: 'floppyforms/layouts/default.html',
-        'row_template': lambda **kwargs: 'floppyforms/rows/default.html',
-        'label': default_label,
-        'help_text': default_help_text,
-        'widget': default_widget,
-        'widget_template': default_widget_template,
+        "layout": lambda **kwargs: "floppyforms/layouts/default.html",
+        "row_template": lambda **kwargs: "floppyforms/rows/default.html",
+        "label": default_label,
+        "help_text": default_help_text,
+        "widget": default_widget,
+        "widget_template": default_widget_template,
     }
 
     def __init__(self):
@@ -187,8 +196,10 @@ class FormConfig(object):
 
         """
         if filter is None:
+
             def filter(**kwargs):
                 return True
+
         self.dicts[-1][key].append((value, filter))
 
     def retrieve(self, key, **kwargs):
@@ -228,8 +239,9 @@ class BaseFormNode(Node):
     Base class for the form rendering tags. Holds methods to parse common
     arguments like "using <template>" and "with <context>" in a standard way.
     """
-    CONFIG_CONTEXT_ATTR = '_form_config'
-    IN_FORM_CONTEXT_VAR = '_form_render'
+
+    CONFIG_CONTEXT_ATTR = "_form_config"
+    IN_FORM_CONTEXT_VAR = "_form_render"
 
     optional_using_parameter = False
     optional_with_parameter = False
@@ -257,74 +269,81 @@ class BaseFormNode(Node):
     @classmethod
     def parse_variables(cls, tagname, parser, bits, options):
         variables = []
-        while bits and bits[0] not in ('using', 'with', 'only'):
+        while bits and bits[0] not in ("using", "with", "only"):
             variables.append(Variable(bits.pop(0)))
         if not variables:
-            raise TemplateSyntaxError('%s tag expectes at least one '
-                                      'template variable as argument.' %
-                                      tagname)
+            raise TemplateSyntaxError(
+                "%s tag expectes at least one "
+                "template variable as argument." % tagname
+            )
         return variables
 
     @classmethod
     def parse_using(cls, tagname, parser, bits, options):
         if bits:
-            if bits[0] == 'using':
+            if bits[0] == "using":
                 bits.pop(0)
                 if len(bits):
-                    if bits[0] in ('with', 'only'):
+                    if bits[0] in ("with", "only"):
                         raise TemplateSyntaxError(
-                            '%s: you must provide one template after '
-                            '"using" and before "with" or "only".' %
-                            tagname)
-                    options['using'] = Variable(bits.pop(0))
+                            "%s: you must provide one template after "
+                            '"using" and before "with" or "only".' % tagname
+                        )
+                    options["using"] = Variable(bits.pop(0))
                 else:
-                    raise TemplateSyntaxError('%s: expected a template name '
-                                              'after "using".' % tagname)
+                    raise TemplateSyntaxError(
+                        "%s: expected a template name " 'after "using".' % tagname
+                    )
             elif not cls.optional_using_parameter:
-                raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
-                                          (tagname, bits[0]))
+                raise TemplateSyntaxError(
+                    "Unknown argument for %s tag: %r." % (tagname, bits[0])
+                )
 
     @classmethod
     def parse_with(cls, tagname, parser, bits, options):
         if bits:
-            if bits[0] == 'with':
+            if bits[0] == "with":
                 bits.pop(0)
                 arguments = token_kwargs(bits, parser, support_legacy=False)
                 if not arguments:
-                    raise TemplateSyntaxError('"with" in %s tag needs at '
-                                              'least one keyword argument.' %
-                                              tagname)
-                options['with'] = arguments
-            elif bits[0] not in ('only',) and not cls.optional_with_parameter:
-                raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
-                                          (tagname, bits[0]))
+                    raise TemplateSyntaxError(
+                        '"with" in %s tag needs at '
+                        "least one keyword argument." % tagname
+                    )
+                options["with"] = arguments
+            elif bits[0] not in ("only",) and not cls.optional_with_parameter:
+                raise TemplateSyntaxError(
+                    "Unknown argument for %s tag: %r." % (tagname, bits[0])
+                )
 
         if bits:
-            if cls.accept_only_parameter and bits[0] == 'only':
+            if cls.accept_only_parameter and bits[0] == "only":
                 bits.pop(0)
-                options['only'] = True
+                options["only"] = True
 
     @classmethod
     def parse_for(cls, tagname, parser, bits, options):
         if bits:
-            if bits[0] == 'for':
+            if bits[0] == "for":
                 bits.pop(0)
                 if len(bits):
-                    options['for'] = Variable(bits.pop(0))
+                    options["for"] = Variable(bits.pop(0))
                 else:
-                    raise TemplateSyntaxError('%s: expected an argument '
-                                              'after "for".' % tagname)
+                    raise TemplateSyntaxError(
+                        "%s: expected an argument " 'after "for".' % tagname
+                    )
             elif not cls.optional_for_parameter:
-                raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
-                                          (tagname, bits[0]))
+                raise TemplateSyntaxError(
+                    "Unknown argument for %s tag: %r." % (tagname, bits[0])
+                )
 
     @classmethod
     def parse(cls, parser, tokens):
         bits = tokens.split_contents()
         tagname = bits.pop(0)
         options = {
-            'only': False,
-            'with': None,
+            "only": False,
+            "with": None,
         }
 
         variables = cls.parse_variables(tagname, parser, bits, options)
@@ -332,8 +351,9 @@ class BaseFormNode(Node):
         cls.parse_with(tagname, parser, bits, options)
 
         if bits:
-            raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
-                                      (tagname, ' '.join(bits)))
+            raise TemplateSyntaxError(
+                "Unknown argument for %s tag: %r." % (tagname, " ".join(bits))
+            )
 
         return cls(tagname, variables, options)
 
@@ -355,6 +375,7 @@ class ModifierBase(BaseFormNode):
     Will call the RowModifier class with the arguments ``using`` and
     ``"row.html"``. See the ``FormConfigNode.parse`` method for more details.
     """
+
     accept_for_parameter = False
 
     template_config_name = None
@@ -367,47 +388,49 @@ class ModifierBase(BaseFormNode):
 
     def enforce_form_tag(self, context):
         if not context.get(self.IN_FORM_CONTEXT_VAR, False):
-            raise TemplateSyntaxError('%s must be used inside a form tag.' %
-                                      self.tagname)
+            raise TemplateSyntaxError(
+                "%s must be used inside a form tag." % self.tagname
+            )
 
     def render(self, context):
         self.enforce_form_tag(context)
         config = self.get_config(context)
         filter = None
-        if self.options['for']:
+        if self.options["for"]:
             try:
-                for_ = self.options['for'].resolve(context)
+                for_ = self.options["for"].resolve(context)
             except VariableDoesNotExist:
                 return raise_or_not_variable_does_not_exist_compat_version(context)
 
             filter = ConfigFilter(for_)
-        if self.options['using']:
+        if self.options["using"]:
             try:
-                template_name = self.options['using'].resolve(context)
+                template_name = self.options["using"].resolve(context)
             except VariableDoesNotExist:
                 return raise_or_not_variable_does_not_exist_compat_version(context)
 
-            config.configure(self.template_config_name,
-                             template_name, filter=filter)
-        if self.options['with']:
-            extra_context = dict([
-                (name, var.resolve(context))
-                for name, var in self.options['with'].items()])
-            config.configure(self.context_config_name,
-                             extra_context, filter=filter)
-        return ''
+            config.configure(self.template_config_name, template_name, filter=filter)
+        if self.options["with"]:
+            extra_context = dict(
+                [
+                    (name, var.resolve(context))
+                    for name, var in self.options["with"].items()
+                ]
+            )
+            config.configure(self.context_config_name, extra_context, filter=filter)
+        return ""
 
     @classmethod
     def parse_bits(cls, tagname, modifier, bits, parser, tokens):
         options = {
-            'using': None,
-            'with': None,
-            'for': None,
+            "using": None,
+            "with": None,
+            "for": None,
         }
         if not bits:
-            raise TemplateSyntaxError('%s %s: at least one argument '
-                                      'is required.' %
-                                      (tagname, modifier))
+            raise TemplateSyntaxError(
+                "%s %s: at least one argument " "is required." % (tagname, modifier)
+            )
 
         cls.parse_using(tagname, parser, bits, options)
         cls.parse_with(tagname, parser, bits, options)
@@ -415,8 +438,10 @@ class ModifierBase(BaseFormNode):
             cls.parse_for(tagname, parser, bits, options)
 
         if bits:
-            raise TemplateSyntaxError('Unknown argument for %s %s tag: %r.' %
-                                      (tagname, modifier, ' '.join(bits)))
+            raise TemplateSyntaxError(
+                "Unknown argument for %s %s tag: %r."
+                % (tagname, modifier, " ".join(bits))
+            )
 
         return cls(tagname, modifier, options)
 
@@ -425,36 +450,39 @@ class RowModifier(ModifierBase):
     """
     {% formconfig row ... %}
     """
+
     optional_using_parameter = True
     optional_with_parameter = True
     accept_only_parameter = False
     accept_for_parameter = False
 
-    template_config_name = 'row_template'
-    context_config_name = 'row_context'
+    template_config_name = "row_template"
+    context_config_name = "row_context"
 
 
 class FieldModifier(ModifierBase):
     """
     {% formconfig field ... %}
     """
+
     optional_using_parameter = True
     optional_with_parameter = True
     accept_only_parameter = False
     accept_for_parameter = True
     optional_for_parameter = True
 
-    template_config_name = 'widget_template'
-    context_config_name = 'widget_context'
+    template_config_name = "widget_template"
+    context_config_name = "widget_context"
 
 
 class FormConfigNode(BaseFormNode):
     """
     {% formconfig ... %}
     """
+
     MODIFIERS = {
-        'row': RowModifier,
-        'field': FieldModifier,
+        "row": RowModifier,
+        "field": FieldModifier,
     }
 
     @classmethod
@@ -463,8 +491,9 @@ class FormConfigNode(BaseFormNode):
         tagname = bits.pop(0)
         if not bits or bits[0] not in cls.MODIFIERS:
             raise TemplateSyntaxError(
-                '%s needs one of the following keywords as first argument: '
-                '%s' % (tagname, ', '.join(cls.MODIFIERS.keys())))
+                "%s needs one of the following keywords as first argument: "
+                "%s" % (tagname, ", ".join(cls.MODIFIERS.keys()))
+            )
         modifier = bits.pop(0)
         modifier_cls = cls.MODIFIERS[modifier]
         return modifier_cls.parse_bits(tagname, modifier, bits, parser, tokens)
@@ -476,6 +505,7 @@ class BaseFormRenderNode(BaseFormNode):
     responsible for actually rendering a form and outputting HTML.
 
     """
+
     def is_list_variable(self, var):
         return False
 
@@ -483,11 +513,11 @@ class BaseFormRenderNode(BaseFormNode):
         raise NotImplementedError
 
     def get_nodelist(self, context, extra_context):
-        if 'nodelist' in self.options:
-            return self.options['nodelist']
+        if "nodelist" in self.options:
+            return self.options["nodelist"]
         try:
-            if 'using' in self.options:
-                template_name = self.options['using'].resolve(context)
+            if "using" in self.options:
+                template_name = self.options["using"].resolve(context)
             else:
                 template_name = self.get_template_name(context)
             return get_template(context, template_name)
@@ -523,15 +553,20 @@ class BaseFormRenderNode(BaseFormNode):
         if self.list_template_var:
             extra_context[self.list_template_var] = variables
 
-        if self.options['with']:
-            extra_context.update(dict([
-                (name, var.resolve(context))
-                for name, var in self.options['with'].items()]))
+        if self.options["with"]:
+            extra_context.update(
+                dict(
+                    [
+                        (name, var.resolve(context))
+                        for name, var in self.options["with"].items()
+                    ]
+                )
+            )
 
         return extra_context
 
     def render(self, context):
-        only = self.options['only']
+        only = self.options["only"]
 
         config = self.get_config(context)
         config.push()
@@ -539,7 +574,7 @@ class BaseFormRenderNode(BaseFormNode):
         extra_context = self.get_extra_context(context)
         nodelist = self.get_nodelist(context, extra_context)
         if nodelist is None:
-            return ''
+            return ""
 
         if only:
             context = context.new(extra_context)
@@ -557,11 +592,12 @@ class FormNode(BaseFormRenderNode):
     """
     {% form ... %}
     """
-    single_template_var = 'form'
-    list_template_var = 'forms'
+
+    single_template_var = "form"
+    list_template_var = "forms"
 
     def is_list_variable(self, var):
-        if not hasattr(var, '__iter__'):
+        if not hasattr(var, "__iter__"):
             return False
         if is_formset(var):
             return True
@@ -572,7 +608,7 @@ class FormNode(BaseFormRenderNode):
 
     def get_template_name(self, context):
         config = self.get_config(context)
-        return config.retrieve('layout')
+        return config.retrieve("layout")
 
     def get_extra_context(self, context):
         extra_context = super(FormNode, self).get_extra_context(context)
@@ -586,47 +622,50 @@ class FormNode(BaseFormRenderNode):
         specified after "using".
         """
         if bits:
-            if bits[0] == 'using':
+            if bits[0] == "using":
                 bits.pop(0)
                 if len(bits):
-                    if bits[0] in ('with', 'only'):
+                    if bits[0] in ("with", "only"):
                         raise TemplateSyntaxError(
                             '%s: you must provide one template after "using" '
-                            'and before "with" or "only".')
-                    options['using'] = Variable(bits.pop(0))
+                            'and before "with" or "only".'
+                        )
+                    options["using"] = Variable(bits.pop(0))
                 else:
-                    nodelist = parser.parse(('end%s' % tagname,))
+                    nodelist = parser.parse(("end%s" % tagname,))
                     parser.delete_first_token()
-                    options['nodelist'] = nodelist
+                    options["nodelist"] = nodelist
             else:
-                raise TemplateSyntaxError('Unknown argument for %s tag: %r.' %
-                                          (tagname, bits[0]))
+                raise TemplateSyntaxError(
+                    "Unknown argument for %s tag: %r." % (tagname, bits[0])
+                )
 
 
 class FormRowNode(BaseFormRenderNode):
     """
     {% formrow <bounds fields> ... %}
     """
-    single_template_var = 'field'
-    list_template_var = 'fields'
+
+    single_template_var = "field"
+    list_template_var = "fields"
 
     optional_using_parameter = True
 
     def is_list_variable(self, var):
-        if hasattr(var, '__iter__') and not is_bound_field(var):
+        if hasattr(var, "__iter__") and not is_bound_field(var):
             return True
         return False
 
     def get_template_name(self, context):
         config = self.get_config(context)
-        return config.retrieve('row_template')
+        return config.retrieve("row_template")
 
     def get_extra_context(self, context):
         extra_context = super(FormRowNode, self).get_extra_context(context)
         config = self.get_config(context)
         configured_context = {}
         # most recently used values should overwrite older ones
-        for extra in reversed(config.retrieve_all('row_context')):
+        for extra in reversed(config.retrieve_all("row_context")):
             configured_context.update(extra)
         configured_context.update(extra_context)
         return configured_context
@@ -648,7 +687,8 @@ class FormFieldNode(BaseFormRenderNode):
     """
     {% formfield <bound field> ... %}
     """
-    single_template_var = 'field'
+
+    single_template_var = "field"
     optional_using_parameter = True
 
     def get_extra_context(self, context):
@@ -657,8 +697,7 @@ class FormFieldNode(BaseFormRenderNode):
         config = self.get_config(context)
         configured_context = {}
         # most recently used values should overwrite older ones
-        widget_context = config.retrieve_all('widget_context',
-                                             bound_field=field)
+        widget_context = config.retrieve_all("widget_context", bound_field=field)
         for extra in reversed(widget_context):
             configured_context.update(extra)
         configured_context.update(extra_context)
@@ -673,16 +712,15 @@ class FormFieldNode(BaseFormRenderNode):
         except VariableDoesNotExist:
             return raise_or_not_variable_does_not_exist_compat_version(context)
 
-        widget = config.retrieve('widget', bound_field=bound_field)
+        widget = config.retrieve("widget", bound_field=bound_field)
         extra_context = self.get_extra_context(context)
-        template_name = config.retrieve('widget_template',
-                                        bound_field=bound_field)
-        if 'using' in self.options:
+        template_name = config.retrieve("widget_template", bound_field=bound_field)
+        if "using" in self.options:
             try:
-                template_name = self.options['using'].resolve(context)
+                template_name = self.options["using"].resolve(context)
             except VariableDoesNotExist:
                 return raise_or_not_variable_does_not_exist_compat_version(context)
-        if self.options['only']:
+        if self.options["only"]:
             context_instance = context.new(extra_context)
         else:
             context.update(extra_context)
@@ -692,13 +730,14 @@ class FormFieldNode(BaseFormRenderNode):
 
         # Using a context manager here until Django's BoundField takes
         # template name and context instance parameters
-        with attributes(widget, template_name=template_name,
-                        context_instance=context_instance) as widget:
+        with attributes(
+            widget, template_name=template_name, context_instance=context_instance
+        ) as widget:
             output = bound_field.as_widget(widget=widget)
 
         config.pop()
 
-        if not self.options['only']:
+        if not self.options["only"]:
             context.pop()
 
         if bound_field.field.show_hidden_initial:
@@ -708,12 +747,13 @@ class FormFieldNode(BaseFormRenderNode):
     @classmethod
     def parse_variables(cls, tagname, parser, bits, options):
         variables = []
-        while bits and bits[0] not in ('using', 'with', 'only'):
+        while bits and bits[0] not in ("using", "with", "only"):
             variables.append(Variable(bits.pop(0)))
         if len(variables) != 1:
-            raise TemplateSyntaxError('%s tag expectes exactly one '
-                                      'template variable as argument.' %
-                                      tagname)
+            raise TemplateSyntaxError(
+                "%s tag expectes exactly one "
+                "template variable as argument." % tagname
+            )
         return variables
 
 
@@ -729,15 +769,15 @@ class WidgetNode(Node):
     def render(self, context):
         field = self.field.resolve(context)
 
-        if callable(getattr(field.field.widget, 'get_context', None)):
+        if callable(getattr(field.field.widget, "get_context", None)):
             name = field.html_name
-            attrs = {'id': field.auto_id}
+            attrs = {"id": field.auto_id}
             value = field.value()
             widget_ctx = field.field.widget.get_context(name, value, attrs)
             template = field.field.widget.template_name
         else:
-            widget_ctx = {'field': field}
-            template = 'floppyforms/dummy.html'
+            widget_ctx = {"field": field}
+            template = "floppyforms/dummy.html"
 
         template = get_template(context, template)
         context.update(widget_ctx)
@@ -765,14 +805,14 @@ def hidden_field_errors(form):
 @register.filter
 def id(bound_field):
     widget = bound_field.field.widget
-    for_id = widget.attrs.get('id') or bound_field.auto_id
+    for_id = widget.attrs.get("id") or bound_field.auto_id
     if for_id:
         for_id = widget.id_for_label(for_id)
     return for_id
 
 
-register.tag('formconfig', FormConfigNode.parse)
-register.tag('form', FormNode.parse)
-register.tag('formrow', FormRowNode.parse)
-register.tag('formfield', FormFieldNode.parse)
-register.tag('widget', WidgetNode.parse)
+register.tag("formconfig", FormConfigNode.parse)
+register.tag("form", FormNode.parse)
+register.tag("formrow", FormRowNode.parse)
+register.tag("formfield", FormFieldNode.parse)
+register.tag("widget", WidgetNode.parse)

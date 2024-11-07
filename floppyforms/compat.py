@@ -8,8 +8,8 @@ MULTIVALUE_DICT_TYPES = (MultiValueDict,)
 
 
 REQUIRED_CONTEXT_ATTRIBTUES = (
-    '_form_config',
-    '_form_render',
+    "_form_config",
+    "_form_render",
 )
 
 
@@ -20,8 +20,10 @@ class DictContext(dict):
 
 
 if django.VERSION < (1, 8):
+
     def get_template(context, template_name):
         from django.template.loader import get_template
+
         return get_template(template_name)
 
     def get_context(context):
@@ -32,6 +34,7 @@ if django.VERSION < (1, 8):
         return context
 
 else:
+
     def get_template(context, template_name):
         # Django 1.8 and higher support multiple template engines. We need to
         # load child templates used in the floppyform template tags from the

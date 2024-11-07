@@ -2,24 +2,56 @@ import django
 from django import forms
 import decimal
 
-from .widgets import (TextInput, HiddenInput, CheckboxInput, Select,
-                      ClearableFileInput, SelectMultiple, DateInput,
-                      DateTimeInput, TimeInput, URLInput, NumberInput,
-                      EmailInput, NullBooleanSelect, SlugInput, IPAddressInput,
-                      SplitDateTimeWidget, SplitHiddenDateTimeWidget,
-                      MultipleHiddenInput)
+from .widgets import (
+    TextInput,
+    HiddenInput,
+    CheckboxInput,
+    Select,
+    ClearableFileInput,
+    SelectMultiple,
+    DateInput,
+    DateTimeInput,
+    TimeInput,
+    URLInput,
+    NumberInput,
+    EmailInput,
+    NullBooleanSelect,
+    SlugInput,
+    IPAddressInput,
+    SplitDateTimeWidget,
+    SplitHiddenDateTimeWidget,
+    MultipleHiddenInput,
+)
 
 __all__ = (
-    'Field', 'CharField', 'IntegerField', 'DateField', 'TimeField',
-    'DateTimeField', 'EmailField', 'FileField', 'ImageField', 'URLField',
-    'BooleanField', 'NullBooleanField', 'ChoiceField', 'MultipleChoiceField',
-    'FloatField', 'DecimalField', 'SlugField', 'RegexField',
-    'GenericIPAddressField', 'TypedChoiceField', 'FilePathField',
-    'TypedMultipleChoiceField', 'ComboField', 'MultiValueField',
-    'SplitDateTimeField',
+    "Field",
+    "CharField",
+    "IntegerField",
+    "DateField",
+    "TimeField",
+    "DateTimeField",
+    "EmailField",
+    "FileField",
+    "ImageField",
+    "URLField",
+    "BooleanField",
+    "NullBooleanField",
+    "ChoiceField",
+    "MultipleChoiceField",
+    "FloatField",
+    "DecimalField",
+    "SlugField",
+    "RegexField",
+    "GenericIPAddressField",
+    "TypedChoiceField",
+    "FilePathField",
+    "TypedMultipleChoiceField",
+    "ComboField",
+    "MultiValueField",
+    "SplitDateTimeField",
 )
 if django.VERSION < (1, 9):
-    __all__ += ('IPAddressField',)
+    __all__ += ("IPAddressField",)
 
 
 class Field(forms.Field):
@@ -36,7 +68,7 @@ class CharField(Field, forms.CharField):
             attrs = {}
         if self.max_length is not None and isinstance(widget, (TextInput, HiddenInput)):
             # The HTML attribute is maxlength, not max_length.
-            attrs.update({'maxlength': str(self.max_length)})
+            attrs.update({"maxlength": str(self.max_length)})
         return attrs
 
 
@@ -73,8 +105,7 @@ class MultipleChoiceField(Field, forms.MultipleChoiceField):
     hidden_widget = MultipleHiddenInput
 
 
-class TypedMultipleChoiceField(MultipleChoiceField,
-                               forms.TypedMultipleChoiceField):
+class TypedMultipleChoiceField(MultipleChoiceField, forms.TypedMultipleChoiceField):
     pass
 
 
@@ -96,11 +127,11 @@ class FloatField(Field, forms.FloatField):
     def widget_attrs(self, widget):
         attrs = super(FloatField, self).widget_attrs(widget) or {}
         if self.min_value is not None:
-            attrs['min'] = self.min_value
+            attrs["min"] = self.min_value
         if self.max_value is not None:
-            attrs['max'] = self.max_value
-        if 'step' not in widget.attrs:
-            attrs.setdefault('step', 'any')
+            attrs["max"] = self.max_value
+        if "step" not in widget.attrs:
+            attrs.setdefault("step", "any")
         return attrs
 
 
@@ -108,15 +139,17 @@ class IntegerField(Field, forms.IntegerField):
     widget = NumberInput
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('widget', NumberInput if not kwargs.get('localize') else self.widget)
+        kwargs.setdefault(
+            "widget", NumberInput if not kwargs.get("localize") else self.widget
+        )
         super(IntegerField, self).__init__(*args, **kwargs)
 
     def widget_attrs(self, widget):
         attrs = super(IntegerField, self).widget_attrs(widget) or {}
         if self.min_value is not None:
-            attrs['min'] = self.min_value
+            attrs["min"] = self.min_value
         if self.max_value is not None:
-            attrs['max'] = self.max_value
+            attrs["max"] = self.max_value
         return attrs
 
 
@@ -124,17 +157,19 @@ class DecimalField(Field, forms.DecimalField):
     widget = NumberInput
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('widget', NumberInput if not kwargs.get('localize') else self.widget)
+        kwargs.setdefault(
+            "widget", NumberInput if not kwargs.get("localize") else self.widget
+        )
         super(DecimalField, self).__init__(*args, **kwargs)
 
     def widget_attrs(self, widget):
         attrs = super(DecimalField, self).widget_attrs(widget) or {}
         if self.min_value is not None:
-            attrs['min'] = self.min_value
+            attrs["min"] = self.min_value
         if self.max_value is not None:
-            attrs['max'] = self.max_value
+            attrs["max"] = self.max_value
         if self.decimal_places is not None:
-            attrs['step'] = decimal.Decimal('0.1') ** self.decimal_places
+            attrs["step"] = decimal.Decimal("0.1") ** self.decimal_places
         return attrs
 
 
@@ -153,20 +188,30 @@ class SlugField(Field, forms.SlugField):
 class RegexField(Field, forms.RegexField):
     widget = TextInput
 
-    def __init__(self, regex, js_regex=None, max_length=None, min_length=None,
-                 error_message=None, *args, **kwargs):
+    def __init__(
+        self,
+        regex,
+        js_regex=None,
+        max_length=None,
+        min_length=None,
+        error_message=None,
+        *args,
+        **kwargs
+    ):
         self.js_regex = js_regex
-        super(RegexField, self).__init__(regex=regex, max_length=max_length, min_length=min_length,
-                                         *args, **kwargs)
+        super(RegexField, self).__init__(
+            regex=regex, max_length=max_length, min_length=min_length, *args, **kwargs
+        )
 
     def widget_attrs(self, widget):
         attrs = super(RegexField, self).widget_attrs(widget) or {}
         if self.js_regex is not None:
-            attrs['pattern'] = self.js_regex
+            attrs["pattern"] = self.js_regex
         return attrs
 
 
 if django.VERSION < (1, 9):
+
     class IPAddressField(Field, forms.IPAddressField):
         widget = IPAddressInput
 

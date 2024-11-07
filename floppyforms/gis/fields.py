@@ -5,10 +5,16 @@ except ImportError:
 
 from . import widgets
 
-__all__ = ('GeometryField', 'GeometryCollectionField',
-           'PointField', 'MultiPointField',
-           'LineStringField', 'MultiLineStringField',
-           'PolygonField', 'MultiPolygonField')
+__all__ = (
+    "GeometryField",
+    "GeometryCollectionField",
+    "PointField",
+    "MultiPointField",
+    "LineStringField",
+    "MultiLineStringField",
+    "PolygonField",
+    "MultiPolygonField",
+)
 
 
 class GeometryWidget(widgets.BaseMetacartaWidget, widgets.GeometryWidget):
@@ -23,8 +29,9 @@ class GeometryField(BaseGeometryField):
         self.widget.is_required = self.required  # Django < 1.3 support
 
 
-class GeometryCollectionWidget(widgets.BaseMetacartaWidget,
-                               widgets.GeometryCollectionWidget):
+class GeometryCollectionWidget(
+    widgets.BaseMetacartaWidget, widgets.GeometryCollectionWidget
+):
     pass
 
 
@@ -32,7 +39,7 @@ class GeometryCollectionField(GeometryField):
     widget = GeometryCollectionWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'GEOMETRYCOLLECTION'
+        kwargs["geom_type"] = "GEOMETRYCOLLECTION"
         super(GeometryCollectionField, self).__init__(*args, **kwargs)
 
 
@@ -44,7 +51,7 @@ class PointField(GeometryField):
     widget = PointWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'POINT'
+        kwargs["geom_type"] = "POINT"
         super(PointField, self).__init__(*args, **kwargs)
 
 
@@ -56,7 +63,7 @@ class MultiPointField(GeometryField):
     widget = MultiPointWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'MULTIPOINT'
+        kwargs["geom_type"] = "MULTIPOINT"
         super(MultiPointField, self).__init__(*args, **kwargs)
 
 
@@ -68,12 +75,11 @@ class LineStringField(GeometryField):
     widget = LineStringWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'LINESTRING'
+        kwargs["geom_type"] = "LINESTRING"
         super(LineStringField, self).__init__(*args, **kwargs)
 
 
-class MultiLineStringWidget(widgets.BaseMetacartaWidget,
-                            widgets.MultiLineStringWidget):
+class MultiLineStringWidget(widgets.BaseMetacartaWidget, widgets.MultiLineStringWidget):
     pass
 
 
@@ -81,7 +87,7 @@ class MultiLineStringField(GeometryField):
     widget = MultiLineStringWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'MULTILINESTRING'
+        kwargs["geom_type"] = "MULTILINESTRING"
         super(MultiLineStringField, self).__init__(*args, **kwargs)
 
 
@@ -93,12 +99,11 @@ class PolygonField(GeometryField):
     widget = PolygonWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'POLYGON'
+        kwargs["geom_type"] = "POLYGON"
         super(PolygonField, self).__init__(*args, **kwargs)
 
 
-class MultiPolygonWidget(widgets.BaseMetacartaWidget,
-                         widgets.MultiPolygonWidget):
+class MultiPolygonWidget(widgets.BaseMetacartaWidget, widgets.MultiPolygonWidget):
     pass
 
 
@@ -106,5 +111,5 @@ class MultiPolygonField(GeometryField):
     widget = MultiPolygonWidget
 
     def __init__(self, *args, **kwargs):
-        kwargs['geom_type'] = 'MULTIPOLYGON'
+        kwargs["geom_type"] = "MULTIPOLYGON"
         super(MultiPolygonField, self).__init__(*args, **kwargs)

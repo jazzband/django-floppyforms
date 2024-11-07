@@ -12,12 +12,20 @@ except ImportError:
     """GDAL / GEOS not installed"""
 
 
-__all__ = ('GeometryWidget', 'GeometryCollectionWidget',
-           'PointWidget', 'MultiPointWidget',
-           'LineStringWidget', 'MultiLineStringWidget',
-           'PolygonWidget', 'MultiPolygonWidget',
-           'BaseGeometryWidget', 'BaseMetacartaWidget',
-           'BaseOsmWidget', 'BaseGMapWidget')
+__all__ = (
+    "GeometryWidget",
+    "GeometryCollectionWidget",
+    "PointWidget",
+    "MultiPointWidget",
+    "LineStringWidget",
+    "MultiLineStringWidget",
+    "PolygonWidget",
+    "MultiPolygonWidget",
+    "BaseGeometryWidget",
+    "BaseMetacartaWidget",
+    "BaseOsmWidget",
+    "BaseGMapWidget",
+)
 
 
 class BaseGeometryWidget(forms.Textarea):
@@ -25,39 +33,39 @@ class BaseGeometryWidget(forms.Textarea):
     The base class for rich geometry widgets. Custom widgets may be
     obtained by subclassing this base widget.
     """
+
     display_wkt = False
     map_width = 600
     map_height = 400
     map_srid = 4326
-    template_name = 'floppyforms/gis/openlayers.html'
+    template_name = "floppyforms/gis/openlayers.html"
 
     # Internal API #
     is_point = False
     is_linestring = False
     is_polygon = False
     is_collection = False
-    geom_type = 'GEOMETRY'
+    geom_type = "GEOMETRY"
 
-    map_attrs = ('map_width', 'map_height', 'map_srid', 'display_wkt')
+    map_attrs = ("map_width", "map_height", "map_srid", "display_wkt")
 
     def __init__(self, *args, **kwargs):
         super(BaseGeometryWidget, self).__init__(*args, **kwargs)
-        attrs = kwargs.pop('attrs', {})
+        attrs = kwargs.pop("attrs", {})
         for key in self.map_attrs:
             setattr(self, key, attrs.pop(key, getattr(self, key)))
 
     def get_context_data(self):
         ctx = super(BaseGeometryWidget, self).get_context_data()
-        for key in ('is_polygon', 'is_linestring',
-                    'is_point', 'is_collection'):
+        for key in ("is_polygon", "is_linestring", "is_point", "is_collection"):
             ctx[key] = getattr(self, key)
-        ctx['geom_type'] = gdal.OGRGeomType(self.geom_type)
+        ctx["geom_type"] = gdal.OGRGeomType(self.geom_type)
 
         for key in self.map_attrs:
             ctx[key] = getattr(self, key)
 
-        if self.geom_type == 'GEOMETRYCOLLECTION':
-            ctx['geom_type'] = 'Collection'
+        if self.geom_type == "GEOMETRYCOLLECTION":
+            ctx["geom_type"] = "Collection"
         return ctx
 
     def get_context(self, name, value, attrs=None, extra_context={}):
@@ -69,11 +77,15 @@ class BaseGeometryWidget(forms.Textarea):
             except (geos.GEOSException, ValueError):
                 value = None
 
-        if value and value.geom_type.upper() != self.geom_type and self.geom_type != 'GEOMETRY':
+        if (
+            value
+            and value.geom_type.upper() != self.geom_type
+            and self.geom_type != "GEOMETRY"
+        ):
             value = None
 
         # Defaulting the WKT value to a blank string
-        wkt = ''
+        wkt = ""
         if value:
             srid = self.map_srid
             if value.srid != srid:
@@ -86,8 +98,8 @@ class BaseGeometryWidget(forms.Textarea):
             else:
                 wkt = value.wkt
         context = super(BaseGeometryWidget, self).get_context(name, wkt, attrs)
-        context['module'] = 'map_%s' % name.replace('-', '_')
-        context['name'] = name
+        context["module"] = "map_%s" % name.replace("-", "_")
+        context["name"] = name
 
         # Deprecated, we will remove this in a future release, it's no longer
         # used. But we keep it here for now as it's documented in
@@ -95,11 +107,11 @@ class BaseGeometryWidget(forms.Textarea):
 
         # Django >= 1.4 doesn't have ADMIN_MEDIA_PREFIX anymore, we must
         # rely on contrib.staticfiles.
-        if hasattr(settings, 'ADMIN_MEDIA_PREFIX'):
-            context['ADMIN_MEDIA_PREFIX'] = settings.ADMIN_MEDIA_PREFIX
+        if hasattr(settings, "ADMIN_MEDIA_PREFIX"):
+            context["ADMIN_MEDIA_PREFIX"] = settings.ADMIN_MEDIA_PREFIX
         else:
-            context['ADMIN_MEDIA_PREFIX'] = settings.STATIC_URL + 'admin/'
-        context['LANGUAGE_BIDI'] = translation.get_language_bidi()
+            context["ADMIN_MEDIA_PREFIX"] = settings.STATIC_URL + "admin/"
+        context["LANGUAGE_BIDI"] = translation.get_language_bidi()
         return context
 
 
@@ -109,77 +121,79 @@ class GeometryWidget(BaseGeometryWidget):
 
 class GeometryCollectionWidget(GeometryWidget):
     is_collection = True
-    geom_type = 'GEOMETRYCOLLECTION'
+    geom_type = "GEOMETRYCOLLECTION"
 
 
 class PointWidget(BaseGeometryWidget):
     is_point = True
-    geom_type = 'POINT'
+    geom_type = "POINT"
 
 
 class MultiPointWidget(PointWidget):
     is_collection = True
-    geom_type = 'MULTIPOINT'
+    geom_type = "MULTIPOINT"
 
 
 class LineStringWidget(BaseGeometryWidget):
     is_linestring = True
-    geom_type = 'LINESTRING'
+    geom_type = "LINESTRING"
 
 
 class MultiLineStringWidget(LineStringWidget):
     is_collection = True
-    geom_type = 'MULTILINESTRING'
+    geom_type = "MULTILINESTRING"
 
 
 class PolygonWidget(BaseGeometryWidget):
     is_polygon = True
-    geom_type = 'POLYGON'
+    geom_type = "POLYGON"
 
 
 class MultiPolygonWidget(PolygonWidget):
     is_collection = True
-    geom_type = 'MULTIPOLYGON'
+    geom_type = "MULTIPOLYGON"
 
 
 class BaseMetacartaWidget(BaseGeometryWidget):
 
     class Media:
         js = (
-            'floppyforms/openlayers/OpenLayers.js',
-            'floppyforms/js/MapWidget.js',
+            "floppyforms/openlayers/OpenLayers.js",
+            "floppyforms/js/MapWidget.js",
         )
 
 
 class BaseOsmWidget(BaseGeometryWidget):
     """An OpenStreetMap base widget"""
+
     map_srid = 3857
-    template_name = 'floppyforms/gis/osm.html'
+    template_name = "floppyforms/gis/osm.html"
 
     class Media:
         js = (
-            'floppyforms/openlayers/OpenLayers.js',
-            'https://www.openstreetmap.org/openlayers/OpenStreetMap.js',
-            'floppyforms/js/MapWidget.js',
+            "floppyforms/openlayers/OpenLayers.js",
+            "https://www.openstreetmap.org/openlayers/OpenStreetMap.js",
+            "floppyforms/js/MapWidget.js",
         )
 
 
 class BaseGMapWidget(BaseGeometryWidget):
     """A Google Maps base widget"""
+
     map_srid = 3857
-    template_name = 'floppyforms/gis/google.html'
+    template_name = "floppyforms/gis/google.html"
     google_maps_api_key = None
 
     @property
     def media(self):
-        qs_dict = {'v': '3'}
+        qs_dict = {"v": "3"}
         if self.google_maps_api_key is not None:
-            qs_dict['key'] = self.google_maps_api_key
+            qs_dict["key"] = self.google_maps_api_key
 
         js = (
-            'floppyforms/openlayers/OpenLayers.js',
-            'floppyforms/js/MapWidget.js',
+            "floppyforms/openlayers/OpenLayers.js",
+            "floppyforms/js/MapWidget.js",
             # Needs (safe) because may contain "&":
-            safe('https://maps.google.com/maps/api/js?' + urlencode(qs_dict))
+            safe("https://maps.google.com/maps/api/js?" + urlencode(qs_dict)),
         )
         return forms.Media(js=js)
